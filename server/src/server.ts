@@ -1,9 +1,9 @@
-import express, { Application } from "express";
-import "dotenv/config";
+import app from "./app";
 import { port } from "./config/variables";
-import "colors";
-import "./config/env.server";
+import connect from "./config/database";
 
-const app: Application = express();
+app.listen(port, () => {
+   console.log(`Server running on port ${port}`.yellow);
 
-app.listen(port, () => console.log(`Server running on port ${port}`.green.underline));
+   connect();
+});

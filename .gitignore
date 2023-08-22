@@ -1,0 +1,9 @@
+# Ignore Node.js dependencies
+node_modules/
+
+# Ignore environment configuration
+.env
+env.server.ts
+
+# Ignore Next.js build artifacts
+.next/

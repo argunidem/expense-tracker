@@ -1,16 +1,24 @@
 import { Request, Response, NextFunction } from "express";
-import { ErrorResponse } from "../interfaces/error";
+import { ErrorResponse } from "../interfaces/response";
+import { ZodError } from "zod";
 
-export function errorHandler(
+export const errorHandler = (
    err: Error,
    req: Request,
    res: Response<ErrorResponse>,
    next: NextFunction
-) {
-   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
-   res.status(statusCode);
-   res.json({
-      message: err.message,
+) => {
+   let statusCode = 500;
+   let message = err.message;
+
+   if (err instanceof ZodError) {
+      statusCode = 400;
+      message = err.errors[0].message || "Zod validation error";
+   }
+
+   res.status(statusCode).json({
+      status: "fail",
+      message,
       stack: process.env.NODE_ENV === "production" ? null : err.stack,
    });
-}
+};

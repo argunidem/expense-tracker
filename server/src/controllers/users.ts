@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { ApiResponse } from "../interfaces/response";
+import { UserCredentials } from "../interfaces/user";
 
-const register = async (req: Request, res: Response<ApiResponse>) => {
+const register = async (req: Request<{}, {}, UserCredentials>, res: Response<ApiResponse>) => {
    res.status(200).json({
       status: "success",
       message: "Register",

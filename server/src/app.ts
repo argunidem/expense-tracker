@@ -3,6 +3,7 @@ import "dotenv/config";
 import "colors";
 import "./config/env.server";
 import { notFound, errorHandler } from "./middlewares";
+import router from "./routes";
 
 import morgan from "morgan";
 import helmet from "helmet";
@@ -15,13 +16,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.get("/", async (req, res, next) => {
-   try {
-      throw new Error("Something went wrong");
-   } catch (error) {
-      return next(error);
-   }
-});
+app.use("/api", router);
 
 app.use(notFound);
 app.use(errorHandler);

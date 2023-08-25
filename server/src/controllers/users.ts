@@ -1,15 +1,21 @@
 import { Request, Response } from "express";
 import { ApiResponse } from "../interfaces/response";
-import { UserCredentials } from "../interfaces/user";
+import { LoginCredentials, RegistrationCredentials } from "../interfaces/user";
 
-const register = async (req: Request<{}, {}, UserCredentials>, res: Response<ApiResponse>) => {
+const register = async (
+   req: Request<{}, ApiResponse, RegistrationCredentials>,
+   res: Response<ApiResponse>
+) => {
    res.status(200).json({
       status: "success",
       message: "Register",
    });
 };
 
-const login = async (req: Request, res: Response<ApiResponse>) => {
+const login = async (
+   req: Request<{}, ApiResponse, LoginCredentials>,
+   res: Response<ApiResponse>
+) => {
    res.status(200).json({
       status: "success",
       message: "Login",

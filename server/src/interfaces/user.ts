@@ -1,11 +1,12 @@
 import { Document } from "mongoose";
+import * as z from "zod";
+import { registrationSchema } from "../schemas/user";
 
-interface UserCredentials {
-   email: string;
-   name: string;
-   password: string;
-}
+interface RegistrationCredentials
+   extends Omit<z.infer<typeof registrationSchema>["body"], "confirmation"> {}
 
-interface UserDocument extends UserCredentials, Document {}
+interface LoginCredentials extends Omit<RegistrationCredentials, "name"> {}
 
-export { UserCredentials, UserDocument };
+interface UserDocument extends RegistrationCredentials, Document {}
+
+export { RegistrationCredentials, LoginCredentials, UserDocument };

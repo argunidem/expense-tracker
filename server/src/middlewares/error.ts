@@ -3,12 +3,12 @@ import { ErrorResponse } from "../interfaces/response";
 import { ZodError } from "zod";
 
 export const errorHandler = (
-   err: Error,
+   err: any,
    req: Request,
    res: Response<ErrorResponse>,
    next: NextFunction
 ) => {
-   let statusCode = 500;
+   let statusCode = err.statusCode || 500;
    let message = err.message;
 
    if (err instanceof ZodError) {

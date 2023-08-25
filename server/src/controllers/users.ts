@@ -1,21 +1,32 @@
-import { Request, Response } from "express";
-import { ApiResponse } from "../interfaces/response";
-import { LoginCredentials, RegistrationCredentials } from "../interfaces/user";
+import { NextFunction, Request, Response } from "express";
+import { ApiResponse, RegistrationResponse } from "../interfaces/response";
+import { RegistrationCredentials } from "../interfaces/user";
+import { createUser } from "../services/user";
+import User from "../models/user";
+import { ConflictError } from "../utils/error";
 
 const register = async (
-   req: Request<{}, ApiResponse, RegistrationCredentials>,
-   res: Response<ApiResponse>
+   req: Request<{}, RegistrationResponse, RegistrationCredentials>,
+   res: Response<RegistrationResponse>,
+   next: NextFunction
 ) => {
-   res.status(200).json({
-      status: "success",
-      message: "Register",
-   });
+   try {
+      const userExists = await User.findByEmail(req.body.email);
+      if (userExists) return next(ConflictError);
+
+      const user = await createUser(req.body);
+      req.session.user = user._id;
+
+      res.status(200).json({
+         status: "success",
+         data: user,
+      });
+   } catch (error: any) {
+      next(error);
+   }
 };
 
-const login = async (
-   req: Request<{}, ApiResponse, LoginCredentials>,
-   res: Response<ApiResponse>
-) => {
+const login = async (req: Request<{}, ApiResponse>, res: Response<ApiResponse>) => {
    res.status(200).json({
       status: "success",
       message: "Login",

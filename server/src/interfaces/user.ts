@@ -1,12 +1,21 @@
-import { Document } from "mongoose";
+import { Document, Model } from "mongoose";
 import * as z from "zod";
 import { registrationSchema } from "../schemas/user";
 
 interface RegistrationCredentials
    extends Omit<z.infer<typeof registrationSchema>["body"], "confirmation"> {}
 
-interface LoginCredentials extends Omit<RegistrationCredentials, "name"> {}
+interface UserWithId extends Pick<UserDocument, "_id" | "name" | "email"> {}
 
+//. Model Interfaces
 interface UserDocument extends RegistrationCredentials, Document {}
 
-export { RegistrationCredentials, LoginCredentials, UserDocument };
+interface UserMethods {
+   excludePassword(): UserWithId;
+}
+
+interface UserModel extends Model<UserDocument, {}, UserMethods> {
+   findByEmail(email: string): Promise<UserDocument | null>;
+}
+
+export { RegistrationCredentials, UserWithId, UserModel, UserDocument };

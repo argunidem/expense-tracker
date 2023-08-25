@@ -11,7 +11,20 @@ class BaseError extends Error {
    }
 }
 
-export const ConflictError = new BaseError(
-   409,
-   "Conflict: The email address is already in use by another user."
-);
+class ConflictError extends BaseError {
+   constructor(message: string = "Conflict: The email address is already in use by another user.") {
+      super(409, message);
+   }
+}
+
+class NotFoundError extends BaseError {
+   property: string;
+
+   constructor(property: string) {
+      super(404, `Property '${property}' not found.`);
+
+      this.property = property;
+   }
+}
+
+export { BaseError, ConflictError, NotFoundError };

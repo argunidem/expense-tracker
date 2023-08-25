@@ -3,7 +3,6 @@ import { ApiResponse, RegistrationResponse } from "../interfaces/response";
 import { RegistrationCredentials } from "../interfaces/user";
 import { createUser } from "../services/user";
 import User from "../models/user";
-import { ConflictError } from "../utils/error";
 
 const register = async (
    req: Request<{}, RegistrationResponse, RegistrationCredentials>,
@@ -11,13 +10,10 @@ const register = async (
    next: NextFunction
 ) => {
    try {
-      const userExists = await User.findByEmail(req.body.email);
-      if (userExists) return next(ConflictError);
-
       const user = await createUser(req.body);
       req.session.user = user._id;
 
-      res.status(200).json({
+      res.status(201).json({
          status: "success",
          data: user,
       });

@@ -3,9 +3,11 @@ import * as z from "zod";
 export const registrationSchema = z.object({
    body: z
       .object({
-         name: z.string({
-            required_error: "Name is required",
-         }),
+         name: z
+            .string({
+               required_error: "Name is required",
+            })
+            .min(4, "Name should be 4 characters minimum"),
          email: z
             .string({
                required_error: "Email is required",

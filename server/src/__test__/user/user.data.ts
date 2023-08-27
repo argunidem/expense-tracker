@@ -1,8 +1,13 @@
-export const validUserInput = {
+export const validRegistrationInput = {
    name: "John Doe",
    email: "john@email.com",
    password: "testpassword",
    confirmation: "testpassword",
+};
+
+export const validLoginInput = {
+   email: "john@email.com",
+   password: "testpassword",
 };
 
 export const invalidName = {
@@ -12,18 +17,36 @@ export const invalidName = {
    confirmation: "testpassword",
 };
 
-export const invalidEmail = {
-   name: "John Doe",
+export const invalidLoginEmail = {
    email: "johnemail.com",
    password: "testpassword",
+};
+
+export const invalidRegistrationEmail = {
+   name: "John Doe",
+   ...invalidLoginEmail,
    confirmation: "testpassword",
 };
 
-export const invalidPassword = {
-   name: "John Doe",
+export const invalidLoginPassword = {
    email: "john@email.com",
    password: "short",
+};
+
+export const incorrectLoginPassword = {
+   email: "john@email.com",
+   password: "incorrect-password",
+};
+
+export const invalidRegistrationPassword = {
+   name: "John Doe",
+   ...invalidLoginPassword,
    confirmation: "short",
+};
+
+export const userNotFoundLogin = {
+   email: "nonexistent@example.com",
+   password: "somepassword",
 };
 
 export const passwordMismatch = {

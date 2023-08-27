@@ -5,4 +5,10 @@ module.exports = {
    testMatch: ["**/**/*.test.ts"],
    verbose: true,
    forceExit: true,
+   transform: {
+      "^.+\\.tsx?$": "ts-jest",
+   },
+   moduleNameMapper: {
+      "^@/(.*)$": "<rootDir>/src/$1",
+   },
 };

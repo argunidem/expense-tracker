@@ -1,13 +1,13 @@
-import { UserWithId } from "./user";
+import { UserWithoutPassword } from "./user";
 
 export interface ApiResponse {
    status: "success";
    message: string;
 }
 
-export interface RegistrationResponse {
+export interface AuthResponse {
    status: "success";
-   data: UserWithId;
+   data: UserWithoutPassword;
 }
 
 export interface ErrorResponse {

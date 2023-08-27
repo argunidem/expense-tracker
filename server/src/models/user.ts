@@ -13,7 +13,7 @@ const userSchema = new Schema<UserDocument, UserModel>(
    }
 );
 
-userSchema.statics.findByEmail = async function (email: string) {
+userSchema.statics.findByEmail = function (email: string) {
    return this.findOne({ email });
 };
 
@@ -30,6 +30,11 @@ userSchema.methods.excludePassword = function () {
    const user = this.toObject();
    delete user.password;
    return user;
+};
+
+userSchema.methods.matchPassword = async function (inputPassword: string): Promise<boolean> {
+   const { password } = this;
+   return await bcrypt.compare(inputPassword, password);
 };
 
 const User = model<UserDocument, UserModel>("User", userSchema);

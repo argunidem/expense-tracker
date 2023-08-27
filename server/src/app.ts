@@ -1,3 +1,4 @@
+import "module-alias/register";
 import express, { Application } from "express";
 import "dotenv/config";
 import "colors";

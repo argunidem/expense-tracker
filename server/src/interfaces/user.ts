@@ -1,23 +1,23 @@
 import { Document, Model } from "mongoose";
 import * as z from "zod";
-import { registrationSchema } from "../schemas/user";
+import { loginSchema, registrationSchema } from "../schemas/user";
 
-//! name, email, password
-interface RegistrationCredentials
-   extends Omit<z.infer<typeof registrationSchema>["body"], "confirmation"> {}
+//! email and password
+type LoginCredentials = z.infer<typeof loginSchema>["body"];
+//! name, email and password
+type RegistrationCredentials = Omit<z.infer<typeof registrationSchema>["body"], "confirmation">;
 
-//! _id, name, email
-interface UserWithId extends Pick<UserDocument, "_id" | "name" | "email"> {}
-
-//. Model Interfaces
-interface UserDocument extends RegistrationCredentials, Document {}
-
+//! mongoose methods
 interface UserMethods {
-   excludePassword(): UserWithId;
+   excludePassword(): UserWithoutPassword;
+   matchPassword(inputPassword: string): Promise<boolean>;
 }
+
+interface UserDocument extends RegistrationCredentials, UserMethods, Document {}
+interface UserWithoutPassword extends Omit<UserDocument, "password"> {}
 
 interface UserModel extends Model<UserDocument, {}, UserMethods> {
    findByEmail(email: string): Promise<UserDocument | null>;
 }
 
-export { RegistrationCredentials, UserWithId, UserModel, UserDocument };
+export { LoginCredentials, RegistrationCredentials, UserWithoutPassword, UserModel, UserDocument };

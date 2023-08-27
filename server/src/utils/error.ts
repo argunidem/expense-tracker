@@ -11,9 +11,9 @@ class BaseError extends Error {
    }
 }
 
-class ConflictError extends BaseError {
-   constructor(message: string = "Conflict: The email address is already in use by another user.") {
-      super(409, message);
+class AuthenticationError extends BaseError {
+   constructor(message: string = "Invalid credentials.") {
+      super(401, message);
    }
 }
 
@@ -21,10 +21,16 @@ class NotFoundError extends BaseError {
    property: string;
 
    constructor(property: string) {
-      super(404, `Property '${property}' not found.`);
+      super(404, `${property} not found.`);
 
       this.property = property;
    }
 }
 
-export { BaseError, ConflictError, NotFoundError };
+class ConflictError extends BaseError {
+   constructor(message: string = "Conflict: The email address is already in use by another user.") {
+      super(409, message);
+   }
+}
+
+export { AuthenticationError, BaseError, ConflictError, NotFoundError };

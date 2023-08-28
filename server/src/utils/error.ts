@@ -12,7 +12,7 @@ class BaseError extends Error {
 }
 
 class AuthenticationError extends BaseError {
-   constructor(message: string = "Invalid credentials.") {
+   constructor(message: string) {
       super(401, message);
    }
 }

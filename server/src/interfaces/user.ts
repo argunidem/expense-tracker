@@ -1,6 +1,6 @@
 import { Document, Model } from "mongoose";
 import * as z from "zod";
-import { loginSchema, registrationSchema } from "../schemas/user";
+import { loginSchema, registrationSchema } from "@/schemas/user";
 
 //! email and password
 type LoginCredentials = z.infer<typeof loginSchema>["body"];

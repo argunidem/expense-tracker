@@ -1,6 +1,7 @@
+import { NextFunction, Request } from "express";
 import User from "@/models/user";
 import { LoginCredentials, RegistrationCredentials, UserWithoutPassword } from "@/interfaces/user";
-import { AuthenticationError, ConflictError, NotFoundError } from "@/utils/error";
+import { AuthenticationError, BaseError, ConflictError, NotFoundError } from "@/utils/error";
 
 export const createUser = async (
    credentials: RegistrationCredentials
@@ -24,10 +25,22 @@ export const loginUser = async (credentials: LoginCredentials): Promise<UserWith
       if (!user) throw new NotFoundError("User");
 
       const isMatch = await user.matchPassword(password);
-      if (!isMatch) throw new AuthenticationError();
+      if (!isMatch) throw new AuthenticationError("Invalid credentials.");
 
       return user.excludePassword();
    } catch (error) {
       throw error;
    }
+};
+
+export const logoutUser = (req: Request, next: NextFunction) => {
+   req.session.destroy((err: any) => {
+      if (err) {
+         console.error("Error destroying session:", err);
+         return next(new BaseError(500, "Internal server error"));
+      }
+
+      req.user = null;
+      next();
+   });
 };

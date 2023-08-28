@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
-import { UserDocument, UserModel } from "../interfaces/user";
+import { UserDocument, UserModel } from "@/interfaces/user";
 
 const userSchema = new Schema<UserDocument, UserModel>(
    {

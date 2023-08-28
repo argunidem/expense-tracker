@@ -1,8 +1,7 @@
 import supertest from "supertest";
-import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
 import app from "@/app";
 import User from "@/models/user";
+import { setupTestEnvironment, teardownTestEnvironment } from "@/__test__/test-setup";
 import {
    validRegistrationInput,
    validLoginInput,
@@ -12,7 +11,6 @@ import {
    userNotFoundLogin,
    incorrectLoginPassword,
 } from "../user.data";
-import { setupTestEnvironment, teardownTestEnvironment } from "@/__test__/test-setup";
 
 describe("Login", () => {
    beforeAll(setupTestEnvironment);

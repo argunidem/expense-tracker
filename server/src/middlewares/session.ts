@@ -1,14 +1,6 @@
-import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-
-import { mongoUri } from "../config/variables";
-
-declare module "express-session" {
-   export interface SessionData {
-      user: mongoose.Types.ObjectId;
-   }
-}
+import { mongoUri } from "@/config/variables";
 
 export const sessionSetup = session({
    name: "exprense-tracker.sid",

@@ -5,7 +5,7 @@ export interface ApiResponse {
    message: string;
 }
 
-export interface AuthResponse {
+export interface UserResponse {
    status: "success";
    data: UserWithoutPassword;
 }

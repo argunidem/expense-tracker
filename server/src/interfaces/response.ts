@@ -1,4 +1,4 @@
-import { UserWithoutPassword } from "./user";
+import { UserWithoutPassword } from "./user/mongoose";
 
 export interface ApiResponse {
    status: "success";

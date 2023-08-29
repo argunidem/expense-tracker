@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { UserDocument } from "./interfaces/user";
+import { UserDocument } from "./interfaces/user/mongoose";
 
 declare module "express" {
    export interface Request {

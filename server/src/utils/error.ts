@@ -12,8 +12,14 @@ class BaseError extends Error {
 }
 
 class AuthenticationError extends BaseError {
-   constructor(message: string) {
+   constructor(message: string = "Unauthorized: Authentication required.") {
       super(401, message);
+   }
+}
+
+class ForbiddenError extends BaseError {
+   constructor(message: string = "Forbidden: You don't have permission to access this resource.") {
+      super(403, message);
    }
 }
 
@@ -33,4 +39,4 @@ class ConflictError extends BaseError {
    }
 }
 
-export { AuthenticationError, BaseError, ConflictError, NotFoundError };
+export { AuthenticationError, ForbiddenError, BaseError, ConflictError, NotFoundError };

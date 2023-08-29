@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const bodySchema = z.object({
+const bodySchema = z.object({
    email: z
       .string({
          required_error: "Email is required",
@@ -13,11 +13,11 @@ export const bodySchema = z.object({
       .min(6, "Password should be 6 characters minimum"),
 });
 
-export const loginSchema = z.object({
+const loginSchema = z.object({
    body: bodySchema,
 });
 
-export const registrationSchema = z.object({
+const registrationSchema = z.object({
    body: bodySchema
       .extend({
          name: z
@@ -34,3 +34,15 @@ export const registrationSchema = z.object({
          path: ["confirmation"],
       }),
 });
+
+const updateSchema = z.object({
+   body: bodySchema
+      .extend({
+         name: z.string().min(4, "Name should be 4 characters minimum"),
+      })
+      .partial(),
+});
+
+type mytpye = z.infer<typeof updateSchema>;
+
+export { loginSchema, registrationSchema, updateSchema };

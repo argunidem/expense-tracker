@@ -6,8 +6,8 @@ type LoginCredentials = z.infer<typeof loginSchema>["body"];
 //! Registration request body - email, name, password, and confirmation
 type RegistrationCredentials = Omit<z.infer<typeof registrationSchema>["body"], "confirmation">;
 
-//! User with optional fields - used for updating user
-interface UpdateUserCredentials extends Partial<RegistrationCredentials> {}
+//! User with optional fields
+type UpdateUserCredentials = Partial<RegistrationCredentials>;
 
 //! Google OAuth tokens
 interface GoogleTokensResponse {

@@ -17,8 +17,13 @@ interface IncomeResponse {
 }
 
 interface IncomesResponse {
-   status: "success";
-   data: IncomeDocument[];
+   success: "success";
+   count: number;
+   pagination: {
+      next?: { page: number; limit: number };
+      prev?: { page: number; limit: number };
+   };
+   data: any;
 }
 
 interface ErrorResponse {

@@ -1,7 +1,7 @@
 import { Schema, Types, model } from "mongoose";
 import { IncomeDocument } from "@/interfaces/income";
 
-const incomeSchema: Schema = new Schema<IncomeDocument>(
+const incomeBodySchema: Schema = new Schema<IncomeDocument>(
    {
       source: {
          type: String,
@@ -29,5 +29,5 @@ const incomeSchema: Schema = new Schema<IncomeDocument>(
    }
 );
 
-const Income = model<IncomeDocument>("Income", incomeSchema);
+const Income = model<IncomeDocument>("Income", incomeBodySchema);
 export default Income;

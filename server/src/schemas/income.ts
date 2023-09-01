@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const incomeSchema = z.object({
+const IncomeBodySchema = {
    body: z.object({
       source: z
          .string({
@@ -20,6 +20,25 @@ const incomeSchema = z.object({
          .regex(/^\d{4}-\d{2}-\d{2}$/)
          .optional(),
    }),
+};
+
+const params = {
+   params: z.object({
+      id: z.string(),
+   }),
+};
+
+const incomeBodySchema = z.object({
+   ...IncomeBodySchema,
 });
 
-export { incomeSchema };
+const incomeParamsSchema = z.object({
+   ...params,
+});
+
+const updateIncomeSchema = z.object({
+   ...params,
+   body: IncomeBodySchema.body.partial(),
+});
+
+export { incomeBodySchema, incomeParamsSchema, updateIncomeSchema };

@@ -1,9 +1,15 @@
 import { Router } from "express";
-import { createIncome, getIncomes } from "@/controllers/income";
+import {
+   createIncome,
+   deleteIncome,
+   getIncome,
+   getIncomes,
+   updateIncome,
+} from "@/controllers/income";
+import Income from "@/models/income";
 import { protect, validate } from "@/middlewares";
 import { refine } from "@/middlewares/refine";
-import Income from "@/models/income";
-import { incomeSchema } from "@/schemas/income";
+import { incomeBodySchema, incomeParamsSchema, updateIncomeSchema } from "@/schemas/income";
 
 const router = Router();
 
@@ -11,8 +17,13 @@ router
    .route("/")
    .all(protect)
    .get(refine(Income), getIncomes)
-   .post(validate(incomeSchema), createIncome);
+   .post(validate(incomeBodySchema), createIncome);
 
-//; When refine middleware is created, don't forget to handle populate query
+router
+   .route("/:id")
+   .all(protect)
+   .get(validate(incomeParamsSchema), getIncome)
+   .put(validate(updateIncomeSchema), updateIncome)
+   .delete(validate(incomeParamsSchema), deleteIncome);
 
 export default router;

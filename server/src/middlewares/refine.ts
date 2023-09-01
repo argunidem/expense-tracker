@@ -11,7 +11,7 @@ export const refine =
          const reqQuery = { ...req.query };
 
          //- Fields to exclude
-         const removeFields = ["select", "sort", "page", "limit"];
+         const removeFields = ["select", "sort", "page", "limit", "populate"];
 
          //- Loop over removeFields and delete them from reqQuery
          removeFields.forEach((param) => delete reqQuery[param]);
@@ -25,15 +25,18 @@ export const refine =
          //- Finding resource
          query = model.find(JSON.parse(queryStr));
 
+         //- Filter by logged-in user's id
+         query = query.where("user").equals(req.user?._id);
+
          //- Select fields
          if (req.query.select) {
-            const fields = (req.query.select as string).split(",").join(" ");
+            const fields = stripComma(req.query.select as string);
             query = query.select(fields);
          }
 
          //- Sort
          if (req.query.sort) {
-            const sortBy = (req.query.sort as string).split(",").join(" ");
+            const sortBy = stripComma(req.query.sort as string);
             query = query.sort(sortBy);
          } else {
             query = query.sort("-createdAt");
@@ -44,27 +47,31 @@ export const refine =
          const limit = parseInt(req.query.limit as string, 10) || 25;
          const startIndex = (page - 1) * limit;
          const endIndex = page * limit;
-         const total = await model.countDocuments();
+         const total = await model.find({ user: req.user?._id }).countDocuments();
 
          query = query.skip(startIndex).limit(limit);
 
-         // //- Populate
-         // if (populate) {
-         //    query = query.populate(populate);
-         // }
-
-         //; TODO - Only the user's incomes should be returned
+         //- Populate
+         //- /api/incomes?populate=user-name,email
+         //- populate({ path: "user", select: "name email" })
+         if (req.query.populate) {
+            const populate = req.query.populate as string;
+            const path = populate.split("-")[0] || "";
+            let select;
+            if (populate.split("-")[1]) {
+               select = stripComma(populate.split("-")[1]);
+            }
+            query = query.populate({ path, select: select ?? "-password" });
+         }
 
          //- Executing query
          const results = await query;
 
-         //;
-
-         //| Pagination result
-         // const pagination = {};
+         //- Pagination
          type Pagination = { page: number; limit: number };
          const pagination: { next?: Pagination; prev?: Pagination } = {};
 
+         //- If not on last page
          if (endIndex < total) {
             pagination.next = {
                page: page + 1,
@@ -72,6 +79,7 @@ export const refine =
             };
          }
 
+         //- If not on first page
          if (startIndex > 0) {
             pagination.prev = {
                page: page - 1,
@@ -91,3 +99,8 @@ export const refine =
          next(error);
       }
    };
+
+//- Strip commas and replace with spaces
+const stripComma = (str: string) => {
+   return str.split(",").join(" ");
+};

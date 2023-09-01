@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorResponse } from "@/interfaces/response";
 import { ZodError } from "zod";
+import mongoose from "mongoose";
 
 export const errorHandler = (
    err: any,
@@ -15,6 +16,12 @@ export const errorHandler = (
    if (err instanceof ZodError) {
       statusCode = 400;
       message = err.errors[0].message || "Zod validation error";
+   }
+
+   //- Handle CastError
+   if (err instanceof mongoose.Error.CastError) {
+      statusCode = 400;
+      message = `Invalid ${err.kind}: ${err.value}`;
    }
 
    res.status(statusCode).json({

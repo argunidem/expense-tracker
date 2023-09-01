@@ -11,7 +11,7 @@ import cors from "cors";
 
 const app: Application = express();
 
-//. Middlewares
+//. Middleware setup
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors());

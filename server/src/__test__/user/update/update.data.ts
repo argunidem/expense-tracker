@@ -27,3 +27,21 @@ export const updatedResponse = {
       __v: 0,
    },
 };
+
+//; Conflict error inputs
+export const validRegistrationInputToUpdate = {
+   name: "Update User",
+   email: "conflicterror@email.com",
+   password: "testpassword",
+   confirmation: "testpassword",
+};
+
+export const validLoginInputToUpdate = {
+   email: "conflicterror@email.com",
+   password: "testpassword",
+};
+
+export const conflictErrorInput = {
+   name: "Conflict Error",
+   email: "john@email.com",
+};

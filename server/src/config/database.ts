@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { mongoUri } from "./variables";
 
+//! Connect to MongoDB
 async function connect() {
    try {
       const dbInstance = await mongoose.connect(mongoUri);

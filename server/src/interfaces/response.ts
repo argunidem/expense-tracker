@@ -1,17 +1,30 @@
 import { UserWithoutPassword } from "./user/mongoose";
+import { IncomeDocument } from "./income";
 
-export interface ApiResponse {
+interface ApiResponse {
    status: "success";
    message: string;
 }
 
-export interface UserResponse {
+interface UserResponse {
    status: "success";
    data: UserWithoutPassword;
 }
 
-export interface ErrorResponse {
+interface IncomeResponse {
+   status: "success";
+   data: IncomeDocument;
+}
+
+interface IncomesResponse {
+   status: "success";
+   data: IncomeDocument[];
+}
+
+interface ErrorResponse {
    status: "fail";
    message: string;
    stack?: string | null;
 }
+
+export { ApiResponse, UserResponse, ErrorResponse, IncomeResponse, IncomesResponse };

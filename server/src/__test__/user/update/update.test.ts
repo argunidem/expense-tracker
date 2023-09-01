@@ -7,6 +7,9 @@ import {
    invalidUpdateName,
    invalidUpdateEmail,
    invalidUpdatePassword,
+   validRegistrationInputToUpdate,
+   validLoginInputToUpdate,
+   conflictErrorInput,
    updatedResponse,
 } from "./update.data";
 import { validLoginInput } from "../login/login.data";
@@ -82,6 +85,28 @@ describe("/api/users/update", () => {
    });
 
    describe("controller", () => {
+      describe("service", () => {
+         test("should return 409 and conflict message", async () => {
+            await User.create(validRegistrationInput);
+            await User.create(validRegistrationInputToUpdate);
+            const login = await supertest(app)
+               .post("/api/users/login")
+               .send(validLoginInputToUpdate);
+
+            const { statusCode, body } = await supertest(app)
+               .put("/api/users/update")
+               .set("content-type", "application/json")
+               .set("Cookie", [login.headers["set-cookie"]])
+               .send(conflictErrorInput);
+
+            expect(statusCode).toBe(409);
+            expect(body.message).toEqual(
+               "Conflict: The email address is already in use by another user."
+            );
+            await User.deleteMany();
+         });
+      });
+
       test("should return 200 and update user details", async () => {
          await User.create(validRegistrationInput);
          const login = await supertest(app).post("/api/users/login").send(validLoginInput);

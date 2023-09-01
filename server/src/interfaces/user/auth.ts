@@ -1,15 +1,15 @@
 import * as z from "zod";
 import { loginSchema, registrationSchema } from "@/schemas/user";
 
-//! email and password
+//! Login request body - email and password
 type LoginCredentials = z.infer<typeof loginSchema>["body"];
-//! name, email and password
+//! Registration request body - email, name, password, and confirmation
 type RegistrationCredentials = Omit<z.infer<typeof registrationSchema>["body"], "confirmation">;
 
-//! user with optional fields
+//! User with optional fields - used for updating user
 interface UpdateUserCredentials extends Partial<RegistrationCredentials> {}
 
-//! google oauth tokens
+//! Google OAuth tokens
 interface GoogleTokensResponse {
    access_token: string;
    expires_in: number;
@@ -18,7 +18,7 @@ interface GoogleTokensResponse {
    id_token: string;
 }
 
-//! google oauth user
+//! Google OAuth user
 interface GoogleUserResponse {
    id: string;
    email: string;

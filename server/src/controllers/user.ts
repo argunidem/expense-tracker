@@ -8,6 +8,7 @@ import {
    updateDetails,
 } from "@/services/user";
 import { ForbiddenError } from "@/utils/error";
+import { initializeBudget } from "@/utils/budget";
 import { origin } from "@/config/variables";
 import { ApiResponse, UserResponse } from "@/interfaces/response";
 import {
@@ -26,8 +27,12 @@ const register = async (
    next: NextFunction
 ) => {
    try {
+      //- Create user and store user ID in session
       const user = await createUser(req.body);
       req.session.user = user._id;
+
+      //; Create a new budget entry for the current month if it doesn't exist
+      await initializeBudget(user._id);
 
       res.status(201).json({
          status: "success",
@@ -47,8 +52,12 @@ const login = async (
    next: NextFunction
 ) => {
    try {
+      //- Log in user and store user ID in session
       const user = await loginUser(req.body);
       req.session.user = user._id;
+
+      //; Create a new budget entry for the current month if it doesn't exist
+      await initializeBudget(user._id);
 
       res.status(200).json({
          status: "success",
@@ -64,16 +73,19 @@ const login = async (
 //! Public Route
 const googleOAuth = async (req: Request, res: Response, next: NextFunction) => {
    try {
+      //- Obtain Google OAuth tokens
       const code = req.query.code as string;
-
       const { id_token, access_token } = await getGoogleOauthTokens({ code });
 
+      //- Obtain Google user
       const googleUser = await getGoogleUser({ id_token, access_token });
 
+      //- Check if Google account is verified
       if (!googleUser.verified_email) {
          return next(new ForbiddenError("Google account is not verified"));
       }
 
+      //- Update or create user using Google account info
       const user = await updateDetails(
          {
             email: googleUser.email,
@@ -81,7 +93,6 @@ const googleOAuth = async (req: Request, res: Response, next: NextFunction) => {
          {
             email: googleUser.email,
             name: googleUser.name,
-            picture: googleUser.picture,
          },
          {
             upsert: true,
@@ -89,7 +100,11 @@ const googleOAuth = async (req: Request, res: Response, next: NextFunction) => {
          }
       );
 
+      //- Store user ID in session and redirect
       req.session.user = user._id;
+
+      //; Create a new budget entry for the current month if it doesn't exist
+      await initializeBudget(user._id);
 
       res.redirect(origin);
    } catch (error: any) {
@@ -100,12 +115,8 @@ const googleOAuth = async (req: Request, res: Response, next: NextFunction) => {
 //! Logout user
 //! POST /api/users/logout
 //! Private Route
-const logout = (
-   req: Request<{}, ApiResponse, {}>,
-   res: Response<ApiResponse>,
-   next: NextFunction
-) => {
-   //! Destroy session
+const logout = (req: Request<{}, ApiResponse, {}>, res: Response<ApiResponse>) => {
+   //- Destroy session
    logoutUser(req, () => {
       res.status(200).json({ status: "success", message: "Logout successful" });
    });
@@ -120,6 +131,7 @@ const profile = (
    next: NextFunction
 ) => {
    try {
+      //- Exclude password from user
       const user = req.user?.excludePassword();
 
       res.status(200).json({
@@ -141,7 +153,6 @@ const updateUser = async (
 ) => {
    try {
       const { email } = req.user as UserDocument;
-
       const fieldsToUpdate = req.body;
 
       const user = await updateDetails(

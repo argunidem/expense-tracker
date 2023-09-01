@@ -4,9 +4,14 @@ class BaseError extends Error {
    constructor(statusCode: number, message: string) {
       super(message);
 
+      //. Set the prototype of the instance
       Object.setPrototypeOf(this, new.target.prototype);
+
+      //. Set the error name and status code
       this.name = Error.name;
       this.statusCode = statusCode;
+
+      //. Capture the stack trace
       Error.captureStackTrace(this);
    }
 }
@@ -29,6 +34,7 @@ class NotFoundError extends BaseError {
    constructor(property: string) {
       super(404, `${property} not found.`);
 
+      //. Set the custom property
       this.property = property;
    }
 }

@@ -1,5 +1,6 @@
-import { Request } from "express";
-import { UserDocument } from "./interfaces/user/mongoose";
+import { Request, Response } from "express";
+import { Types } from "mongoose";
+import { UserDocument } from "@/interfaces/user/mongoose";
 
 declare module "express" {
    export interface Request {
@@ -7,8 +8,14 @@ declare module "express" {
    }
 }
 
+declare module "express" {
+   export interface Response {
+      results?: any;
+   }
+}
+
 declare module "express-session" {
    export interface SessionData {
-      user: Types.ObjectId;
+      user: typeof Types.ObjectId;
    }
 }

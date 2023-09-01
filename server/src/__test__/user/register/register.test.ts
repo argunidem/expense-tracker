@@ -74,8 +74,6 @@ describe("/api/users/register", () => {
          expect(body.message).toEqual(
             "Conflict: The email address is already in use by another user."
          );
-      });
-      afterEach(async () => {
          await User.deleteMany();
       });
 

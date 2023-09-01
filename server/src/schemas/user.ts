@@ -43,6 +43,4 @@ const updateSchema = z.object({
       .partial(),
 });
 
-type mytpye = z.infer<typeof updateSchema>;
-
 export { loginSchema, registrationSchema, updateSchema };

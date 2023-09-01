@@ -4,13 +4,14 @@ import { ZodError } from "zod";
 
 export const errorHandler = (
    err: any,
-   req: Request,
+   _req: Request,
    res: Response<ErrorResponse>,
    next: NextFunction
 ) => {
    let statusCode = err.statusCode || 500;
    let message = err.message;
 
+   //- Handle Zod validation error
    if (err instanceof ZodError) {
       statusCode = 400;
       message = err.errors[0].message || "Zod validation error";

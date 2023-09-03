@@ -15,11 +15,15 @@ import {
 import { validLoginInput } from "../login/login.data";
 import { validRegistrationInput } from "../register/register.data";
 
+//- Test route: PUT /api/users/update
 describe("/api/users/update", () => {
+   //- Connect to a new in-memory database before running any tests.
    beforeAll(setupTestEnvironment);
    afterAll(teardownTestEnvironment);
 
+   //- Middleware tests
    describe("middlewares", () => {
+      //- Route protection middleware
       describe("protect middleware", () => {
          test("should return 401 and unauthorized message", async () => {
             const { statusCode, body } = await supertest(app)
@@ -34,6 +38,7 @@ describe("/api/users/update", () => {
          });
       });
 
+      //- Validation middleware
       describe("validate middleware", () => {
          let login: supertest.Response;
 
@@ -51,7 +56,7 @@ describe("/api/users/update", () => {
 
             expect(statusCode).toBe(400);
             expect(body.status).toEqual("fail");
-            expect(body.message).toEqual("Name should be 4 characters minimum");
+            expect(body.message).toEqual("Name must have at least 4 characters.");
          });
 
          test("should return 400 and invalid email message", async () => {
@@ -63,7 +68,7 @@ describe("/api/users/update", () => {
 
             expect(statusCode).toBe(400);
             expect(body.status).toEqual("fail");
-            expect(body.message).toEqual("Not a valid email");
+            expect(body.message).toEqual("The email provided is invalid.");
          });
 
          test("should return 400 and invalid password message", async () => {
@@ -75,7 +80,7 @@ describe("/api/users/update", () => {
 
             expect(statusCode).toBe(400);
             expect(body.status).toEqual("fail");
-            expect(body.message).toEqual("Password should be 6 characters minimum");
+            expect(body.message).toEqual("Password must have at least 6 characters.");
          });
 
          afterAll(async () => {
@@ -84,7 +89,9 @@ describe("/api/users/update", () => {
       });
    });
 
+   //- Controller tests
    describe("controller", () => {
+      //- Service tests
       describe("service", () => {
          test("should return 409 and conflict message", async () => {
             await User.create(validRegistrationInput);

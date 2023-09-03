@@ -1,16 +1,16 @@
-import * as z from "zod";
+import { z } from "zod";
 
 const bodySchema = z.object({
    email: z
       .string({
-         required_error: "Email is required",
+         required_error: "Email address is required.",
       })
-      .email("Not a valid email"),
+      .email("The email provided is invalid."),
    password: z
       .string({
-         required_error: "Password is required",
+         required_error: "Password is required.",
       })
-      .min(6, "Password should be 6 characters minimum"),
+      .min(6, "Password must have at least 6 characters."),
 });
 
 const loginSchema = z.object({
@@ -22,15 +22,15 @@ const registrationSchema = z.object({
       .extend({
          name: z
             .string({
-               required_error: "Name is required",
+               required_error: "Name is required.",
             })
-            .min(4, "Name should be 4 characters minimum"),
+            .min(4, "Name must have at least 4 characters."),
          confirmation: z.string({
-            required_error: "Password confirmation is required",
+            required_error: "Password confirmation is required.",
          }),
       })
       .refine((data) => data.password === data.confirmation, {
-         message: "Passwords do not match",
+         message: "Passwords do not match.",
          path: ["confirmation"],
       }),
 });
@@ -38,7 +38,7 @@ const registrationSchema = z.object({
 const updateSchema = z.object({
    body: bodySchema
       .extend({
-         name: z.string().min(4, "Name should be 4 characters minimum"),
+         name: z.string().min(4, "Name must have at least 4 characters."),
       })
       .partial(),
 });

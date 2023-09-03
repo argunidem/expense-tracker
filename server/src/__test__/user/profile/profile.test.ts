@@ -6,10 +6,13 @@ import { validLoginInput } from "../login/login.data";
 import { validRegistrationInput } from "../register/register.data";
 import { successResponse } from "../user.data";
 
+//- Test route: GET /api/users/profile
 describe("/api/users/profile", () => {
+   //- Connect to a new in-memory database before running any tests.
    beforeAll(setupTestEnvironment);
    afterAll(teardownTestEnvironment);
 
+   //- Route protection middleware
    describe("protect middleware", () => {
       test("should return 401 and unauthorized message", async () => {
          const { statusCode, body } = await supertest(app).get("/api/users/profile");
@@ -21,6 +24,7 @@ describe("/api/users/profile", () => {
       });
    });
 
+   //- Controller tests
    describe("controller", () => {
       test("should return 200 and the user data", async () => {
          await User.create(validRegistrationInput);

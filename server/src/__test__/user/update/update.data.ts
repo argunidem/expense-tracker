@@ -28,7 +28,7 @@ export const updatedResponse = {
    },
 };
 
-//; Conflict error inputs
+//! Conflict error inputs
 export const validRegistrationInputToUpdate = {
    name: "Update User",
    email: "conflicterror@email.com",

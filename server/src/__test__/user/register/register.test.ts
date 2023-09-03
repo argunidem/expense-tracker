@@ -11,11 +11,15 @@ import {
 } from "./register.data";
 import { successResponse } from "../user.data";
 
+//- Test route: POST /api/users/register
 describe("/api/users/register", () => {
+   //- Connect to a new in-memory database before running any tests.
    beforeAll(setupTestEnvironment);
    afterAll(teardownTestEnvironment);
 
+   //- Middleware tests
    describe("validate middleware", () => {
+      //- Validation middleware
       test("should return 400 and invalid name message", async () => {
          const { statusCode, body } = await supertest(app)
             .post("/api/users/register")
@@ -24,7 +28,7 @@ describe("/api/users/register", () => {
 
          expect(statusCode).toBe(400);
          expect(body.status).toEqual("fail");
-         expect(body.message).toEqual("Name should be 4 characters minimum");
+         expect(body.message).toEqual("Name must have at least 4 characters.");
       });
 
       test("should return 400 and invalid email message", async () => {
@@ -35,7 +39,7 @@ describe("/api/users/register", () => {
 
          expect(statusCode).toBe(400);
          expect(body.status).toEqual("fail");
-         expect(body.message).toEqual("Not a valid email");
+         expect(body.message).toEqual("The email provided is invalid.");
       });
 
       test("should return 400 and invalid password message", async () => {
@@ -46,7 +50,7 @@ describe("/api/users/register", () => {
 
          expect(statusCode).toBe(400);
          expect(body.status).toEqual("fail");
-         expect(body.message).toEqual("Password should be 6 characters minimum");
+         expect(body.message).toEqual("Password must have at least 6 characters.");
       });
 
       test("should return 400 and password mismatch message", async () => {
@@ -57,10 +61,11 @@ describe("/api/users/register", () => {
 
          expect(statusCode).toBe(400);
          expect(body.status).toEqual("fail");
-         expect(body.message).toEqual("Passwords do not match");
+         expect(body.message).toEqual("Passwords do not match.");
       });
    });
 
+   //- Controller tests
    describe("controller", () => {
       test("should return 409 and conflict message", async () => {
          await User.create(validRegistrationInput);

@@ -1,44 +1,39 @@
 import { z } from "zod";
+import { paramsSchema } from "./params";
 
-const IncomeBodySchema = {
+const incomeBodySchema = z.object({
    body: z.object({
+      name: z.string().min(3).max(25).optional(),
+      description: z.string().min(5).max(50).optional(),
       source: z
          .string({
-            required_error: "Income source is required",
+            required_error: "Please provide an income source.",
          })
          .min(3)
-         .max(50),
+         .max(15),
       amount: z
          .number({
-            required_error: "Income amount is required",
+            required_error: "Please provide the amount of the income.",
          })
          .min(0.01),
-      regular: z.boolean(),
+      //; TODO - Later on change date to be z.date() type and convert to correct format in the backend
+      //- Validate date in YYYY-MM-DD format
+      date: z
+         .string()
+         .regex(/^\d{4}-\d{2}-\d{2}$/)
+         .optional(),
+      regular: z.boolean().default(false),
       //- Validate date in YYYY-MM-DD format
       expiresAt: z
          .string()
          .regex(/^\d{4}-\d{2}-\d{2}$/)
          .optional(),
    }),
-};
-
-const params = {
-   params: z.object({
-      id: z.string(),
-   }),
-};
-
-const incomeBodySchema = z.object({
-   ...IncomeBodySchema,
-});
-
-const incomeParamsSchema = z.object({
-   ...params,
 });
 
 const updateIncomeSchema = z.object({
-   ...params,
-   body: IncomeBodySchema.body.partial(),
+   params: paramsSchema.shape.params,
+   body: incomeBodySchema.shape.body.partial(),
 });
 
-export { incomeBodySchema, incomeParamsSchema, updateIncomeSchema };
+export { incomeBodySchema, updateIncomeSchema };

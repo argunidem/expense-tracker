@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { Model } from "mongoose";
-import { IncomeDocument } from "@/interfaces/income";
+import { ResourceDocument } from "@/interfaces/resource";
 
 export const refine =
-   (model: Model<IncomeDocument>) => async (req: Request, res: Response, next: NextFunction) => {
+   <T extends ResourceDocument>(model: Model<T>) =>
+   async (req: Request, res: Response, next: NextFunction) => {
       try {
          let query;
 

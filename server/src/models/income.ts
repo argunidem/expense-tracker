@@ -1,8 +1,15 @@
 import { Schema, Types, model } from "mongoose";
 import { IncomeDocument } from "@/interfaces/income";
+import { setDateNow } from "@/utils/date";
 
-const incomeBodySchema: Schema = new Schema<IncomeDocument>(
+const incomeSchema: Schema = new Schema<IncomeDocument>(
    {
+      name: {
+         type: String,
+      },
+      description: {
+         type: String,
+      },
       source: {
          type: String,
          required: true,
@@ -11,9 +18,12 @@ const incomeBodySchema: Schema = new Schema<IncomeDocument>(
          type: Number,
          required: true,
       },
+      date: {
+         type: String,
+         default: setDateNow(),
+      },
       regular: {
          type: Boolean,
-         default: false,
       },
       expiresAt: {
          type: String,
@@ -29,5 +39,5 @@ const incomeBodySchema: Schema = new Schema<IncomeDocument>(
    }
 );
 
-const Income = model<IncomeDocument>("Income", incomeBodySchema);
+const Income = model<IncomeDocument>("Income", incomeSchema);
 export default Income;

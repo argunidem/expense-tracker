@@ -1,14 +1,37 @@
 import { z } from "zod";
+import { paramsSchema } from "./params";
 
-const expenseSchema = z.object({
+const expenseBodySchema = z.object({
    body: z.object({
-      name: z.string().min(3).max(50),
-      amount: z.number().min(0.01),
-      category: z.string().min(3).max(30),
+      name: z.string().min(3).max(25).optional(),
+      description: z.string().min(5).max(50).optional(),
+      category: z
+         .string({
+            required_error: "Please provide an expense category.",
+         })
+         .min(3)
+         .max(30),
+      amount: z
+         .number({
+            required_error: "Please provide the amount of the expense.",
+         })
+         .min(0.01),
       //- Validate date in YYYY-MM-DD format
-      date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-      regular: z.boolean(),
+      date: z
+         .string()
+         .regex(/^\d{4}-\d{2}-\d{2}$/)
+         .optional(),
+      regular: z.boolean().default(false),
+      expiresAt: z
+         .string()
+         .regex(/^\d{4}-\d{2}-\d{2}$/)
+         .optional(),
    }),
 });
 
-export { expenseSchema };
+const updateExpenseSchema = z.object({
+   params: paramsSchema.shape.params,
+   body: expenseBodySchema.shape.body.partial(),
+});
+
+export { expenseBodySchema, updateExpenseSchema };

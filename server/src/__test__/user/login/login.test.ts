@@ -12,10 +12,13 @@ import {
 import { validRegistrationInput } from "../register/register.data";
 import { successResponse } from "../user.data";
 
+//- Test route: POST /api/users/login
 describe("/api/users/register", () => {
+   //- Connect to a new in-memory database before running any tests.
    beforeAll(setupTestEnvironment);
    afterAll(teardownTestEnvironment);
 
+   //- Validation middleware
    describe("validate middleware", () => {
       test("should return 400 and invalid email message", async () => {
          const { statusCode, body } = await supertest(app)
@@ -25,7 +28,7 @@ describe("/api/users/register", () => {
 
          expect(statusCode).toBe(400);
          expect(body.status).toEqual("fail");
-         expect(body.message).toEqual("Not a valid email");
+         expect(body.message).toEqual("The email provided is invalid.");
       });
       test("should return 400 and invalid password message", async () => {
          const { statusCode, body } = await supertest(app)
@@ -35,10 +38,13 @@ describe("/api/users/register", () => {
 
          expect(statusCode).toBe(400);
          expect(body.status).toEqual("fail");
-         expect(body.message).toEqual("Password should be 6 characters minimum");
+         expect(body.message).toEqual("Password must have at least 6 characters.");
       });
    });
+
+   //- Controller tests
    describe("controller", () => {
+      //- Service tests
       describe("service", () => {
          test("should return 404 and not found message", async () => {
             const { statusCode, body } = await supertest(app)

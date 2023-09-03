@@ -1,6 +1,6 @@
 import { Router } from "express";
 import user from "./user";
-import income from "./income";
+import { income, expense } from "./resource";
 
 const router = Router();
 
@@ -9,5 +9,7 @@ router.use("/users", user);
 
 //! /api/incomes
 router.use("/incomes", income);
+//! /api/expenses
+router.use("/expenses", expense);
 
 export default router;

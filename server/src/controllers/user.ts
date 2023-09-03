@@ -10,7 +10,7 @@ import {
 import { ForbiddenError } from "@/utils/error";
 import { initializeBudget } from "@/utils/budget";
 import { origin } from "@/config/variables";
-import { ApiResponse, UserResponse } from "@/interfaces/response";
+import { MessageResponse, UserResponse } from "@/interfaces/response";
 import {
    LoginCredentials,
    RegistrationCredentials,
@@ -115,7 +115,7 @@ const googleOAuth = async (req: Request, res: Response, next: NextFunction) => {
 //! Logout user
 //! POST /api/users/logout
 //! Private Route
-const logout = (req: Request<{}, ApiResponse, {}>, res: Response<ApiResponse>) => {
+const logout = (req: Request<{}, MessageResponse, {}>, res: Response<MessageResponse>) => {
    //- Destroy session
    logoutUser(req, () => {
       res.status(200).json({ status: "success", message: "Logout successful" });

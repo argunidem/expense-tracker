@@ -1,7 +1,7 @@
 import { validate } from "./validate";
 import { protect } from "./protect";
+import { refine } from "./refine";
 import { errorHandler } from "./error";
 import { notFound } from "./notFound";
-import { sessionSetup } from "../utils/session";
 
-export { validate, protect, errorHandler, notFound, sessionSetup };
+export { validate, protect, refine, errorHandler, notFound };

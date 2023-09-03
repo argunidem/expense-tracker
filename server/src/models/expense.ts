@@ -1,9 +1,16 @@
 import { Schema, Types, model } from "mongoose";
 import { ExpenseDocument } from "@/interfaces/expense";
+import { setDateNow } from "@/utils/date";
 
-const expenseSchema: Schema = new Schema(
+const expenseSchema: Schema = new Schema<ExpenseDocument>(
    {
       name: {
+         type: String,
+      },
+      description: {
+         type: String,
+      },
+      category: {
          type: String,
          required: true,
       },
@@ -11,16 +18,15 @@ const expenseSchema: Schema = new Schema(
          type: Number,
          required: true,
       },
-      category: {
-         type: String,
-         required: true,
-      },
       date: {
-         type: Date,
+         type: String,
+         default: setDateNow(),
       },
       regular: {
          type: Boolean,
-         default: false,
+      },
+      expiresAt: {
+         type: String,
       },
       user: {
          type: Types.ObjectId,

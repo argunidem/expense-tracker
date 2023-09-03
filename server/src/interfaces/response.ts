@@ -1,7 +1,7 @@
 import { UserWithoutPassword } from "./user/mongoose";
-import { IncomeDocument } from "./income";
+import { ResourceDocument } from "./resource";
 
-interface ApiResponse {
+interface MessageResponse {
    status: "success";
    message: string;
 }
@@ -11,12 +11,12 @@ interface UserResponse {
    data: UserWithoutPassword;
 }
 
-interface IncomeResponse {
+interface ResourceResponse {
    status: "success";
-   data: IncomeDocument;
+   data: ResourceDocument;
 }
 
-interface IncomesResponse {
+interface ResultsResponse {
    success: "success";
    count: number;
    pagination: {
@@ -32,4 +32,4 @@ interface ErrorResponse {
    stack?: string | null;
 }
 
-export { ApiResponse, UserResponse, ErrorResponse, IncomeResponse, IncomesResponse };
+export { MessageResponse, UserResponse, ResultsResponse, ResourceResponse, ErrorResponse };

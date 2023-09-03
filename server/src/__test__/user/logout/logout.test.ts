@@ -5,10 +5,13 @@ import { setupTestEnvironment, teardownTestEnvironment } from "@/__test__/test-s
 import { validLoginInput } from "../login/login.data";
 import { validRegistrationInput } from "../register/register.data";
 
+//- Test route: GET /api/users/logout
 describe("/api/users/logout", () => {
+   //- Connect to a new in-memory database before running any tests.
    beforeAll(setupTestEnvironment);
    afterAll(teardownTestEnvironment);
 
+   //- Route protection middleware
    describe("protect middleware", () => {
       test("should return 401 and unauthorized message", async () => {
          const { statusCode, body } = await supertest(app).get("/api/users/logout");
@@ -20,6 +23,7 @@ describe("/api/users/logout", () => {
       });
    });
 
+   //- Controller tests
    describe("controller", () => {
       test("should return 200 and logout message", async () => {
          await User.create(validRegistrationInput);

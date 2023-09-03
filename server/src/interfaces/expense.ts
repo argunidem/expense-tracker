@@ -1,11 +1,13 @@
+import { z } from "zod";
 import { Document, Types } from "mongoose";
+import { expenseBodySchema } from "@/schemas/expense";
 
-interface ExpenseDocument extends Document {
-   name: string;
-   amount: number;
-   category: string;
-   date: Date;
-   user: Types.ObjectId;
-}
+//! Expense request body with user id
+type ExpenseInput = z.infer<typeof expenseBodySchema>["body"] & {
+   user: typeof Types.ObjectId;
+};
 
-export { ExpenseDocument };
+//! Expense document
+interface ExpenseDocument extends Document, ExpenseInput {}
+
+export { ExpenseInput, ExpenseDocument };

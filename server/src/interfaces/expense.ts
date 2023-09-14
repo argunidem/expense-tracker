@@ -4,7 +4,8 @@ import { expenseBodySchema } from "@/schemas/expense";
 
 //! Expense request body with user id
 type ExpenseInput = z.infer<typeof expenseBodySchema>["body"] & {
-   user: typeof Types.ObjectId;
+   user: Types.ObjectId;
+   budgets: Types.ObjectId[];
 };
 
 //! Expense document

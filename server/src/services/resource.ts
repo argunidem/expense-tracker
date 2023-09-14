@@ -16,7 +16,8 @@ const createResource = async <T extends ResourceDocument>(
    body: IncomeInput | ExpenseInput,
    model: Model<T>
 ) => {
-   return await model.create(body);
+   const resource = new model(body);
+   return await resource.save();
 };
 
 const getAndVerifyResource: ResourceService = async (
@@ -25,7 +26,7 @@ const getAndVerifyResource: ResourceService = async (
 ) => {
    try {
       //- Get resource by id
-      const resource = await model.findById(req.params.id);
+      const resource = await model.findOne({ _id: req.params.id });
 
       //- Check if resource exists
       if (!resource) {
@@ -39,7 +40,7 @@ const getAndVerifyResource: ResourceService = async (
 
       //- If query has populate, populate the resource with the user
       if (req.query.populate) {
-         await (resource as Document).populate("user");
+         await (resource as Document).populate(req.query.populate as string);
       }
 
       return resource;
@@ -53,18 +54,15 @@ const updateResourceById: ResourceService = async (
    model
 ) => {
    try {
-      const {
-         params: { id },
-         body,
-      } = req;
-
+      const { body } = req;
       //- Check if resource exists and user is owner
-      await getAndVerifyResource(req, model);
+      const resource = await getAndVerifyResource(req, model);
 
-      const resource = await model.findOneAndUpdate({ _id: id }, body, {
-         new: true,
-         runValidators: true,
-      });
+      //- Update resource
+      resource.set(body);
+
+      //- Trigger the post save middleware to update the budget
+      await resource.save();
 
       return resource as ResourceDocument;
    } catch (error) {
@@ -77,15 +75,11 @@ const deleteResourceById = async <T extends ResourceDocument>(
    model: Model<T>
 ): Promise<void> => {
    try {
-      const {
-         params: { id },
-      } = req;
-
       //- Check if resource exists and user is owner
-      await getAndVerifyResource(req, model);
+      const resource = await getAndVerifyResource(req, model);
 
       //- Delete resource
-      await model.findOneAndDelete({ _id: id });
+      await resource.deleteOne();
    } catch (error) {
       throw error;
    }

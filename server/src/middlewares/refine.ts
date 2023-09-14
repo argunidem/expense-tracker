@@ -1,11 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { Model } from "mongoose";
 import { ResourceDocument } from "@/interfaces/resource";
+import Budget from "@/models/budget";
 
 export const refine =
    <T extends ResourceDocument>(model: Model<T>) =>
    async (req: Request, res: Response, next: NextFunction) => {
       try {
+         await Budget.calculateBudgets(req.user?._id);
+
          let query;
 
          //- Copy req.query

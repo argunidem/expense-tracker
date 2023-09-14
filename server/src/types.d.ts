@@ -17,6 +17,6 @@ declare module "express" {
 
 declare module "express-session" {
    export interface SessionData {
-      user: typeof Types.ObjectId;
+      user: Types.ObjectId;
    }
 }

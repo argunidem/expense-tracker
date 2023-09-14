@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { paramsSchema } from "./params";
+import { format } from "date-fns";
 
 const incomeBodySchema = z.object({
    body: z.object({
@@ -16,17 +17,16 @@ const incomeBodySchema = z.object({
             required_error: "Please provide the amount of the income.",
          })
          .min(0.01),
-      //; TODO - Later on change date to be z.date() type and convert to correct format in the backend
       //- Validate date in YYYY-MM-DD format
       date: z
          .string()
          .regex(/^\d{4}-\d{2}-\d{2}$/)
-         .optional(),
+         .default(format(new Date(), "yyyy-MM-dd")),
       regular: z.boolean().default(false),
       //- Validate date in YYYY-MM-DD format
       expiresAt: z
          .string()
-         .regex(/^\d{4}-\d{2}-\d{2}$/)
+         .regex(/^\d{4}-\d{2}$/)
          .optional(),
    }),
 });

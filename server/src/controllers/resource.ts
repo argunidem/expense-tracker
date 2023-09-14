@@ -31,7 +31,6 @@ const create: ResourceController =
             data: resource,
          });
       } catch (error: any) {
-         console.log(error);
          next(error);
       }
    };
@@ -41,7 +40,7 @@ const create: ResourceController =
 //! /api/incomes  or  /api/expenses
 //! Private Route
 const getResources = async (
-   _req: Request<{}, ResultsResponse, {}>,
+   req: Request<{}, ResultsResponse, {}>,
    res: Response<ResultsResponse>,
    next: NextFunction
 ) => {

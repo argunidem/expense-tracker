@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { paramsSchema } from "./params";
+import { format } from "date-fns";
 
 const expenseBodySchema = z.object({
    body: z.object({
@@ -20,7 +21,7 @@ const expenseBodySchema = z.object({
       date: z
          .string()
          .regex(/^\d{4}-\d{2}-\d{2}$/)
-         .optional(),
+         .default(format(new Date(), "yyyy-MM-dd")),
       regular: z.boolean().default(false),
       expiresAt: z
          .string()

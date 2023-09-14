@@ -4,7 +4,8 @@ import { incomeBodySchema } from "@/schemas/income";
 
 //! Income request body with user id
 type IncomeInput = z.infer<typeof incomeBodySchema>["body"] & {
-   user: typeof Types.ObjectId;
+   user: Types.ObjectId;
+   budgets: Types.ObjectId[];
 };
 
 //! Income document

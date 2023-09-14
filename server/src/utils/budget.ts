@@ -1,37 +1,51 @@
+import { Types } from "mongoose";
 import Budget from "@/models/budget";
+import Income from "@/models/income";
+import Expense from "@/models/expense";
+import { getMonthAndYear } from "./date";
 
-//! Create a new budget entry for the current month if it doesn't exist
-const initializeBudget = async (userId: string) => {
-   //- Get current month and year
-   const { name, month } = getCurrentMonthAndYear();
+export const handleBudgetOnAuth = async (userId: Types.ObjectId, date: Date = new Date()) => {
+   try {
+      const budgets = await Budget.find().sort("-timestamp");
 
-   //- Check if a budget entry exists for the current month
-   const existingBudget = await Budget.findOne({ month, user: userId });
+      //- If butgets.length > 0, that means the user has already logged in before
+      if (budgets.length > 0) {
+         //- Get the timestamp of the last budget entry and create a date object from it
+         const lastBudgetMonth = new Date(budgets[0].timestamp);
 
-   if (!existingBudget) {
-      //- Create a new budget entry for the current month
-      await Budget.create({
-         name,
-         month,
-         user: userId,
-      });
+         //- Create budget entries for the months till the current month
+         const budgetIds = await Budget.createBudgets(userId, lastBudgetMonth, date);
+
+         const query = {
+            user: userId,
+            regular: true,
+            $or: [
+               { expiresAt: { $exists: false } },
+               {
+                  $expr: {
+                     $eq: [{ $toLong: { $toDate: "$expiresAt" } }, budgets[0].timestamp],
+                  },
+               },
+            ],
+         };
+         const update = { $addToSet: { budgets: { $each: budgetIds } } };
+
+         //- Add the budgetIds to the budgets array of all regular incomes and expenses of the user
+         await Income.updateMany(query, update);
+         await Expense.updateMany(query, update);
+
+         //- Calculate all budgets of the user after income and expense updates on login
+         await Budget.calculateBudgets(userId);
+      } else {
+         //- Else means the user is logging in for the first time
+         const { name, month } = getMonthAndYear(date);
+         await Budget.create({
+            name,
+            month,
+            user: userId,
+         });
+      }
+   } catch (error) {
+      console.error(error);
    }
 };
-
-//! Get current month and year
-const getCurrentMonthAndYear = () => {
-   //- Get current month and year
-   const currentDate = new Date();
-   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
-   const currentYear = currentDate.getFullYear();
-
-   //- Create name and month variables
-   const name = `${currentMonth}, ${currentYear}`;
-   const month = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}`;
-
-   return { name, month };
-};
-
-export { initializeBudget };

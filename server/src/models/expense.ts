@@ -1,6 +1,7 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { ExpenseDocument } from "@/interfaces/expense";
-import { setDateNow } from "@/utils/date";
+import { format } from "date-fns";
+import { preSaveBudgetProcessing } from "@/utils/resource";
 
 const expenseSchema: Schema = new Schema<ExpenseDocument>(
    {
@@ -20,22 +21,49 @@ const expenseSchema: Schema = new Schema<ExpenseDocument>(
       },
       date: {
          type: String,
-         default: setDateNow(),
+         required: true,
+         default: format(new Date(), "yyyy-MM-dd"),
       },
       regular: {
          type: Boolean,
+         required: true,
+         default: false,
       },
+      budgets: [
+         {
+            type: Schema.Types.ObjectId,
+            ref: "Budget",
+         },
+      ],
       expiresAt: {
          type: String,
       },
       user: {
-         type: Types.ObjectId,
+         type: Schema.Types.ObjectId,
          ref: "User",
          required: true,
       },
    },
    {
       timestamps: true,
+   }
+);
+
+//! Handle budgets array before saving
+expenseSchema.pre("save", async function () {
+   await preSaveBudgetProcessing(this);
+});
+
+//! Calculate all budgets of the user after a CRUD operation
+expenseSchema.post(
+   ["deleteOne", "save", "findOne"],
+   { document: true, query: false },
+   async function () {
+      try {
+         await this.model("Budget").calculateBudgets(this.user);
+      } catch (error) {
+         console.error("Error in expense post-save middleware: ".red.underline, error);
+      }
    }
 );
 

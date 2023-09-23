@@ -1,15 +1,25 @@
 import * as React from "react";
-import Navbar from "@/components/navbar";
-import Hero from "@/components/hero";
-import Services from "@/components/services";
+import Navbar from "@/components/sections/navbar";
+import Hero from "@/components/sections/hero";
+import Services from "@/components/sections/services";
+import Features from "@/components/sections/features";
+import Testimonials from "@/components/sections/testimonials";
+import Pricing from "@/components/sections/pricing";
+import Footer from "@/components/sections/footer";
 
 const Home = () => {
    return (
-      <main className='min-h-screen overflow-x-hidden dark:bg-zinc-900'>
+      <>
          <Navbar />
-         <Hero />
-         <Services />
-      </main>
+         <main className='min-h-screen overflow-x-hidden dark:bg-zinc-900'>
+            <Hero />
+            <Services />
+            <Features />
+            <Testimonials />
+            <Pricing />
+            <Footer />
+         </main>
+      </>
    );
 };
 

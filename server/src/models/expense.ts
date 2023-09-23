@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { ExpenseDocument } from "@/interfaces/expense";
 import { format } from "date-fns";
-import { preSaveBudgetProcessing } from "@/utils/resource";
+import { preSaveBudgetProcessing } from "@/utils/budget";
 
 const expenseSchema: Schema = new Schema<ExpenseDocument>(
    {

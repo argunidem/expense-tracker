@@ -7,8 +7,8 @@ import {
    loginUser,
    updateDetails,
 } from "@/services/user";
-import Budget from "@/models/budget";
 import { ForbiddenError } from "@/utils/error";
+import { handleBudgetOnAuth } from "@/utils/budget";
 import { origin } from "@/config/variables";
 import { MessageResponse, UserResponse } from "@/interfaces/response";
 import {
@@ -17,8 +17,6 @@ import {
    UpdateUserCredentials,
 } from "@/interfaces/user/auth";
 import { UserDocument, UserWithoutPassword } from "@/interfaces/user/mongoose";
-// import { handleBudgetOnAuth } from "@/utils/testBudget";
-import { handleBudgetOnAuth } from "@/utils/budget";
 
 //! Register user
 //! POST /api/users/register
@@ -33,7 +31,7 @@ const register = async (
       const user = await createUser(req.body);
       req.session.user = user._id;
 
-      //; Create a new budget entry for the current month if it doesn't exist
+      //- Create a new budget for the current month and calculate it if it doesn't exist
       await handleBudgetOnAuth(user._id);
 
       res.status(201).json({
@@ -58,7 +56,7 @@ const login = async (
       const user = await loginUser(req.body);
       req.session.user = user._id;
 
-      //; Create a new budget entry for the current month and calculate it
+      //- Create a new budget for the current month and calculate it if it doesn't exist
       await handleBudgetOnAuth(user._id);
 
       res.status(200).json({
@@ -105,7 +103,7 @@ const googleOAuth = async (req: Request, res: Response, next: NextFunction) => {
       //- Store user ID in session and redirect
       req.session.user = user._id;
 
-      //; Create a new budget entry for the current month if it doesn't exist
+      //- Create a new budget for the current month and calculate it if it doesn't exist
       await handleBudgetOnAuth(user._id);
 
       res.redirect(origin);

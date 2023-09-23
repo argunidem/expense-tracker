@@ -6,6 +6,12 @@ html {
    -webkit-tap-highlight-color: transparent;
 }
 
-img:hover {
-   fill: white;
+.testimonial-0,
+.testimonial-3 {
+   @apply rounded-md md:rounded-tr-[65px] md:rounded-bl-[65px] md:rounded-none;
+}
+
+.testimonial-1,
+.testimonial-2 {
+   @apply rounded-md md:rounded-tl-[65px] md:rounded-br-[65px] md:rounded-none;
 }

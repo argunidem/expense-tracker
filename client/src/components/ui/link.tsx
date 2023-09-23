@@ -1,23 +1,34 @@
-import Link from "next/link";
-import clsx from "clsx";
+"use client";
 
-interface NavLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
-   href: string;
+import Link, { LinkProps } from "next/link";
+import clsx from "clsx";
+import { scrollToSection } from "@/utils/scroll";
+
+interface NavLinkProps extends LinkProps, React.HTMLAttributes<HTMLAnchorElement> {
    active?: boolean;
-   label: string;
+   target?: string;
+   href: string;
+   children?: React.ReactNode;
 }
 
-const ActiveClasses = "font-medium text-blue-500 dark:text-white";
+const ActiveClasses = "text-blue-500 dark:text-white";
 const InactiveClasses =
-   "font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500";
+   "text-neutral-600/95 dark:text-neutral-300/70 dark:hover:text-neutral-600 hover:text-gray-400";
 
-const NavLink = ({ href, label, active }: NavLinkProps) => {
+const NavLink = ({ children, active, target, href, ...props }: NavLinkProps) => {
    return (
       <Link
          href={href}
-         className={clsx("font-medium", active ? ActiveClasses : InactiveClasses)}
+         onClick={(e) => scrollToSection(e)}
+         target={target || "_self"}
+         {...props}
+         className={clsx(
+            "font-medium text-base",
+            active ? ActiveClasses : InactiveClasses,
+            props.className && props.className
+         )}
       >
-         {label}
+         {children}
       </Link>
    );
 };

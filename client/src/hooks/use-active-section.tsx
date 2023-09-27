@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const useActiveSection = () => {
    const [active, setActive] = useState("");
+
+   const pathname = usePathname();
 
    useEffect(() => {
       const handleScroll = () => {
@@ -16,8 +19,10 @@ const useActiveSection = () => {
             }
          });
 
-         if (window.scrollY === 0 && !currentActiveSection) {
+         if (!currentActiveSection && window.scrollY === 0 && pathname === "/") {
             setActive("home");
+         } else if (pathname !== "/") {
+            setActive(pathname.split("/")[1]);
          } else {
             setActive(currentActiveSection);
          }
@@ -25,14 +30,16 @@ const useActiveSection = () => {
 
       window.addEventListener("scroll", handleScroll);
 
-      if (window.scrollY === 0) {
+      if (window.scrollY === 0 && pathname === "/") {
          setActive("home");
+      } else if (pathname !== "/") {
+         setActive(pathname.split("/")[1]);
       }
 
       return () => {
          window.removeEventListener("scroll", handleScroll);
       };
-   }, []);
+   }, [pathname]);
 
    return active;
 };

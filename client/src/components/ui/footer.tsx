@@ -1,5 +1,5 @@
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import NavLink from "../ui/link";
+import NavLink from "./navbar/nav-link";
 
 const Footer = () => {
    return (

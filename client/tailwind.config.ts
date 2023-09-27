@@ -19,6 +19,7 @@ const config: Config = {
       extend: {
          backgroundImage: {
             hero: "url('/hero.jpg')",
+            "sign-up": "url('/sign-up.svg')",
          },
          keyframes: {
             up: {

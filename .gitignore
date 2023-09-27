@@ -2,7 +2,7 @@
 node_modules/
 
 # Ignore environment configuration
-.env
+.env*
 env.server.ts
 
 # Ignore Next.js build artifacts

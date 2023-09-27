@@ -1,7 +1,7 @@
 import Image from "next/image";
-import clsx from "clsx";
 import { Quote } from "lucide-react";
 import { testimonials } from "@/constants/testimonials";
+import { cn } from "@/lib/utils";
 
 const Testimonials = () => {
    return (
@@ -16,7 +16,7 @@ const Testimonials = () => {
             {testimonials.map(({ image, name, title, quote }, index) => (
                <div
                   key={index}
-                  className={clsx(
+                  className={cn(
                      "relative flex flex-col space-y-4 px-6 py-8 shadow-lg border border-neutral-200/60 dark:border-neutral-800/70 sm:px-8",
                      `testimonial-${index}`
                   )}

@@ -1,5 +1,5 @@
 import { Gem } from "lucide-react";
-import Plan from "@/components/plan";
+import Plan from "./plan";
 import { plans } from "@/constants/pricing";
 
 const Pricing = () => {

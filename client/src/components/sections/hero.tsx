@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
-import NavLink from "../ui/link";
+import NavLink from "../ui/navbar/nav-link";
 
 const Hero = () => {
    return (
@@ -26,24 +26,25 @@ const Hero = () => {
                      </h3>
                   </div>
                   <div className='flex space-x-4'>
-                     <Link href='/login'>
-                        <Button
-                           variant={"default"}
-                           border={"neutral"}
-                           className='animate-up sm:px-8 lg:px-12 xl:hover:text-neutral-700'
-                        >
-                           Get Started
-                        </Button>
-                     </Link>
-                     <NavLink href='#services'>
-                        <Button
-                           variant={"outline"}
-                           border={"neutral"}
-                           className='pointer-events-none animate-up sm:px-8 lg:px-12 xl:text-neutral-700'
+                     <Button
+                        variant={"default"}
+                        border={"neutral"}
+                        className='animate-up sm:px-8 lg:px-12 xl:hover:text-neutral-700'
+                     >
+                        <Link href='/login'>Get Started</Link>
+                     </Button>
+                     <Button
+                        variant={"outline"}
+                        border={"neutral"}
+                        className='animate-up'
+                     >
+                        <NavLink
+                           href='#services'
+                           className='sm:px-8 lg:px-12 xl:text-neutral-700'
                         >
                            Learn More
-                        </Button>
-                     </NavLink>
+                        </NavLink>
+                     </Button>
                   </div>
                </div>
             </div>

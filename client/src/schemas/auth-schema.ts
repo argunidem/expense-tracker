@@ -1,18 +1,5 @@
 import * as z from "zod";
 
-const schema = z.object({
-   email: z
-      .string({
-         required_error: "Email address is required.",
-      })
-      .email("The email provided is invalid."),
-   password: z
-      .string({
-         required_error: "Password is required.",
-      })
-      .min(6, "Password must have at least 6 characters."),
-});
-
 const loginSchema = z.object({
    email: z
       .string({

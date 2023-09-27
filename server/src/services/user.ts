@@ -117,7 +117,7 @@ const updateDetails = async (
    let user;
 
    //- Check if updated email already exists
-   if (update.email) {
+   if (update.email && !options.upsert) {
       const userExists = await User.findByEmail(update.email);
       if (userExists) throw new ConflictError();
    }

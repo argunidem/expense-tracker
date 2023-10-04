@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -11,18 +11,14 @@ import { Input } from "@/components/ui/form/input";
 import { Button } from "../../ui/button";
 import { loginSchema, registrationSchema } from "@/schemas/auth-schema";
 import { useAuth } from "@/hooks/use-auth";
-import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 const AuthForm = () => {
-   const { toast } = useToast();
-
    const {
       useLogin: { mutate: login, isLoading: isLoginLoading },
       useRegister: { mutate: register, isLoading: isRegisterLoading },
    } = useAuth();
 
-   const { push } = useRouter();
    const pathname = usePathname();
    const isRegister = pathname === "/register";
 
@@ -40,20 +36,7 @@ const AuthForm = () => {
    });
 
    async function onSubmit(values: z.infer<typeof schema>) {
-      submitFn(values, {
-         onSuccess: () => {
-            toast({
-               description: `You have successfully ${isRegister ? "registered" : "logged in"}`,
-            });
-            push("/dashboard");
-         },
-         onError: (error: any) => {
-            toast({
-               description: error.message,
-               variant: "destructive",
-            });
-         },
-      });
+      submitFn(values);
    }
 
    return (

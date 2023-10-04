@@ -1,4 +1,3 @@
-import * as React from "react";
 import Hero from "@/components/sections/hero";
 import Services from "@/components/sections/services";
 import Features from "@/components/sections/features";

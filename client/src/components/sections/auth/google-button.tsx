@@ -13,6 +13,7 @@ const GoogleButton = ({ title }: { title: string }) => {
             <Image
                src={googleIcon}
                alt='Google icon'
+               priority={true}
                width={20}
                height={20}
             />

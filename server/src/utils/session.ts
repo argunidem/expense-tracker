@@ -3,7 +3,7 @@ import MongoStore from "connect-mongo";
 import { mongoUri } from "@/config/variables";
 
 export const sessionSetup = session({
-   name: "exprense-tracker.sid",
+   name: "sid",
    secret: "Replace with your secret key",
    resave: false,
    saveUninitialized: false,

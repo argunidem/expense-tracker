@@ -3,7 +3,7 @@ import { AuthenticationError } from "@/utils/error";
 import { Request, Response, NextFunction } from "express";
 
 //! Add user to request object
-export const protect = async (req: Request, res: Response, next: NextFunction) => {
+export const protect = async (req: Request, _res: Response, next: NextFunction) => {
    try {
       //- Check if user is logged in
       const user = req.session.user;

@@ -120,6 +120,7 @@ const logout = (req: Request<{}, MessageResponse, {}>, res: Response<MessageResp
    logoutUser(req, () => {
       res.status(200).json({ status: "success", message: "Logout successful" });
    });
+   res.clearCookie("sid");
 };
 
 //! Get current user

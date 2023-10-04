@@ -14,9 +14,9 @@ export default function Error({
    }, [error]);
 
    return (
-      <main className='h-screen w-full flex flex-col justify-center items-center bg-neutral-900'>
+      <main className='h-screen w-full px-12 flex flex-col justify-center items-center text-center bg-neutral-900'>
          <h1 className='text-6xl font-extrabold text-neutral-300 tracking-widest'>{error.name}</h1>
-         <h2 className='mt-10 text-4xl font-extrabold text-neutral-300 tracking-widest'>
+         <h2 className='mt-10 text-3xl font-extrabold text-neutral-300 tracking-widest'>
             {error.message}
          </h2>
          <button

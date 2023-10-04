@@ -11,8 +11,8 @@ const Auth = ({ type }: AuthProps) => {
    const title = type.charAt(0).toUpperCase() + type.slice(1);
 
    return (
-      <main className='w-full max-w-[1800px] mx-auto min-h-screen flex items-center justify-center pt-20 text-neutral-800/90 dark:bg-neutral-900/40 dark:text-neutral-200 lg:items-stretch'>
-         <div className={"lg:flex lg:justify-center flex-1"}>
+      <main className='w-full max-w-[1800px] mx-auto min-h-screen flex items-center justify-center pt-20 text-neutral-800/90 dark:text-neutral-200 lg:items-stretch'>
+         <div className='lg:flex lg:justify-center flex-1'>
             <div
                className={cn(
                   "self-center lg:w-1/2 xl:w-5/12 xl:mb-12",

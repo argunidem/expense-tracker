@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-   "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300",
+   "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-60 dark:disabled:opacity-30 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300",
    {
       variants: {
          variant: {
@@ -17,7 +17,7 @@ const buttonVariants = cva(
             outline: "bg-transparent text-neutral-300 hover:bg-gray-100 hover:text-neutral-700/90",
             secondary:
                "bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
-            ghost: "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
+            ghost: "hover:bg-gray-500/10 hover:text-neutral-700 dark:hover:bg-gray-500/10 dark:hover:text-slate-50",
             link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50",
             auth: "font-semibold bg-yellow-700/90 text-gray-100 w-full py-4 rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center hover:bg-yellow-600 dark:hover:bg-yellow-600/50",
          },
@@ -32,6 +32,7 @@ const buttonVariants = cva(
          border: {
             default: "border dark:border-neutral-700",
             neutral: "border border-neutral-500/50",
+            "light-only": "border border-neutral-500/50 dark:border-none",
             none: "border-0",
          },
          shadow: {

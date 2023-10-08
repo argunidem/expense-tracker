@@ -6,6 +6,24 @@ html {
    -webkit-tap-highlight-color: transparent;
 }
 
+::-webkit-scrollbar {
+   width: 10px;
+   height: 6px;
+}
+
+::-webkit-scrollbar-track {
+   background: #00000000;
+}
+
+::-webkit-scrollbar-thumb {
+   background: #888e9b;
+   border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+   background: #6b707b;
+}
+
 .testimonial-0,
 .testimonial-3 {
    @apply rounded-md md:rounded-tr-[65px] md:rounded-bl-[65px] md:rounded-none;

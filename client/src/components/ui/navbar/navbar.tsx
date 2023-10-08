@@ -14,7 +14,7 @@ const Navbar = () => {
    const pathname = usePathname();
 
    return (
-      <header className='fixed group w-full z-50 bg-white border-b text-sm py-4 transition-all duration-300 dark:bg-zinc-900 dark:border-b-neutral-800 md:hover:py-6 sm:justify-start'>
+      <header className='fixed group w-full z-50 bg-white border-b text-sm py-4 transition-all duration-300 dark:bg-zinc-900 dark:border-gray-600/30 md:hover:py-6 sm:justify-start'>
          <nav className='max-w-[1600px] w-full mx-auto px-4 md:flex md:items-center md:justify-between md:py-[3px] lg:px-8 xl:px-16'>
             <div className='flex items-center justify-between'>
                <NavLink

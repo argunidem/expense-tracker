@@ -7,7 +7,7 @@ const GoogleButton = ({ title }: { title: string }) => {
    return (
       <Link
          href={getGoogleUrl()}
-         className='w-full mt-8 mx-auto max-w-xs shadow-sm rounded-lg py-3 bg-gray-100 flex items-center justify-center transition-all duration-300 ease-in-out dark:bg-neutral-800/40 hover:shadow-md hover:shadow-neutral-300 dark:hover:shadow-none dark:hover:bg-neutral-800/80'
+         className='w-full mt-8 mx-auto max-w-xs shadow-sm rounded-lg py-3 bg-gray-100/70 flex items-center justify-center transition-all duration-300 ease-in-out dark:bg-gray-500/10 hover:shadow-md hover:shadow-neutral-300 dark:hover:shadow-none dark:hover:bg-neutral-500/5'
       >
          <div className='bg-white p-2 rounded-full dark:bg-neutral-600/40'>
             <Image

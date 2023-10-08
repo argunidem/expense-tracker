@@ -1,6 +1,6 @@
 "use client";
 
-import ThemeSwitcher from "@/components/theme-switcher";
+import ThemeSwitcher from "@/components/theme/theme-switcher";
 import { items } from "@/constants/sidebar-items";
 import MenuItem from "./menu-item";
 

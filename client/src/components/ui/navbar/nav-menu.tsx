@@ -2,7 +2,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import NavLink from "./nav-link";
-import ThemeSwitcher from "../../theme-switcher";
+import ThemeSwitcher from "../../theme/theme-switcher";
 import useActiveSection from "@/hooks/use-active-section";
 import { authItems, items } from "@/constants/nav-items";
 import { cn } from "@/lib/utils";

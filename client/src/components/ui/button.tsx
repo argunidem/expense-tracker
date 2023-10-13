@@ -19,7 +19,7 @@ const buttonVariants = cva(
                "bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
             ghost: "hover:bg-gray-500/10 hover:text-neutral-700 dark:hover:bg-gray-500/10 dark:hover:text-slate-50",
             link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50",
-            auth: "font-semibold bg-yellow-700/90 text-gray-100 w-full py-4 rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center hover:bg-yellow-600 dark:hover:bg-yellow-600/50",
+            auth: "font-semibold bg-gray-600/70 text-gray-100 w-full py-4 rounded-lg transition-all duration-300 ease-in-out flex items-center justify-center dark:bg-gray-600/60 hover:bg-gray-600/60 dark:hover:bg-gray-600/40",
          },
          size: {
             default: "h-10 px-4",

@@ -1,8 +1,6 @@
-"use client";
-
 import ChartContainer from "@/app/(routes)/@private/(dashboard)/components/chart-container";
 import {
-   LineChart as Chart,
+   LineChart,
    Line,
    XAxis,
    YAxis,
@@ -12,59 +10,41 @@ import {
    ResponsiveContainer,
 } from "recharts";
 
-const data = [
-   {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-   },
-   {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-   },
-   {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-   },
-   {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-   },
-   {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-   },
-   {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-   },
-   {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-   },
-];
+interface DoubleLineChartProps {
+   data: {
+      name: string;
+      month: string;
+      expense: number;
+      income: number;
+   }[];
+}
 
-const LineChart = () => {
+const CustomTooltip = ({ active, payload, label }: any) => {
+   if (active && payload && payload.length) {
+      return (
+         <div className='bg-[#000000b0] p-4 rounded-md space-y-1 dark:bg-[#0000006a]'>
+            <p className='text-[#fefefe]'>{payload[0]?.payload.name || label}</p>
+            <p style={{ color: payload[0]?.color }}>
+               Total {payload[0]?.name}: ${payload[0]?.value}
+            </p>
+            <p className='text-rose-500/60 dark:text-rose-400/60'>
+               Total {payload[1]?.name}: ${payload[1]?.value}
+            </p>
+         </div>
+      );
+   }
+
+   return null;
+};
+
+const DoubleLineChart = ({ data }: DoubleLineChartProps) => {
    return (
       <ChartContainer>
          <ResponsiveContainer
             width='100%'
             height='100%'
          >
-            <Chart
+            <LineChart
                width={500}
                height={300}
                data={data}
@@ -83,29 +63,24 @@ const LineChart = () => {
                <YAxis />
                <Tooltip
                   cursor={{ stroke: "#545e6963" }}
-                  contentStyle={{
-                     backgroundColor: "#000000bb",
-                     borderWidth: 0,
-                     borderRadius: "6px",
-                  }}
-                  labelStyle={{ color: "#fefefe" }}
+                  content={<CustomTooltip />}
                />
                <Legend />
                <Line
                   type='monotone'
-                  dataKey='pv'
+                  dataKey='income'
                   stroke='#4caf84'
                   activeDot={{ r: 5 }}
                />
                <Line
                   type='monotone'
-                  dataKey='uv'
+                  dataKey='expense'
                   stroke='#b55959'
                />
-            </Chart>
+            </LineChart>
          </ResponsiveContainer>
       </ChartContainer>
    );
 };
 
-export default LineChart;
+export default DoubleLineChart;

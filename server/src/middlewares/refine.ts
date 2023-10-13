@@ -92,7 +92,7 @@ export const refine =
          }
 
          res.results = {
-            success: "success",
+            status: "success",
             count: results.length,
             pagination,
             data: results,

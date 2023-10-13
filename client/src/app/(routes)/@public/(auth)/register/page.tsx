@@ -1,6 +1,7 @@
 import Auth from "@/components/sections/auth/auth";
-const Register = () => {
+
+const RegisterPage = () => {
    return <Auth type='register' />;
 };
 
-export default Register;
+export default RegisterPage;

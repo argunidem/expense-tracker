@@ -17,7 +17,7 @@ interface ResourceResponse {
 }
 
 interface ResultsResponse {
-   success: "success";
+   status: "success";
    count: number;
    pagination: {
       next?: { page: number; limit: number };

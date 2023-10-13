@@ -14,10 +14,10 @@ const MenuItem = ({ data: { icon: Icon, text, href } }: MenuItemProps) => {
    const Item = href ? Link : "button";
 
    const {
-      useLogout: { refetch },
+      logout: { refetch },
    } = useAuth();
 
-   const handleClick = async () => {
+   const handleClick = () => {
       refetch();
    };
 

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 type AuthValues = z.infer<typeof loginSchema> | z.infer<typeof registrationSchema>;
 
-const login = async (values: AuthValues) => {
+const loginFn = async (values: AuthValues) => {
    try {
       return await axios.post("/users/login", values);
    } catch (error: any) {
@@ -15,7 +15,7 @@ const login = async (values: AuthValues) => {
    }
 };
 
-const register = async (values: AuthValues) => {
+const registerFn = async (values: AuthValues) => {
    try {
       return await axios.post("/users/register", values);
    } catch (error: any) {
@@ -23,7 +23,7 @@ const register = async (values: AuthValues) => {
    }
 };
 
-const logout = async () => {
+const logoutFn = async () => {
    try {
       const { data } = await axios.get("/users/logout");
       return data;
@@ -33,7 +33,7 @@ const logout = async () => {
 };
 
 export const useAuth = () => {
-   const { push } = useRouter();
+   const { push, refresh } = useRouter();
    const { toast } = useToast();
 
    const onError = (error: any) => {
@@ -43,27 +43,28 @@ export const useAuth = () => {
       });
    };
 
-   const onSuccess = (message: string, redirect: string) => {
+   const onSuccess = (message: string, route: string) => {
       toast({
          description: message,
       });
-      push(redirect);
+      refresh();
+      push(route);
    };
 
    return {
-      useLogin: useMutation({
-         mutationFn: login,
-         onSuccess: () => onSuccess("You have successfully logged in", "/dashboard"),
+      login: useMutation({
+         mutationFn: loginFn,
+         onSuccess: () => onSuccess("You have successfully logged in", "/"),
          onError,
       }),
-      useRegister: useMutation({
-         mutationFn: register,
-         onSuccess: () => onSuccess("You have successfully registered", "/dashboard"),
+      register: useMutation({
+         mutationFn: registerFn,
+         onSuccess: () => onSuccess("You have successfully registered", "/"),
          onError,
       }),
-      useLogout: useQuery({
+      logout: useQuery({
          queryKey: "logout",
-         queryFn: logout,
+         queryFn: logoutFn,
          enabled: false,
          retry: false,
          onSuccess: (data) => onSuccess(data.message, "/login"),

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ChartContainer from "@/components/sections/dashboard/chart-container";
+import ChartContainer from "@/app/(routes)/@private/(dashboard)/components/chart-container";
 import {
    BarChart as Chart,
    Bar,
@@ -87,11 +87,11 @@ const BarChart = () => {
                <Tooltip
                   cursor={{ opacity: 0 }}
                   contentStyle={{
-                     backgroundColor: "#484c55",
+                     backgroundColor: "#000000bb",
                      borderWidth: 0,
                      borderRadius: "6px",
                   }}
-                  labelStyle={{ color: "#bdbec0" }}
+                  labelStyle={{ color: "#fefefe" }}
                />
                <Legend />
                <Bar

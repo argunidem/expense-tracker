@@ -15,8 +15,8 @@ import { cn } from "@/lib/utils";
 
 const AuthForm = () => {
    const {
-      useLogin: { mutate: login, isLoading: isLoginLoading },
-      useRegister: { mutate: register, isLoading: isRegisterLoading },
+      login: { mutate: login, isLoading: isLoginLoading },
+      register: { mutate: register, isLoading: isRegisterLoading },
    } = useAuth();
 
    const pathname = usePathname();

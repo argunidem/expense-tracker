@@ -1,7 +1,7 @@
 import Auth from "@/components/sections/auth/auth";
 
-const Login = () => {
+const LoginPage = () => {
    return <Auth type='login' />;
 };
 
-export default Login;
+export default LoginPage;

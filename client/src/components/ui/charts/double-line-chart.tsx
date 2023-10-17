@@ -1,4 +1,4 @@
-import ChartContainer from "@/app/(routes)/@private/(dashboard)/components/chart-container";
+import ChartContainer from "@/components/ui/charts/chart-container";
 import {
    LineChart,
    Line,

@@ -34,9 +34,14 @@ import { cn } from "@/utils/cn";
 interface DataTableProps<TData, TValue> {
    columns: ColumnDef<TData, TValue>[];
    data: TData[];
+   searchBy: string;
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+   columns,
+   data,
+   searchBy,
+}: DataTableProps<TData, TValue>) {
    const [sorting, setSorting] = useState<SortingState>([]);
    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -62,9 +67,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       <>
          <div className='flex flex-col-reverse items-center gap-y-4 py-4 sm:flex-row'>
             <Input
-               placeholder='Filter by category...'
-               value={(table.getColumn("category")?.getFilterValue() as string) ?? ""}
-               onChange={(event) => table.getColumn("category")?.setFilterValue(event.target.value)}
+               placeholder={`Filter by ${searchBy}...`}
+               value={(table.getColumn(searchBy)?.getFilterValue() as string) ?? ""}
+               onChange={(event) => table.getColumn(searchBy)?.setFilterValue(event.target.value)}
                className='max-w-sm bg-transparent'
             />
             <DropdownMenu>

@@ -3,11 +3,11 @@ import request from "@/utils/request";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
 import { mapTransactionsData } from "@/utils/data-mappers/transactions";
-import { MappedExpenseData } from "@/interfaces/expense";
+import { MappedIncomeData } from "@/interfaces/income";
 
-export const getExpensesFn = async (cookies?: string) => {
+export const getIncomesFn = async (cookies?: string) => {
    try {
-      const { data } = await request.get("/expenses?sort=date", {
+      const { data } = await request.get("/incomes?sort=date", {
          headers: {
             Cookie: cookies,
          },
@@ -19,7 +19,7 @@ export const getExpensesFn = async (cookies?: string) => {
    }
 };
 
-export const useExpenses = () => {
+export const useIncomes = () => {
    const { refresh } = useRouter();
    const { toast } = useToast();
 
@@ -35,12 +35,12 @@ export const useExpenses = () => {
    };
 
    return {
-      getExpenses: useQuery({
-         queryKey: ["expenses"],
-         queryFn: () => getExpensesFn(),
+      getIncomes: useQuery({
+         queryKey: ["incomes"],
+         queryFn: () => getIncomesFn(),
          onSuccess: () => onSuccess(),
          onError,
-         select: ({ data }) => mapTransactionsData(data) as MappedExpenseData[],
+         select: ({ data }) => mapTransactionsData(data) as MappedIncomeData[],
          refetchOnMount: false,
          refetchOnWindowFocus: false,
       }),

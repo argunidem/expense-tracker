@@ -1,7 +1,7 @@
 "use client";
 
 import { Column, ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal, X, Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,15 +12,9 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { MappedIncomeData } from "@/interfaces/income";
 
-export type Payment = {
-   id: string;
-   amount: number;
-   status: "pending" | "processing" | "success" | "failed";
-   email: string;
-};
-
-const generateButton = (column: Column<Payment, unknown>, label: string) => (
+const generateButton = (column: Column<MappedIncomeData, unknown>, label: string) => (
    <button
       className='flex items-center py-4 font-semibold text-neutral-700 dark:text-white/60 hover:text-neutral-600/90 dark:hover:text-gray-400/70'
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -30,20 +24,20 @@ const generateButton = (column: Column<Payment, unknown>, label: string) => (
    </button>
 );
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<MappedIncomeData>[] = [
    {
-      accessorKey: "status",
-      header: ({ column }) => generateButton(column, "Status"),
+      accessorKey: "date",
+      header: ({ column }) => generateButton(column, "Date"),
    },
    {
-      accessorKey: "email",
-      header: ({ column }) => generateButton(column, "Email"),
+      accessorKey: "source",
+      header: ({ column }) => generateButton(column, "Source"),
    },
    {
-      accessorKey: "amount",
+      accessorKey: "income",
       header: ({ column }) => generateButton(column, "Amount"),
       cell: ({ row }) => {
-         const amount = parseFloat(row.getValue("amount"));
+         const amount = parseFloat(row.getValue("income"));
          const formatted = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
@@ -53,10 +47,30 @@ export const columns: ColumnDef<Payment>[] = [
       },
    },
    {
+      accessorKey: "regular",
+      header: ({ column }) => generateButton(column, "Regular"),
+      cell: ({ row }) => {
+         return (
+            <div className='pl-4 py-2 md:pl-6'>
+               {row.getValue("regular") ? (
+                  <Check
+                     size={18}
+                     className='text-emerald-400'
+                  />
+               ) : (
+                  <X
+                     size={18}
+                     className='text-rose-500'
+                  />
+               )}
+            </div>
+         );
+      },
+   },
+   {
       id: "actions",
       cell: ({ row }) => {
-         const payment = row.original;
-
+         const income = row.original;
          return (
             <div className='text-right'>
                <DropdownMenu>
@@ -71,12 +85,11 @@ export const columns: ColumnDef<Payment>[] = [
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align='end'>
                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                     <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
-                        Copy payment ID
+                     <DropdownMenuItem onClick={() => navigator.clipboard.writeText(income.id)}>
+                        Copy income ID
                      </DropdownMenuItem>
                      <DropdownMenuSeparator />
-                     <DropdownMenuItem>View customer</DropdownMenuItem>
-                     <DropdownMenuItem>View payment details</DropdownMenuItem>
+                     <DropdownMenuItem>View income details</DropdownMenuItem>
                   </DropdownMenuContent>
                </DropdownMenu>
             </div>

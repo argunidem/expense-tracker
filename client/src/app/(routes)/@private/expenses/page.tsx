@@ -1,4 +1,4 @@
-import ExpensesHeader from "./components/expenses-header";
+import ExpensesHeader from "@/components/ui/header";
 import ExpensesDashboard from "./components/expenses-dashboard";
 import { Separator } from "@/components/ui/separator";
 

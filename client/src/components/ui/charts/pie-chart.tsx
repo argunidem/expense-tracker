@@ -1,6 +1,6 @@
 "use client";
 
-import ChartContainer from "@/app/(routes)/@private/(dashboard)/components/chart-container";
+import ChartContainer from "@/components/ui/charts/chart-container";
 import { PieChart as Chart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 const data = [

@@ -1,6 +1,4 @@
-import ChartContainer from "@/app/(routes)/@private/(dashboard)/components/chart-container";
-import { MappedExpenseData } from "@/interfaces/expense";
-import { MappedBudgetData } from "@/interfaces/budget";
+import ChartContainer from "@/components/ui/charts/chart-container";
 import {
    BarChart as Chart,
    Bar,
@@ -11,10 +9,18 @@ import {
    Legend,
    ResponsiveContainer,
 } from "recharts";
+import { useTheme } from "next-themes";
+import { MappedExpenseData } from "@/interfaces/expense";
+import { MappedIncomeData } from "@/interfaces/income";
+import { MappedBudgetData } from "@/interfaces/budget";
 
 interface SingleBarChartProps {
-   data: MappedBudgetData[] | MappedExpenseData[];
-   color: string;
+   data: MappedBudgetData[] | MappedExpenseData[] | MappedIncomeData[];
+   color: {
+      dark?: string;
+      light?: string;
+      default?: string;
+   };
    dataKeys: {
       bar: string;
    };
@@ -37,7 +43,16 @@ const CustomTooltip = ({ active, payload, label, customName }: any) => {
    return null;
 };
 
-const SingleBarChart = ({ data, color, dataKeys: { bar }, customName }: SingleBarChartProps) => {
+const SingleBarChart = ({
+   data,
+   color: { dark, light, default: defaultColor },
+   dataKeys: { bar },
+   customName,
+}: SingleBarChartProps) => {
+   const { theme } = useTheme();
+
+   let color = defaultColor ?? (theme === "dark" ? dark : light);
+
    return (
       <ChartContainer>
          <ResponsiveContainer

@@ -1,10 +1,12 @@
-import Sidebar from "@/components/ui/sidebar/sidebar";
+import { cookies } from "next/headers";
 import { getBudgetsFn } from "@/hooks/use-budgets";
 import { getExpensesFn } from "@/hooks/use-expenses";
+import { getIncomesFn } from "@/hooks/use-incomes";
+import { dehydrate } from "@tanstack/react-query";
 import Hydrate from "@/utils/react-query/hydrate";
 import { getQueryClient } from "@/utils/react-query/query-client";
-import { dehydrate } from "@tanstack/react-query";
-import { cookies } from "next/headers";
+
+import Sidebar from "@/components/ui/sidebar/sidebar";
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
    const sid = cookies().toString();
@@ -12,6 +14,7 @@ export default async function PrivateLayout({ children }: { children: React.Reac
 
    await queryClient.prefetchQuery(["budgets"], () => getBudgetsFn(sid));
    await queryClient.prefetchQuery(["expenses"], () => getExpensesFn(sid));
+   await queryClient.prefetchQuery(["incomes"], () => getIncomesFn(sid));
    const dehydratedState = dehydrate(queryClient);
 
    return (

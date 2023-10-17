@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { protect } from "./lib/auth";
+import { protect } from "./utils/auth/protect";
 
 const publicRoutes = ["/login", "/register"];
 const privateRoutes = ["/expenses", "/incomes", "/budgets", "/data-table"];
@@ -16,5 +16,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-   matcher: ["/data-table", "/login", "/register", "/expenses", "/incomes", "/budgets"],
+   matcher: ["/login", "/register", "/expenses", "/incomes", "/budgets"],
 };

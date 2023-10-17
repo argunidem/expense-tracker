@@ -11,22 +11,10 @@ export interface Expense {
    _id: string;
 }
 
-export interface MappedExpense {
+export interface MappedExpenseData {
    name?: string;
    date: string;
    expense: number;
-}
-
-export interface ExpensesComparison {
-   name: string;
-   month: string;
-   income: number;
-   expense: number;
-}
-
-export interface ExpenseTableData {
-   amount: number;
-   date: string;
    regular: boolean;
    category: string;
    id: string;

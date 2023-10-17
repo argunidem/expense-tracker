@@ -4,7 +4,11 @@ import { ResourceDocument } from "./resource";
 //! Budget document
 interface BudgetDocument extends Document {
    name: string;
-   amount: number;
+   summary: {
+      totalIncome: number;
+      totalExpense: number;
+      balance: number;
+   };
    month: string;
    timestamp: number;
    user: Types.ObjectId;

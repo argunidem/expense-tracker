@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/form/input";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 interface DataTableProps<TData, TValue> {
    columns: ColumnDef<TData, TValue>[];

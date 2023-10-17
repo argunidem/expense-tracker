@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 import { scrollToSection } from "@/utils/scroll";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 interface NavLinkProps extends LinkProps, React.HTMLAttributes<HTMLAnchorElement> {
    active?: boolean;

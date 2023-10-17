@@ -5,7 +5,7 @@ import NavLink from "./nav-link";
 import ThemeSwitcher from "../../theme/theme-switcher";
 import useActiveSection from "@/hooks/use-active-section";
 import { authItems, items } from "@/constants/nav-items";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 const NavMenu = ({ isMenuOpen }: { isMenuOpen: boolean }) => {
    const pathname = usePathname();

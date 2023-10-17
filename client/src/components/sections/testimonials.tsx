@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Quote } from "lucide-react";
 import { testimonials } from "@/constants/testimonials";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 const Testimonials = () => {
    return (

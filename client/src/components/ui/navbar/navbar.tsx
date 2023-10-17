@@ -7,7 +7,7 @@ import { Menu, X } from "lucide-react";
 import { Button } from "../button";
 import NavMenu from "./nav-menu";
 import NavLink from "./nav-link";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 const Navbar = () => {
    const [isMenuOpen, setIsMenuOpen] = useState(false);

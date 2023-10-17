@@ -14,10 +14,22 @@ const budgetSchema = new Schema<BudgetDocument, BudgetModel, {}, BudgetQueryHelp
          type: String,
          required: true,
       },
-      amount: {
-         type: Number,
-         required: true,
-         default: 0,
+      summary: {
+         totalIncome: {
+            type: Number,
+            required: true,
+            default: 0,
+         },
+         totalExpense: {
+            type: Number,
+            required: true,
+            default: 0,
+         },
+         balance: {
+            type: Number,
+            required: true,
+            default: 0,
+         },
       },
       month: {
          type: String,
@@ -40,7 +52,7 @@ const budgetSchema = new Schema<BudgetDocument, BudgetModel, {}, BudgetQueryHelp
       id: false,
       toJSON: {
          virtuals: true,
-         transform(doc, ret) {
+         transform(_doc, ret) {
             ret.transactions = {
                incomes: ret.incomes,
                expenses: ret.expenses,
@@ -83,13 +95,14 @@ budgetSchema.statics.calculateBudgets = async function (userId: Types.ObjectId) 
       for (const budget of budgets) {
          const { incomes, expenses } = budget;
 
-         //- Calculate the budget amount
-         const amount =
-            incomes.reduce((acc, income) => acc + income.amount, 0) -
-            expenses.reduce((acc, expense) => acc + expense.amount, 0);
+         //- Calculate the budget summary
+         const totalIncome = incomes.reduce((acc, income) => acc + income.amount, 0);
+         const totalExpense = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+         const balance = totalIncome - totalExpense;
+         const summary = { totalIncome, totalExpense, balance };
 
          //- Update budget amount
-         await budget.updateOne({ amount });
+         await budget.updateOne({ summary });
       }
    } catch (error) {
       console.error("Error in budget static method 'calculateBudgets'".red.underline, error);

@@ -1,7 +1,7 @@
 import AuthForm from "@/components/sections/auth/auth-form";
 import GoogleButton from "./google-button";
 import AuthSwitchLink from "./auth-switch-link";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 interface AuthProps {
    type: "login" | "register";

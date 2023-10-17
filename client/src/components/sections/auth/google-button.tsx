@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import googleIcon from "@/../public/google.svg";
-import getGoogleUrl from "@/utils/get-google-url";
+import getGoogleUrl from "@/utils/auth/get-google-url";
 
 const GoogleButton = ({ title }: { title: string }) => {
    return (

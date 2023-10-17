@@ -12,16 +12,9 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { MappedExpenseData } from "@/interfaces/expense";
 
-export type Expense = {
-   amount: number;
-   date: string;
-   regular: boolean;
-   category: string;
-   id: string;
-};
-
-const generateButton = (column: Column<Expense, unknown>, label: string) => (
+const generateButton = (column: Column<MappedExpenseData, unknown>, label: string) => (
    <button
       className='flex items-center py-4 font-semibold text-neutral-700 dark:text-white/60 hover:text-neutral-600/90 dark:hover:text-gray-400/70'
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -31,7 +24,7 @@ const generateButton = (column: Column<Expense, unknown>, label: string) => (
    </button>
 );
 
-export const columns: ColumnDef<Expense>[] = [
+export const columns: ColumnDef<MappedExpenseData>[] = [
    {
       accessorKey: "date",
       header: ({ column }) => generateButton(column, "Date"),
@@ -41,10 +34,10 @@ export const columns: ColumnDef<Expense>[] = [
       header: ({ column }) => generateButton(column, "Category"),
    },
    {
-      accessorKey: "amount",
+      accessorKey: "expense",
       header: ({ column }) => generateButton(column, "Amount"),
       cell: ({ row }) => {
-         const amount = parseFloat(row.getValue("amount"));
+         const amount = parseFloat(row.getValue("expense"));
          const formatted = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",

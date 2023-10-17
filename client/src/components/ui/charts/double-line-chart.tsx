@@ -9,15 +9,7 @@ import {
    Legend,
    ResponsiveContainer,
 } from "recharts";
-
-interface DoubleLineChartProps {
-   data: {
-      name: string;
-      month: string;
-      expense: number;
-      income: number;
-   }[];
-}
+import { MappedBudgetData } from "@/interfaces/budget";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
    if (active && payload && payload.length) {
@@ -37,7 +29,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
    return null;
 };
 
-const DoubleLineChart = ({ data }: DoubleLineChartProps) => {
+const DoubleLineChart = ({ data }: { data: MappedBudgetData[] }) => {
    return (
       <ChartContainer>
          <ResponsiveContainer

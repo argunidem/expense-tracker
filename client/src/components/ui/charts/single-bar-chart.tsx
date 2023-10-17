@@ -1,5 +1,6 @@
 import ChartContainer from "@/app/(routes)/@private/(dashboard)/components/chart-container";
-import { MappedExpense } from "@/interfaces/expense";
+import { MappedExpenseData } from "@/interfaces/expense";
+import { MappedBudgetData } from "@/interfaces/budget";
 import {
    BarChart as Chart,
    Bar,
@@ -12,7 +13,7 @@ import {
 } from "recharts";
 
 interface SingleBarChartProps {
-   data: MappedExpense[];
+   data: MappedBudgetData[] | MappedExpenseData[];
    color: string;
    dataKeys: {
       bar: string;
@@ -21,9 +22,8 @@ interface SingleBarChartProps {
 }
 
 const CustomTooltip = ({ active, payload, label, customName }: any) => {
-   const formattedName = payload[0]?.name.charAt(0).toUpperCase() + payload[0]?.name.slice(1);
-
    if (active && payload && payload.length) {
+      const formattedName = payload[0]?.name.charAt(0).toUpperCase() + payload[0]?.name.slice(1);
       return (
          <div className='bg-[#000000bb] p-4 rounded-md space-y-1'>
             <p className='text-[#fefefe]'>{payload[0]?.payload.name || label}</p>

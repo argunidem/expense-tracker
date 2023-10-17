@@ -1,6 +1,6 @@
-import { getBudget, getBudgets } from "@/controllers/budget";
-import { protect } from "@/middlewares";
 import { Router } from "express";
+import { protect } from "@/middlewares";
+import { getBudget, getBudgets } from "@/controllers/budget";
 
 const router = Router();
 

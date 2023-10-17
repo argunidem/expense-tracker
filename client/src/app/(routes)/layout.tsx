@@ -1,4 +1,6 @@
-import { getAuthStatus } from "@/lib/auth";
+import { cookies } from "next/headers";
+import { makeRequest } from "@/hooks/use-auth";
+import { ProfileResponse } from "@/interfaces/profile";
 
 export default async function RoutesLayout({
    private: authenticated,
@@ -7,7 +9,11 @@ export default async function RoutesLayout({
    private: React.ReactNode;
    public: React.ReactNode;
 }) {
-   const status = await getAuthStatus();
+   const { status } = await makeRequest<ProfileResponse>(
+      "/users/profile",
+      undefined,
+      cookies().toString()
+   );
 
    return <>{status === "success" ? authenticated : shared}</>;
 }

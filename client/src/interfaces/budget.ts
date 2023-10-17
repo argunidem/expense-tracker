@@ -1,9 +1,13 @@
 export interface Budget {
    name: string;
-   amount: number;
    month: string;
    user: string;
    timestamp: number;
+   summary: {
+      totalIncome: number;
+      totalExpense: number;
+      balance: number;
+   };
    transactions: {
       expenses: {
          amount: number;
@@ -19,4 +23,12 @@ export interface Budget {
    createdAt: string;
    updatedAt: string;
    _id: string;
+}
+
+export interface MappedBudgetData {
+   name: string;
+   month: string;
+   date: string;
+   income: number;
+   expense: number;
 }

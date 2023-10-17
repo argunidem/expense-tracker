@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/form/input";
 import { Button } from "../../ui/button";
 import { loginSchema, registrationSchema } from "@/schemas/auth-schema";
 import { useAuth } from "@/hooks/use-auth";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 const AuthForm = () => {
    const {

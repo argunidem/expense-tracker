@@ -1,11 +1,17 @@
-import axios from "@/utils/api";
-import { useMutation, useQuery } from "react-query";
-import { useToast } from "./use-toast";
 import { useRouter } from "next/navigation";
+import request from "@/utils/request";
+import { useQuery } from "@tanstack/react-query";
+import { mapExpensesData } from "@/utils/data-mappers/expenses";
+import { useToast } from "./use-toast";
 
-const getExpensesFn = async (values: any) => {
+export const getExpensesFn = async (cookies?: any) => {
    try {
-      const { data } = await axios.get("/expenses", values);
+      const { data } = await request.get("/expenses?sort=date", {
+         headers: {
+            Cookie: cookies,
+         },
+         withCredentials: true,
+      });
       return data;
    } catch (error: any) {
       throw new Error(error.response.data.message || "Something went wrong");
@@ -29,24 +35,13 @@ export const useExpenses = () => {
 
    return {
       getExpenses: useQuery({
-         queryKey: "expenses",
-         queryFn: getExpensesFn,
+         queryKey: ["expenses"],
+         queryFn: () => getExpensesFn(),
          onSuccess: () => onSuccess(),
          onError,
+         select: ({ data }) => mapExpensesData(data),
+         refetchOnMount: false,
          refetchOnWindowFocus: false,
       }),
-      // useRegister: useMutation({
-      //    mutationFn: register,
-      //    onSuccess: () => onSuccess("You have successfully registered", "/"),
-      //    onError,
-      // }),
-      // useLogout: useQuery({
-      //    queryKey: "logout",
-      //    queryFn: logout,
-      //    enabled: false,
-      //    retry: false,
-      //    onSuccess: (data) => onSuccess(data.message, "/login"),
-      //    onError,
-      // }),
    };
 };

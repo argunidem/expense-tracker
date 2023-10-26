@@ -23,7 +23,7 @@ const incomeBodySchema = z.object({
          .regex(/^\d{4}-\d{2}-\d{2}$/)
          .default(format(new Date(), "yyyy-MM-dd")),
       regular: z.boolean().default(false),
-      //- Validate date in YYYY-MM-DD format
+      //- Validate date in YYYY-MM format
       expiresAt: z
          .string()
          .regex(/^\d{4}-\d{2}$/)

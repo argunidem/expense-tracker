@@ -5,27 +5,14 @@ import { TransactionData } from "@/interfaces/transaction";
 
 const mapTransactionsData = (data: Expense[] | Income[]): TransactionData[] => {
    return data.map((transaction: Expense | Income) => {
-      const { name, amount, date, regular, _id } = transaction;
-      const formattedDate = formatDate(date, "MM-dd-yyyy");
+      const transactionType = "category" in transaction ? "expense" : "income";
+      const formattedDate = formatDate(transaction.date, "MM-dd-yyyy");
 
-      const mappedTransaction: TransactionData = {
-         name,
+      return {
+         ...(({ amount, _id: id, ...rest }) => ({ id, ...rest }))(transaction),
          date: formattedDate,
-         regular,
-         id: _id,
+         [transactionType]: transaction.amount,
       };
-
-      if ("category" in transaction) {
-         mappedTransaction.expense = amount;
-         mappedTransaction.category = transaction.category;
-      }
-
-      if ("source" in transaction) {
-         mappedTransaction.income = amount;
-         mappedTransaction.source = transaction.source;
-      }
-
-      return mappedTransaction;
    });
 };
 

@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import request from "@/utils/request";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
@@ -20,7 +19,6 @@ export const getIncomesFn = async (cookies?: string) => {
 };
 
 export const useIncomes = () => {
-   const { refresh } = useRouter();
    const { toast } = useToast();
 
    const onError = (error: any) => {
@@ -30,15 +28,10 @@ export const useIncomes = () => {
       });
    };
 
-   const onSuccess = () => {
-      // refresh();
-   };
-
    return {
       getIncomes: useQuery({
          queryKey: ["incomes"],
          queryFn: () => getIncomesFn(),
-         onSuccess: () => onSuccess(),
          onError,
          select: ({ data }) => mapTransactionsData(data) as MappedIncomeData[],
          refetchOnMount: false,

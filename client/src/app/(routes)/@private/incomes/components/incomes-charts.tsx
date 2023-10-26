@@ -17,14 +17,14 @@ const IncomesCharts = ({ incomesChartData, budgetData }: IncomesChartsProps) => 
             data={incomesChartData}
             color={{ dark: "#37885c", light: "#42a87d" }}
             dataKeys={{ bar: "income" }}
-            customName={"Income"}
+            tooltipText={"Income"}
          />
          {/* Incomes by month */}
          <SingleBarChart
             data={budgetData}
             color={{ default: "#4e68a0" }}
             dataKeys={{ bar: "income" }}
-            customName={"Total income"}
+            tooltipText={"Total income"}
          />
          {/* Expenses and incomes comparison */}
          <DoubleLineChart data={budgetData} />

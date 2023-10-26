@@ -8,7 +8,7 @@ html {
 
 ::-webkit-scrollbar {
    width: 10px;
-   height: 6px;
+   height: 9px;
 }
 
 ::-webkit-scrollbar-track {
@@ -18,6 +18,10 @@ html {
 ::-webkit-scrollbar-thumb {
    background: #888e9b;
    border-radius: 2px;
+}
+
+.stats-scrollbar::-webkit-scrollbar-thumb {
+   background: #959caa;
 }
 
 ::-webkit-scrollbar-thumb:hover {

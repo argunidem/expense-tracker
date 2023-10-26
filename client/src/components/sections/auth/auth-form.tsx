@@ -9,9 +9,9 @@ import { UserPlus } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form/form";
 import { Input } from "@/components/ui/form/input";
 import { Button } from "../../ui/button";
-import { loginSchema, registrationSchema } from "@/schemas/auth-schema";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/utils/cn";
+import { loginSchema, registrationSchema } from "@/schemas/auth-schema";
 
 const AuthForm = () => {
    const {

@@ -17,14 +17,14 @@ const ExpensesCharts = ({ expensesChartData, budgetData }: ExpensesChartsProps) 
             data={expensesChartData}
             color={{ dark: "#938348", light: "#ac984e" }}
             dataKeys={{ bar: "expense" }}
-            customName={"Expense"}
+            tooltipText={"Expense"}
          />
          {/* Expenses by month */}
          <SingleBarChart
             data={budgetData}
             color={{ default: "#4e68a0" }}
             dataKeys={{ bar: "expense" }}
-            customName={"Total expense"}
+            tooltipText={"Total expense"}
          />
          {/* Expenses and incomes comparison */}
          <DoubleLineChart data={budgetData} />

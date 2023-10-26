@@ -4,24 +4,20 @@ import { formatDate } from "../format-date";
 
 export const mapBudgetData = (data: Budget[]): MappedBudgetData[] => {
    const budgets = data.map((budget: Budget) => {
-      const {
-         name,
-         month,
-         summary: { totalIncome, totalExpense, balance },
-      } = budget;
-
-      const formattedDate = formatDate(month, "MM-yyyy");
-
+      const formattedDate = formatDate(budget.month, "MM-yyyy");
       return {
-         name,
-         month,
+         ...(({ _id: id, month, summary, ...rest }) => ({
+            id,
+            income: summary.totalIncome,
+            expense: summary.totalExpense,
+            balance: summary.balance,
+            ...rest,
+         }))(budget),
          date: formattedDate,
-         expense: totalExpense,
-         income: totalIncome,
       };
    });
 
    return budgets.sort((a, b) => {
-      return new Date(a.month).getTime() - new Date(b.month).getTime();
+      return new Date(a.name).getTime() - new Date(b.name).getTime();
    });
 };

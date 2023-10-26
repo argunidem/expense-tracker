@@ -20,7 +20,7 @@ import {
    TableHead,
    TableHeader,
    TableRow,
-} from "@/components/ui/tables/table";
+} from "@/components/ui/table/table";
 import {
    DropdownMenu,
    DropdownMenuCheckboxItem,

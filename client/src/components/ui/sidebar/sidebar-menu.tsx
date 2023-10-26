@@ -1,8 +1,9 @@
 "use client";
 
+import CreateTransaction from "@/components/create-transaction";
+import MenuItem from "./menu-item";
 import ThemeSwitcher from "@/components/theme/theme-switcher";
 import { items } from "@/constants/sidebar-items";
-import MenuItem from "./menu-item";
 
 const SidebarMenu = () => {
    return (
@@ -10,6 +11,7 @@ const SidebarMenu = () => {
          <span className='px-3'>
             <ThemeSwitcher />
          </span>
+         <CreateTransaction locatedIn='Sidebar' />
          {items.map((item, index) => (
             <MenuItem
                key={index}

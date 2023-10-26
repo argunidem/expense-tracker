@@ -1,10 +1,14 @@
 export interface TransactionData {
    name?: string;
-   date: string;
-   expense?: number;
-   income?: number;
-   regular: boolean;
+   description?: string;
    category?: string;
    source?: string;
+   expense?: number;
+   income?: number;
+   date: string;
+   regular: boolean;
+   budgets: string[];
+   expiresAt?: string;
+   user: string;
    id: string;
 }

@@ -12,7 +12,7 @@ interface StatsContainerProps {
 
 const StatsContainer = ({ data }: StatsContainerProps) => {
    return (
-      <div className='flex space-x-2 py-4 mx-6 overflow-x-auto sm:space-x-4 md:py-6 2xl:space-x-12'>
+      <div className='flex space-x-2 py-4 mx-6 overflow-x-auto stats-scrollbar sm:space-x-4 md:py-6 2xl:space-x-8'>
          {data.map((item: Stats, index: number) => (
             <StatsBox
                key={index}

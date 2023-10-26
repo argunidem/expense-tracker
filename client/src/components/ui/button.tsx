@@ -30,7 +30,7 @@ const buttonVariants = cva(
             none: "",
          },
          border: {
-            default: "border dark:border-neutral-700",
+            default: "border dark:border-gray-700/90",
             neutral: "border border-neutral-500/50",
             "light-only": "border border-neutral-500/50 dark:border-none",
             none: "border-0",

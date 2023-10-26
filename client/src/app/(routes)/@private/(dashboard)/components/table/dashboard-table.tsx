@@ -1,6 +1,6 @@
 import { columns } from "./columns";
 import { data } from "./data";
-import { DataTable } from "@/components/ui/tables/data-table";
+import { DataTable } from "@/components/ui/table/data-table";
 
 const DashboardTable = () => {
    return (

@@ -11,11 +11,7 @@ export interface Expense {
    _id: string;
 }
 
-export interface MappedExpenseData {
-   name?: string;
-   date: string;
+export interface MappedExpenseData extends Omit<Expense, "amount" | "_id"> {
    expense: number;
-   regular: boolean;
-   category: string;
    id: string;
 }

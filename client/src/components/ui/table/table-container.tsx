@@ -1,5 +1,5 @@
 import { MappedExpenseData } from "@/interfaces/expense";
-import { DataTable } from "@/components/ui/tables/data-table";
+import { DataTable } from "@/components/ui/table/data-table";
 import { MappedIncomeData } from "@/interfaces/income";
 
 interface TableContainerProps {

@@ -2,7 +2,7 @@
 
 import StatsContainer from "@/components/ui/stats/stats-container";
 import ExpensesCharts from "./expenses-charts";
-import TableContainer from "@/components/ui/tables/table-container";
+import TableContainer from "@/components/ui/table/table-container";
 import { Separator } from "@/components/ui/separator";
 
 import { useExpenses } from "@/hooks/use-expenses";

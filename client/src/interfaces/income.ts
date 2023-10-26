@@ -11,11 +11,7 @@ export interface Income {
    _id: string;
 }
 
-export interface MappedIncomeData {
-   name?: string;
-   date: string;
+export interface MappedIncomeData extends Omit<Income, "amount" | "_id"> {
    income: number;
-   regular: boolean;
-   source: string;
    id: string;
 }

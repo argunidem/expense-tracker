@@ -2,7 +2,7 @@
 
 import StatsContainer from "@/components/ui/stats/stats-container";
 import IncomesCharts from "./incomes-charts";
-import TableContainer from "@/components/ui/tables/table-container";
+import TableContainer from "@/components/ui/table/table-container";
 import { Separator } from "@/components/ui/separator";
 
 import { useIncomes } from "@/hooks/use-incomes";

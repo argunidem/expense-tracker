@@ -66,12 +66,17 @@ const preSaveBudgetProcessing = async function (
 
          let timestamp;
          if (doc.expiresAt) {
-            //- Get the timestamp of the last day of the date's month
-            const endOfTransactionMonth = getEndOfMonth(new Date(date));
-            //- Get the timestamp of the last day of the expiration date's month
-            const endOfExpirationMonth = getEndOfMonth(new Date(doc.expiresAt));
-            //- Get the maximum of the two timestamps
-            timestamp = Math.max(endOfExpirationMonth, endOfTransactionMonth);
+            if (getEndOfMonth() > getEndOfMonth(new Date(doc.expiresAt))) {
+               //- Get the timestamp of the last day of the date's month
+               const endOfTransactionMonth = getEndOfMonth(new Date(date));
+               //- Get the timestamp of the last day of the expiration date's month
+               const endOfExpirationMonth = getEndOfMonth(new Date(doc.expiresAt));
+               //- Get the maximum of the two timestamps
+               timestamp = Math.max(endOfExpirationMonth, endOfTransactionMonth);
+            } else {
+               //- If the expiration date is in the future, set the timestamp to the last day of the current month
+               timestamp = getEndOfMonth();
+            }
          } else {
             //- Get the timestamp of the last day of the current month
             const endOfThisMonth = getEndOfMonth();

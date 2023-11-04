@@ -30,6 +30,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/form/input";
 import { cn } from "@/utils/cn";
+import useModal from "@/hooks/store/use-modal";
+import useDetails from "@/hooks/store/use-details";
 
 interface DataTableProps<TData, TValue> {
    columns: ColumnDef<TData, TValue>[];
@@ -42,6 +44,9 @@ export function DataTable<TData, TValue>({
    data,
    searchBy,
 }: DataTableProps<TData, TValue>) {
+   const { toggleModal } = useModal();
+   const { setData } = useDetails();
+
    const [sorting, setSorting] = useState<SortingState>([]);
    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -62,6 +67,11 @@ export function DataTable<TData, TValue>({
          columnVisibility,
       },
    });
+
+   const handleClick = (e: any) => {
+      setData(e, "transaction");
+      toggleModal("details");
+   };
 
    return (
       <>
@@ -130,6 +140,7 @@ export function DataTable<TData, TValue>({
                         <TableRow
                            key={row.id}
                            data-state={row.getIsSelected() && "selected"}
+                           onClick={() => handleClick(row.original)}
                            className='dark:border-gray-600/30 dark:hover:bg-gray-500/5'
                         >
                            {row.getVisibleCells().map((cell) => (

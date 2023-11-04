@@ -18,7 +18,7 @@ const mapTransactionStats = (budgets: MappedBudgetData[], type: "income" | "expe
       },
       {
          label: "Monthly Average",
-         value: (totalAmount || 1) / (budgets?.length || 1),
+         value: (totalAmount || 0) / (budgets?.length || 0),
          tooltip: `Average amount of money you've ${action} per month.`,
       },
    ];

@@ -1,21 +1,12 @@
 import { cookies } from "next/headers";
-import { getBudgetsFn } from "@/hooks/use-budgets";
-import { getExpensesFn } from "@/hooks/use-expenses";
-import { getIncomesFn } from "@/hooks/use-incomes";
-import { dehydrate } from "@tanstack/react-query";
 import Hydrate from "@/utils/react-query/hydrate";
-import { getQueryClient } from "@/utils/react-query/query-client";
+import { prefetchQueries } from "@/utils/react-query/prefetch-queries";
 import { DetailsModal, TransactionModal } from "@/modals";
 import Sidebar from "@/components/ui/sidebar/sidebar";
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
    const sid = cookies().toString();
-   const queryClient = getQueryClient();
-
-   await queryClient.prefetchQuery(["budgets"], () => getBudgetsFn(sid));
-   await queryClient.prefetchQuery(["expenses"], () => getExpensesFn(sid));
-   await queryClient.prefetchQuery(["incomes"], () => getIncomesFn(sid));
-   const dehydratedState = dehydrate(queryClient);
+   const dehydratedState = await prefetchQueries(sid);
 
    return (
       <Hydrate state={dehydratedState}>

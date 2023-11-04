@@ -6,28 +6,12 @@ import { X } from "lucide-react";
 interface ModalProps {
    isOpen?: boolean;
    onClose: () => void;
-   onSubmit?: () => void;
    title?: string;
    body?: React.ReactNode;
    footer?: React.ReactNode;
-   actionLabel?: string;
-   disabled?: boolean;
-   secondaryAction?: () => void;
-   secondaryActionLabel?: string;
 }
 
-const Modal = ({
-   isOpen,
-   onClose,
-   onSubmit,
-   title,
-   body,
-   actionLabel,
-   footer,
-   disabled,
-   secondaryAction,
-   secondaryActionLabel,
-}: ModalProps) => {
+const Modal = ({ isOpen, onClose, title, body, footer }: ModalProps) => {
    const [showModal, setShowModal] = useState(isOpen);
 
    useEffect(() => {
@@ -35,30 +19,10 @@ const Modal = ({
    }, [isOpen]);
 
    const handleClose = () => {
-      if (disabled) {
-         return;
-      }
-
       setShowModal(false);
       setTimeout(() => {
          onClose();
       }, 300);
-   };
-
-   // const handleSubmit = () => {
-   //    if (disabled) {
-   //       return;
-   //    }
-
-   //    onSubmit();
-   // };
-
-   const handleSecondaryAction = () => {
-      if (disabled || !secondaryAction) {
-         return;
-      }
-
-      secondaryAction();
    };
 
    if (!isOpen) {
@@ -89,25 +53,9 @@ const Modal = ({
                      {/*body*/}
                      <div className='relative p-6 flex-auto'>{body}</div>
                      {/*footer*/}
-                     <div className='p-6 border-t dark:border-gray-500/30'>
-                        {/* <div className='flex flex-row items-center gap-4 w-full'>
-                           {secondaryAction && secondaryActionLabel && (
-                                <Button
-                                  disabled={disabled}
-                                  label={secondaryActionLabel}
-                                  onClick={handleSecondaryAction}
-                                  outline
-                                />
-                              <></>
-                           )}
-                           <Button 
-                    disabled={disabled} 
-                    label={actionLabel} 
-                    onClick={handleSubmit}
-                  />
-                        </div> */}
-                        {footer}
-                     </div>
+                     {footer && (
+                        <div className='p-6 border-t dark:border-gray-500/30'>{footer}</div>
+                     )}
                   </div>
                </div>
             </div>

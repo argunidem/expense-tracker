@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { handleCopy } from "@/utils/handlers/handle-copy";
 import { CheckCircle, Copy } from "lucide-react";
 
 interface ModalFooterProps {
@@ -13,13 +14,12 @@ const ModalFooter = ({ title, id }: ModalFooterProps) => {
    const [isCopied, setIsCopied] = useState(false);
    const { toast } = useToast();
 
-   const handleClick = () => {
-      navigator.clipboard.writeText(id as string);
+   const copyId = () => {
+      handleCopy(id as string);
       setIsCopied(true);
       toast({
          title: "Copied!",
          description: `${title} ID copied to clipboard.`,
-         variant: "success",
       });
       setTimeout(() => {
          setIsCopied(false);
@@ -32,7 +32,7 @@ const ModalFooter = ({ title, id }: ModalFooterProps) => {
             <span>Budget ID: </span>
             <span className='text-neutral-500/80'>{id}</span>
          </p>
-         <button onClick={handleClick}>
+         <button onClick={copyId}>
             {isCopied ? (
                <CheckCircle
                   size={18}

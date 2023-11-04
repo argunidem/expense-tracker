@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { makeRequest } from "@/hooks/use-auth";
+import { makeRequest } from "@/utils/request";
 import { ProfileResponse } from "@/interfaces/profile";
 
 export default async function RoutesLayout({
@@ -9,11 +9,9 @@ export default async function RoutesLayout({
    private: React.ReactNode;
    public: React.ReactNode;
 }) {
-   const { status } = await makeRequest<ProfileResponse>(
-      "/users/profile",
-      undefined,
-      cookies().toString()
-   );
+   const { status } = await makeRequest<ProfileResponse>("/users/profile", {
+      cookies: cookies().toString(),
+   });
 
    return <>{status === "success" ? authenticated : shared}</>;
 }

@@ -101,7 +101,7 @@ const deleteResource: ResourceController =
 
          res.status(200).json({
             status: "success",
-            message: "Resource deleted successfully",
+            message: `${model.modelName} deleted successfully`,
          });
       } catch (error: any) {
          next(error);

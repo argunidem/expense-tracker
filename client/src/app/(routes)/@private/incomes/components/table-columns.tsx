@@ -1,9 +1,6 @@
 "use client";
 
 import { Column, ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, X, Check } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 import {
    DropdownMenu,
    DropdownMenuContent,
@@ -12,6 +9,12 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { useIncomes } from "@/hooks/use-incomes";
+import { useToast } from "@/hooks/use-toast";
+import { handleDeleteTransaction } from "@/utils/handlers/handle-delete";
+import { handleCopy } from "@/utils/handlers/handle-copy";
+import { ArrowUpDown, MoreHorizontal, X, Check } from "lucide-react";
 import { MappedIncomeData } from "@/interfaces/income";
 
 const generateButton = (column: Column<MappedIncomeData, unknown>, label: string) => (
@@ -70,7 +73,21 @@ export const columns: ColumnDef<MappedIncomeData>[] = [
    {
       id: "actions",
       cell: ({ row }) => {
+         const { toast } = useToast();
          const income = row.original;
+         const {
+            deleteIncome: { mutate },
+         } = useIncomes();
+
+         const copyId = (e: React.MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+            handleCopy(income.id);
+            toast({
+               title: "Copied!",
+               description: "Income ID copied to clipboard.",
+            });
+         };
+
          return (
             <div className='text-right'>
                <DropdownMenu>
@@ -85,11 +102,15 @@ export const columns: ColumnDef<MappedIncomeData>[] = [
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align='end'>
                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                     <DropdownMenuItem onClick={() => navigator.clipboard.writeText(income.id)}>
-                        Copy income ID
-                     </DropdownMenuItem>
-                     <DropdownMenuSeparator />
                      <DropdownMenuItem>View income details</DropdownMenuItem>
+                     <DropdownMenuSeparator />
+                     <DropdownMenuItem onClick={copyId}>Copy income ID</DropdownMenuItem>
+                     <DropdownMenuSeparator />
+                     <DropdownMenuItem
+                        onClick={(e) => handleDeleteTransaction(e, mutate, income.id)}
+                     >
+                        Delete income
+                     </DropdownMenuItem>
                   </DropdownMenuContent>
                </DropdownMenu>
             </div>

@@ -45,7 +45,7 @@ const AuthForm = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className={cn(
                "w-full max-w-xs space-y-5",
-               isLoginLoading || (isRegisterLoading && "opacity-60")
+               (isLoginLoading || isRegisterLoading) && "opacity-60"
             )}
          >
             {isRegister && (

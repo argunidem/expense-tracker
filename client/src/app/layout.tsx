@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ReactQueryProvider } from "@/providers/react-query";
 import { ThemeProvider } from "@/providers/theme";
+import { TooltipProvider } from "@/providers/tooltip";
 import { Toaster } from "@/components/ui/toast/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,10 +25,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                defaultTheme='system'
                enableSystem
             >
-               <ReactQueryProvider>
-                  {children}
-                  <Toaster />
-               </ReactQueryProvider>
+               <TooltipProvider>
+                  <ReactQueryProvider>
+                     {children}
+                     <Toaster />
+                  </ReactQueryProvider>
+               </TooltipProvider>
             </ThemeProvider>
          </body>
       </html>

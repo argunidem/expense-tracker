@@ -39,4 +39,6 @@ const registrationSchema = z
       path: ["confirmation"],
    });
 
+export type AuthValues = z.infer<typeof loginSchema> | z.infer<typeof registrationSchema>;
+
 export { loginSchema, registrationSchema };

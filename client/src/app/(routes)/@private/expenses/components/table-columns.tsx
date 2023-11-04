@@ -1,9 +1,6 @@
 "use client";
 
 import { Column, ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, X, Check } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 import {
    DropdownMenu,
    DropdownMenuContent,
@@ -12,6 +9,12 @@ import {
    DropdownMenuSeparator,
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { useExpenses } from "@/hooks/use-expenses";
+import { useToast } from "@/hooks/use-toast";
+import { handleDeleteTransaction } from "@/utils/handlers/handle-delete";
+import { handleCopy } from "@/utils/handlers/handle-copy";
+import { ArrowUpDown, MoreHorizontal, X, Check } from "lucide-react";
 import { MappedExpenseData } from "@/interfaces/expense";
 
 const generateButton = (column: Column<MappedExpenseData, unknown>, label: string) => (
@@ -70,7 +73,21 @@ export const columns: ColumnDef<MappedExpenseData>[] = [
    {
       id: "actions",
       cell: ({ row }) => {
+         const { toast } = useToast();
          const expense = row.original;
+         const {
+            deleteExpense: { mutate },
+         } = useExpenses();
+
+         const copyId = (e: React.MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+            handleCopy(expense.id);
+            toast({
+               title: "Copied!",
+               description: "Expense ID copied to clipboard.",
+            });
+         };
+
          return (
             <div className='text-right'>
                <DropdownMenu>
@@ -85,11 +102,15 @@ export const columns: ColumnDef<MappedExpenseData>[] = [
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align='end'>
                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                     <DropdownMenuItem onClick={() => navigator.clipboard.writeText(expense.id)}>
-                        Copy expense ID
-                     </DropdownMenuItem>
-                     <DropdownMenuSeparator />
                      <DropdownMenuItem>View expense details</DropdownMenuItem>
+                     <DropdownMenuSeparator />
+                     <DropdownMenuItem onClick={copyId}>Copy expense ID</DropdownMenuItem>
+                     <DropdownMenuSeparator />
+                     <DropdownMenuItem
+                        onClick={(e) => handleDeleteTransaction(e, mutate, expense.id)}
+                     >
+                        Delete expense
+                     </DropdownMenuItem>
                   </DropdownMenuContent>
                </DropdownMenu>
             </div>

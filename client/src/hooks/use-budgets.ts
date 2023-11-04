@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import request from "@/utils/request";
+import { request } from "@/utils/request";
 import { useQuery } from "@tanstack/react-query";
 import { mapBudgetData } from "@/utils/data-mappers/budget";
 import { useToast } from "./use-toast";

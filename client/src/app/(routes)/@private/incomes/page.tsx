@@ -1,5 +1,5 @@
 import IncomesHeader from "@/components/ui/header";
-import IncomesDashboard from "./components/incomes-dashboard";
+import TransactionDashboard from "@/components/sections/transaction/transaction-dashboard";
 import { Separator } from "@/components/ui/separator";
 
 const IncomesPage = () => {
@@ -7,7 +7,7 @@ const IncomesPage = () => {
       <>
          <IncomesHeader title={"Incomes"} />
          <Separator className='my-4' />
-         <IncomesDashboard />
+         <TransactionDashboard transactionType={"income"} />
       </>
    );
 };

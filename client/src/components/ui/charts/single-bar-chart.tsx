@@ -13,12 +13,11 @@ import useModal from "@/hooks/store/use-modal";
 import useDetails from "@/hooks/store/use-details";
 import { useTheme } from "next-themes";
 import { X, Check } from "lucide-react";
-import { MappedExpenseData } from "@/interfaces/expense";
-import { MappedIncomeData } from "@/interfaces/income";
 import { MappedBudgetData } from "@/interfaces/budget";
+import { Transaction } from "@/interfaces/transaction";
 
 interface SingleBarChartProps {
-   data: MappedBudgetData[] | MappedExpenseData[] | MappedIncomeData[];
+   data: MappedBudgetData[] | Transaction[];
    color: {
       dark?: string;
       light?: string;

@@ -4,9 +4,11 @@ import {
    BudgetModel,
    BudgetWithTransactions,
    BudgetQueryHelpers,
+   TransactionVirtual,
 } from "@/interfaces/budget";
-import { getMonthAndYear } from "@/utils/date";
+import { TransactionDocument } from "@/interfaces/transaction";
 import { addMonths, getTime } from "date-fns";
+import { getMonthAndYear } from "@/utils/date";
 
 const budgetSchema = new Schema<BudgetDocument, BudgetModel, {}, BudgetQueryHelpers>(
    {
@@ -53,29 +55,34 @@ const budgetSchema = new Schema<BudgetDocument, BudgetModel, {}, BudgetQueryHelp
       toJSON: {
          virtuals: true,
          transform(_doc, ret) {
+            let incomes: TransactionVirtual = [];
+            let expenses: TransactionVirtual = [];
+            ret.transactions.forEach((transaction: TransactionDocument) => {
+               const result = {
+                  _id: transaction._id,
+                  amount: transaction.amount,
+                  date: transaction.date,
+               };
+               transaction.type === "income" ? incomes.push(result) : expenses.push(result);
+            });
+
             ret.transactions = {
-               incomes: ret.incomes,
-               expenses: ret.expenses,
+               incomes,
+               expenses,
             };
-            delete ret.incomes;
-            delete ret.expenses;
          },
       },
       toObject: { virtuals: true },
    }
 );
 
-//! Create virtuals for incomes and expenses
-function createBudgetVirtual(name: string, refModel: string) {
-   return budgetSchema.virtual(name, {
-      ref: refModel,
-      localField: "_id",
-      foreignField: "budgets",
-      justOne: false,
-   });
-}
-createBudgetVirtual("incomes", "Income");
-createBudgetVirtual("expenses", "Expense");
+//! Create virtuals for transactions
+budgetSchema.virtual("transactions", {
+   ref: "Transaction",
+   localField: "_id",
+   foreignField: "budgets",
+   justOne: false,
+});
 
 //! Query helper function to get budgets by user
 budgetSchema.query.byUser = function (userId) {
@@ -85,19 +92,25 @@ budgetSchema.query.byUser = function (userId) {
 //! Static method to calculate all budgets of the user
 budgetSchema.statics.calculateBudgets = async function (userId: Types.ObjectId) {
    try {
-      //- Get all budgets
+      //- Get all budgets of the user with transactions populated
       const budgets = (await this.find().byUser(userId).populate({
-         path: "incomes expenses",
-         select: "_id amount -budgets",
+         path: "transactions",
+         select: "type amount",
       })) as BudgetWithTransactions[];
 
       //- Calculate budgets
       for (const budget of budgets) {
-         const { incomes, expenses } = budget;
+         const { transactions } = budget;
 
          //- Calculate the budget summary
-         const totalIncome = incomes.reduce((acc, income) => acc + income.amount, 0);
-         const totalExpense = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+         const totalIncome = transactions.reduce(
+            (acc, transaction) => (transaction.type === "income" ? acc + transaction.amount : acc),
+            0
+         );
+         const totalExpense = transactions.reduce(
+            (acc, transaction) => (transaction.type === "expense" ? acc + transaction.amount : acc),
+            0
+         );
          const balance = totalIncome - totalExpense;
          const summary = { totalIncome, totalExpense, balance };
 

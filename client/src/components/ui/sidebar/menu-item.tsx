@@ -1,6 +1,6 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/query/use-auth";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/utils/cn";
 

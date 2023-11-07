@@ -1,6 +1,6 @@
 import { Router } from "express";
 import user from "./user";
-import { income, expense } from "./resource";
+import transaction from "./transaction";
 import budget from "./budgets";
 
 const router = Router();
@@ -8,10 +8,8 @@ const router = Router();
 //! /api/users
 router.use("/users", user);
 
-//! /api/incomes
-router.use("/incomes", income);
-//! /api/expenses
-router.use("/expenses", expense);
+//! /api/transactions
+router.use("/transactions", transaction);
 
 //! /api/budgets
 router.use("/budgets", budget);

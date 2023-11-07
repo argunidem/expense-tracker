@@ -25,10 +25,14 @@ export interface Budget {
    _id: string;
 }
 
-export interface MappedBudgetData extends Omit<Budget, "_id" | "summary" | "month"> {
+export interface BudgetsResponse {
+   success: boolean;
+   data: Budget[];
+}
+
+export interface MappedBudgetData extends Omit<Budget, "summary" | "month"> {
    income: number;
    expense: number;
    balance: number;
    date: string;
-   id: string;
 }

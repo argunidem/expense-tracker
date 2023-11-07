@@ -1,9 +1,8 @@
-import { MappedExpenseData } from "@/interfaces/expense";
 import { DataTable } from "@/components/ui/table/data-table";
-import { MappedIncomeData } from "@/interfaces/income";
+import { Transaction } from "@/interfaces/transaction";
 
 interface TableContainerProps {
-   data: MappedIncomeData[] | MappedExpenseData[];
+   data: Transaction[];
    columns: any;
    searchBy: string;
 }
@@ -11,7 +10,7 @@ interface TableContainerProps {
 const TableContainer = ({ data, columns, searchBy }: TableContainerProps) => {
    return (
       <div className='mt-8 px-4 xl:mx-12 2xl:mx-40'>
-         <DataTable<MappedIncomeData | MappedExpenseData, any>
+         <DataTable<Transaction, any>
             columns={columns}
             data={data}
             searchBy={searchBy}

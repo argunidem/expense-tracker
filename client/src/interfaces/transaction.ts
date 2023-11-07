@@ -1,25 +1,28 @@
 import { z } from "zod";
-import { incomeSchema } from "@/schemas/income-schema";
-import { expenseSchema } from "@/schemas/expense-schema";
+import { transactionSchema } from "@/schemas/transaction-schema";
 
-export interface TransactionData {
-   name?: string;
-   description?: string;
-   category?: string;
-   source?: string;
-   expense?: number;
-   income?: number;
-   date: string;
-   regular?: boolean;
+export type TransactionValues = z.infer<typeof transactionSchema>;
+export interface Transaction extends TransactionValues {
    budgets: string[];
    expiresAt?: string;
    user: string;
-   id: string;
+   _id: string;
 }
-
-export type TransactionValues = z.infer<typeof incomeSchema> | z.infer<typeof expenseSchema>;
 
 export interface DeleteTransactionResponse {
    status: string;
    message: string;
+}
+
+export interface TransactionResponse {
+   status: string;
+   data: Transaction;
+}
+
+export interface TransactionsResponse {
+   status: string;
+   data: {
+      incomes: Transaction[];
+      expenses: Transaction[];
+   };
 }

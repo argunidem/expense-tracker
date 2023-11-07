@@ -1,5 +1,5 @@
 import { UserWithoutPassword } from "./user/mongoose";
-import { ResourceDocument } from "./resource";
+import { TransactionDocument } from "./transaction";
 
 interface MessageResponse {
    status: "success";
@@ -11,19 +11,26 @@ interface UserResponse {
    data: UserWithoutPassword;
 }
 
-interface ResourceResponse {
+interface TransactionResponse {
    status: "success";
-   data: ResourceDocument;
+   data: TransactionDocument;
 }
 
 interface ResultsResponse {
-   status: "success";
-   count: number;
-   pagination: {
+   status?: "success";
+   count?: number;
+   pagination?: {
       next?: { page: number; limit: number };
       prev?: { page: number; limit: number };
    };
-   data: any;
+   data: TransactionDocument[];
+}
+
+interface TransactionsResponse extends Omit<ResultsResponse, "data"> {
+   data: {
+      incomes: TransactionDocument[];
+      expenses: TransactionDocument[];
+   };
 }
 
 interface ErrorResponse {
@@ -32,4 +39,11 @@ interface ErrorResponse {
    stack?: string | null;
 }
 
-export { MessageResponse, UserResponse, ResultsResponse, ResourceResponse, ErrorResponse };
+export {
+   MessageResponse,
+   UserResponse,
+   TransactionResponse,
+   TransactionsResponse,
+   ResultsResponse,
+   ErrorResponse,
+};

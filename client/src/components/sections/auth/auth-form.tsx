@@ -9,7 +9,7 @@ import { UserPlus } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form/form";
 import { Input } from "@/components/ui/form/input";
 import { Button } from "../../ui/button";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/query/use-auth";
 import { cn } from "@/utils/cn";
 import { loginSchema, registrationSchema } from "@/schemas/auth-schema";
 

@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { format } from "date-fns";
 
-const expenseSchema = z.object({
+const transactionSchema = z.object({
+   type: z.enum(["income", "expense"], {
+      required_error: "Please provide the type of the transaction.",
+   }),
    name: z.string().min(3).max(25).optional(),
    description: z.string().min(5).max(50).optional(),
    category: z
@@ -15,7 +18,7 @@ const expenseSchema = z.object({
          required_error: "Please provide the amount of the expense.",
       })
       .min(0.01),
-   date: z.date().transform((date) => format(date, "yyyy-MM-dd")),
+   date: z.date().transform((date) => format(date, "MM-dd-yyyy")),
    regular: z.boolean().default(false).optional(),
    expiresAt: z
       .date()
@@ -23,4 +26,4 @@ const expenseSchema = z.object({
       .optional(),
 });
 
-export { expenseSchema };
+export { transactionSchema };

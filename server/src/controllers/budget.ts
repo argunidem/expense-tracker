@@ -4,10 +4,9 @@ import Budget from "@/models/budget";
 const getBudget = async (req: Request, res: Response, next: NextFunction) => {
    try {
       //- Get all budgets with their transactions
-      const budget = await Budget.findById(req.params.id).byUser(req.user?._id).populate({
-         path: "incomes expenses",
-         select: "_id amount date -budgets",
-      });
+      const budget = await Budget.findById(req.params.id)
+         .byUser(req.user?._id)
+         .populate("transactions");
 
       res.status(200).json({
          status: "success",
@@ -21,10 +20,7 @@ const getBudget = async (req: Request, res: Response, next: NextFunction) => {
 const getBudgets = async (req: Request, res: Response, next: NextFunction) => {
    try {
       //- Get all budgets with their transactions
-      const budgets = await Budget.find().byUser(req.user?._id).populate({
-         path: "incomes expenses",
-         select: "_id amount date -budgets",
-      });
+      const budgets = await Budget.find().byUser(req.user?._id).populate("transactions");
 
       res.status(200).json({
          status: "success",

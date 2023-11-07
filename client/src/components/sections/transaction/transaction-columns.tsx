@@ -10,14 +10,14 @@ import {
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useExpenses } from "@/hooks/use-expenses";
+import { useTransactions } from "@/hooks/query/use-transactions";
 import { useToast } from "@/hooks/use-toast";
 import { handleDeleteTransaction } from "@/utils/handlers/handle-delete";
 import { handleCopy } from "@/utils/handlers/handle-copy";
 import { ArrowUpDown, MoreHorizontal, X, Check } from "lucide-react";
-import { MappedExpenseData } from "@/interfaces/expense";
+import { Transaction } from "@/interfaces/transaction";
 
-const generateButton = (column: Column<MappedExpenseData, unknown>, label: string) => (
+const generateButton = (column: Column<Transaction, unknown>, label: string) => (
    <button
       className='flex items-center py-4 font-semibold text-neutral-700 dark:text-white/60 hover:text-neutral-600/90 dark:hover:text-gray-400/70'
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -27,7 +27,7 @@ const generateButton = (column: Column<MappedExpenseData, unknown>, label: strin
    </button>
 );
 
-export const columns: ColumnDef<MappedExpenseData>[] = [
+export const columns: ColumnDef<Transaction>[] = [
    {
       accessorKey: "date",
       header: ({ column }) => generateButton(column, "Date"),
@@ -37,10 +37,10 @@ export const columns: ColumnDef<MappedExpenseData>[] = [
       header: ({ column }) => generateButton(column, "Category"),
    },
    {
-      accessorKey: "expense",
+      accessorKey: "amount",
       header: ({ column }) => generateButton(column, "Amount"),
       cell: ({ row }) => {
-         const amount = parseFloat(row.getValue("expense"));
+         const amount = parseFloat(row.getValue("amount"));
          const formatted = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
@@ -74,17 +74,18 @@ export const columns: ColumnDef<MappedExpenseData>[] = [
       id: "actions",
       cell: ({ row }) => {
          const { toast } = useToast();
-         const expense = row.original;
+         const transaction = row.original;
          const {
-            deleteExpense: { mutate },
-         } = useExpenses();
+            deleteTransaction: { mutate },
+         } = useTransactions();
+         const isExpense = transaction.type === "expense";
 
          const copyId = (e: React.MouseEvent<HTMLDivElement>) => {
             e.stopPropagation();
-            handleCopy(expense.id);
+            handleCopy(transaction._id);
             toast({
                title: "Copied!",
-               description: "Expense ID copied to clipboard.",
+               description: `${isExpense ? "Expense" : "Income"} ID copied to clipboard.`,
             });
          };
 
@@ -102,14 +103,18 @@ export const columns: ColumnDef<MappedExpenseData>[] = [
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align='end'>
                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                     <DropdownMenuItem>View expense details</DropdownMenuItem>
+                     <DropdownMenuItem>
+                        View {isExpense ? "expense" : "income"} details
+                     </DropdownMenuItem>
                      <DropdownMenuSeparator />
-                     <DropdownMenuItem onClick={copyId}>Copy expense ID</DropdownMenuItem>
+                     <DropdownMenuItem onClick={copyId}>
+                        Copy {isExpense ? "expense" : "income"} ID
+                     </DropdownMenuItem>
                      <DropdownMenuSeparator />
                      <DropdownMenuItem
-                        onClick={(e) => handleDeleteTransaction(e, mutate, expense.id)}
+                        onClick={(e) => handleDeleteTransaction(e, mutate, transaction._id)}
                      >
-                        Delete expense
+                        Delete {isExpense ? "expense" : "income"}
                      </DropdownMenuItem>
                   </DropdownMenuContent>
                </DropdownMenu>

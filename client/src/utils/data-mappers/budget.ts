@@ -6,8 +6,7 @@ export const mapBudgetData = (data: Budget[]): MappedBudgetData[] => {
    const budgets = data.map((budget: Budget) => {
       const formattedDate = formatDate(budget.month, "MM-yyyy");
       return {
-         ...(({ _id: id, month, summary, ...rest }) => ({
-            id,
+         ...(({ month, summary, ...rest }) => ({
             income: summary.totalIncome,
             expense: summary.totalExpense,
             balance: summary.balance,

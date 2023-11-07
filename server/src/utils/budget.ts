@@ -1,7 +1,6 @@
 import { Document, Types } from "mongoose";
 import Budget from "@/models/budget";
-import Income from "@/models/income";
-import Expense from "@/models/expense";
+import Transaction from "@/models/transaction";
 import { getMonthAndYear, getEndOfMonth } from "./date";
 
 const handleBudgetOnAuth = async (userId: Types.ObjectId, date: Date = new Date()) => {
@@ -16,7 +15,7 @@ const handleBudgetOnAuth = async (userId: Types.ObjectId, date: Date = new Date(
          //- Create budget entries for the months till the current month
          const budgetIds = await Budget.createBudgets(userId, lastBudgetMonth, date);
 
-         //- Query for all regular incomes and expenses of the user
+         //- Query for all regular transactions of the user
          const query = {
             user: userId,
             regular: true,
@@ -31,11 +30,10 @@ const handleBudgetOnAuth = async (userId: Types.ObjectId, date: Date = new Date(
          };
          const update = { $addToSet: { budgets: { $each: budgetIds } } };
 
-         //- Add the budgetIds to the budgets array of all regular incomes and expenses of the user
-         await Income.updateMany(query, update);
-         await Expense.updateMany(query, update);
+         //- Add the budgetIds to the budgets array of all regular transactions of the user
+         await Transaction.updateMany(query, update);
 
-         //- Calculate all budgets of the user after income and expense updates on login
+         //- Calculate all budgets of the user after transaction updates on login
          await Budget.calculateBudgets(userId);
       } else {
          //- Else means the user is logging in for the first time

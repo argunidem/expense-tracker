@@ -5,12 +5,11 @@ import Modal from "./base-modal";
 import ModalField from "@/components/ui/modal/modal-field";
 import ModalFooter from "@/components/ui/modal/modal-footer";
 import { useModal, useDetails } from "@/hooks/store";
-import { useIncomes } from "@/hooks/use-incomes";
-import { useExpenses } from "@/hooks/use-expenses";
+import { useTransactions } from "@/hooks/query/use-transactions";
 import { handleDeleteTransaction } from "@/utils/handlers/handle-delete";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Check, X } from "lucide-react";
-import { TransactionData } from "@/interfaces/transaction";
+import { Transaction } from "@/interfaces/transaction";
 import { MappedBudgetData } from "@/interfaces/budget";
 
 interface BodyContainerProps {
@@ -23,13 +22,8 @@ interface BodyContainerProps {
 const BodyContainer = ({ children, title, id }: BodyContainerProps) => {
    const { toggleModal } = useModal();
    const {
-      deleteIncome: { mutate: mutateIncome },
-   } = useIncomes();
-   const {
-      deleteExpense: { mutate: mutateExpense },
-   } = useExpenses();
-
-   const mutate = title === "Income" ? mutateIncome : mutateExpense;
+      deleteTransaction: { mutate },
+   } = useTransactions();
 
    return (
       <div className='flex flex-col gap-4'>
@@ -85,14 +79,14 @@ const DetailsModal = () => {
    const { data } = useDetails();
 
    if (data?.key === "transaction") {
-      const { name, description, expense, income, category, source, date, regular, expiresAt, id } =
-         data.value as TransactionData;
-      title = data.value.expense ? "Expense" : "Income";
+      const { type, name, description, amount, category, date, regular, expiresAt, _id } =
+         data.value as Transaction;
+      title = type.charAt(0).toUpperCase() + type.slice(1);
 
       bodyContent = (
          <BodyContainer
             title={title}
-            id={id}
+            id={_id}
             toggleModal={toggleModal}
          >
             {name && <ModalField value={name} />}
@@ -102,15 +96,15 @@ const DetailsModal = () => {
                   value={description}
                />
             )}
-            {(expense || income) && (
+            {amount && (
                <ModalField
                   label={`${title} amount`}
-                  value={`$${expense ? expense : income}`}
+                  value={`$${amount}`}
                />
             )}
             <ModalField
-               label={expense ? "Expense category" : "Income source"}
-               value={expense ? category : source}
+               label={`${title} category`}
+               value={category}
             />
             <ModalField
                label={"Transaction date"}
@@ -195,7 +189,7 @@ const DetailsModal = () => {
          footer={
             <ModalFooter
                title={title}
-               id={data?.value.id || ""}
+               id={data?.value._id || ""}
             />
          }
       />

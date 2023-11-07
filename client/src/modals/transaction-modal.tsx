@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Modal from "./base-modal";
 import { useModal, useDetails } from "@/hooks/store";
-import { useIncomes } from "@/hooks/use-incomes";
-import { useExpenses } from "@/hooks/use-expenses";
+import { useTransactions } from "@/hooks/query/use-transactions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,43 +19,40 @@ import {
    FormLabel,
    FormMessage,
 } from "@/components/ui/form/form";
+import {
+   Select,
+   SelectContent,
+   SelectItem,
+   SelectTrigger,
+   SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/form/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { incomeSchema } from "@/schemas/income-schema";
-import { expenseSchema } from "@/schemas/expense-schema";
+import { transactionSchema } from "@/schemas/transaction-schema";
+import { Transaction } from "@/interfaces/transaction";
 import { Calendar as CalendarIcon, Info, Plus } from "lucide-react";
-import { TransactionData } from "@/interfaces/transaction";
 
 const TransactionModal = () => {
    const [isRegular, setIsRegular] = useState(false);
    const { isOpen, modal, toggleModal } = useModal();
    const { data } = useDetails();
    const {
-      createIncome: { mutateAsync: createIncome, isLoading: incomeLoading, reset: resetIncome },
-      updateIncome: { mutateAsync: updateIncome },
-   } = useIncomes();
-   const {
-      createExpense: { mutateAsync: createExpense, isLoading: expenseLoading, reset: resetExpense },
-      updateExpense: { mutateAsync: updateExpense },
-   } = useExpenses();
+      createTransaction: { mutateAsync: createTransaction, isLoading, reset: resetTransaction },
+      updateTransaction: { mutateAsync: updateTransaction },
+   } = useTransactions();
 
    const path = usePathname();
    const isIncome = path === "/incomes";
-
    const title = isIncome ? "Income" : path === "/expenses" ? "Expense" : "Transaction";
-   const reset = isIncome ? resetIncome : resetExpense;
-   const isLoading = isIncome ? incomeLoading : expenseLoading;
-   const schema = isIncome ? incomeSchema : expenseSchema;
-   const createTransaction = isIncome ? createIncome : createExpense;
-   const updateTransaction = isIncome ? updateIncome : updateExpense;
 
-   const form = useForm<z.infer<typeof schema>>({
-      resolver: zodResolver(schema),
+   const form = useForm<z.infer<typeof transactionSchema>>({
+      resolver: zodResolver(transactionSchema),
       defaultValues: {
+         type: isIncome ? "income" : "expense",
          amount: 0,
          date: new Date() as unknown as string,
       },
@@ -64,36 +60,37 @@ const TransactionModal = () => {
 
    useEffect(() => {
       if (data && modal === "update") {
-         const defaultValues = {
-            amount: data.value.income || data.value.expense,
-            name: data.value.name,
-            description: (data?.value as TransactionData).description,
-            source: (data?.value as TransactionData).source,
-            category: (data?.value as TransactionData).category,
-            regular: (data?.value as TransactionData).regular,
+         const defaultValues: z.infer<typeof transactionSchema> = {
+            type: isIncome ? "income" : "expense",
+            amount: (data.value as Transaction).amount,
+            name: (data.value as Transaction).name,
+            description: (data.value as Transaction).description,
+            category: (data.value as Transaction).category,
+            regular: (data.value as Transaction).regular,
             date: new Date(data?.value.date) as unknown as string,
          };
 
-         setIsRegular((data?.value as TransactionData).regular || false);
+         setIsRegular((data.value as Transaction).regular || false);
          form.reset(defaultValues);
       } else {
          setIsRegular(false);
          form.reset({
+            type: isIncome ? "income" : "expense",
             amount: 0,
             date: new Date() as unknown as string,
          });
       }
-   }, [data, modal, form]);
+   }, [data, modal, form, path]);
 
-   async function onSubmit(values: z.infer<typeof schema>) {
+   async function onSubmit(values: z.infer<typeof transactionSchema>) {
       try {
          if (modal === "transaction") {
             await createTransaction(values);
          } else if (data) {
-            await updateTransaction({ id: data?.value.id, values: { ...values } });
+            await updateTransaction({ id: (data.value as Transaction)._id, values: { ...values } });
          }
          form.reset();
-         reset();
+         resetTransaction();
          setIsRegular(false);
          toggleModal();
       } catch (error) {
@@ -111,6 +108,29 @@ const TransactionModal = () => {
                isRegular ? "" : "mt-8 -mb-10"
             )}
          >
+            <FormField
+               control={form.control}
+               name='type'
+               render={({ field }) => (
+                  <FormItem>
+                     <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                     >
+                        <FormControl>
+                           <SelectTrigger>
+                              <SelectValue placeholder='Please select transaction type' />
+                           </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                           <SelectItem value='income'>Income</SelectItem>
+                           <SelectItem value='expense'>Expense</SelectItem>
+                        </SelectContent>
+                     </Select>
+                     <FormMessage />
+                  </FormItem>
+               )}
+            />
             <FormField
                control={form.control}
                name='amount'
@@ -166,12 +186,12 @@ const TransactionModal = () => {
             />
             <FormField
                control={form.control}
-               name={isIncome ? "source" : "category"}
+               name='category'
                render={({ field }) => (
                   <FormItem>
                      <FormControl>
                         <Input
-                           placeholder={isIncome ? "Source" : "Category"}
+                           placeholder='Category'
                            type='text'
                            className='sm:max-w-sm'
                            {...field}
@@ -240,7 +260,7 @@ const TransactionModal = () => {
                               />
                            </FormControl>
                            <FormLabel className='text-gray-600 dark:text-gray-200/90'>
-                              Regular <span className='inline sm:hidden'>Income</span>
+                              Regular <span className='inline sm:hidden'>Transaction</span>
                            </FormLabel>
                         </FormItem>
                         <Tooltip>

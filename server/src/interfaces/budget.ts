@@ -1,5 +1,5 @@
 import { Model, Query, Document, Types } from "mongoose";
-import { ResourceDocument } from "./resource";
+import { TransactionDocument } from "./transaction";
 
 //! Budget document
 interface BudgetDocument extends Document {
@@ -18,11 +18,10 @@ interface BudgetQueryHelpers extends Query<any, BudgetDocument> {
    byUser(userId: Types.ObjectId): BudgetQueryHelpers;
 }
 
-type ResourceSubset = Pick<ResourceDocument, "_id" | "amount">;
+type TransactionVirtual = Pick<TransactionDocument, "_id" | "amount" | "date">[];
 
 interface BudgetWithTransactions extends BudgetDocument {
-   incomes: ResourceSubset[];
-   expenses: ResourceSubset[];
+   transactions: Pick<TransactionDocument, "type" | "amount">[];
 }
 
 //! Budget model
@@ -36,4 +35,10 @@ interface BudgetModel extends Model<BudgetDocument, BudgetQueryHelpers> {
    ): Promise<Types.ObjectId[]>;
 }
 
-export { BudgetDocument, BudgetModel, BudgetWithTransactions, BudgetQueryHelpers };
+export {
+   BudgetDocument,
+   BudgetModel,
+   BudgetWithTransactions,
+   TransactionVirtual,
+   BudgetQueryHelpers,
+};

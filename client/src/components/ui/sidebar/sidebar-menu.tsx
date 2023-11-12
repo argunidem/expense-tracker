@@ -1,6 +1,6 @@
 "use client";
 
-import CreateTransaction from "@/components/create-transaction";
+import CreateTransaction from "@/components/sections/transaction/create-transaction";
 import MenuItem from "./menu-item";
 import ThemeSwitcher from "@/components/theme/theme-switcher";
 import { items } from "@/constants/sidebar-items";

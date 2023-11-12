@@ -1,4 +1,4 @@
-import CreateTransaction from "../create-transaction";
+import CreateTransaction from "../sections/transaction/create-transaction";
 
 interface HeaderProps {
    title: string;

@@ -3,11 +3,11 @@ import { NextFunction, Request, Response } from "express";
 import { Document, Types } from "mongoose";
 import { MessageResponse, TransactionResponse } from "./response";
 import { paramsSchema } from "@/schemas/params";
-
 import { transactionBodySchema } from "@/schemas/transaction";
 
 //! Transaction input (income or expense)
 type TransactionInput = z.infer<typeof transactionBodySchema>["body"] & {
+   category: Types.ObjectId;
    user: Types.ObjectId;
    budgets: Types.ObjectId[];
 };

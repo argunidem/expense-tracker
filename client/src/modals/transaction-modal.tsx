@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Modal from "./base-modal";
 import { useModal, useDetails } from "@/hooks/store";
 import { useTransactions } from "@/hooks/query/use-transactions";
+import { useCategories } from "@/hooks/query/use-categories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -35,15 +36,20 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { transactionSchema } from "@/schemas/transaction-schema";
 import { Transaction } from "@/interfaces/transaction";
 import { Calendar as CalendarIcon, Info, Plus } from "lucide-react";
+import CreateCategory from "@/components/sections/transaction/create-category";
 
 const TransactionModal = () => {
    const [isRegular, setIsRegular] = useState(false);
+   const [defaultCategory, setDefaultCategory] = useState<string | undefined>(undefined);
    const { isOpen, modal, toggleModal } = useModal();
    const { data } = useDetails();
    const {
       createTransaction: { mutateAsync: createTransaction, isLoading, reset: resetTransaction },
       updateTransaction: { mutateAsync: updateTransaction },
    } = useTransactions();
+   const {
+      getCategories: { data: categories },
+   } = useCategories();
 
    const path = usePathname();
    const isIncome = path === "/incomes";
@@ -54,6 +60,7 @@ const TransactionModal = () => {
       defaultValues: {
          type: isIncome ? "income" : "expense",
          amount: 0,
+         category: categories?.find((category) => category.name === "Other")?._id,
          date: new Date() as unknown as string,
       },
    });
@@ -65,7 +72,7 @@ const TransactionModal = () => {
             amount: (data.value as Transaction).amount,
             name: (data.value as Transaction).name,
             description: (data.value as Transaction).description,
-            category: (data.value as Transaction).category,
+            category: (data.value as Transaction).category._id,
             regular: (data.value as Transaction).regular,
             date: new Date(data?.value.date) as unknown as string,
          };
@@ -77,10 +84,18 @@ const TransactionModal = () => {
          form.reset({
             type: isIncome ? "income" : "expense",
             amount: 0,
+            category: categories?.find((category) => category.name === "Other")?._id,
             date: new Date() as unknown as string,
          });
       }
-   }, [data, modal, form, path]);
+   }, [data, modal, form, path, categories]);
+
+   useEffect(() => {
+      if (defaultCategory) {
+         form.setValue("category", defaultCategory);
+         setDefaultCategory(undefined);
+      }
+   }, [defaultCategory]);
 
    async function onSubmit(values: z.infer<typeof transactionSchema>) {
       try {
@@ -131,6 +146,41 @@ const TransactionModal = () => {
                   </FormItem>
                )}
             />
+
+            <div className='flex items-center gap-y-5 gap-x-3'>
+               <FormField
+                  control={form.control}
+                  name='category'
+                  render={({ field }) => (
+                     <FormItem className='flex-1'>
+                        <Select
+                           onValueChange={field.onChange}
+                           defaultValue={field.value}
+                           value={field.value}
+                        >
+                           <FormControl>
+                              <SelectTrigger>
+                                 <SelectValue placeholder='Please select category' />
+                              </SelectTrigger>
+                           </FormControl>
+                           <SelectContent>
+                              {categories?.map((category) => (
+                                 <SelectItem
+                                    key={category._id}
+                                    value={category._id}
+                                 >
+                                    {category.name}
+                                 </SelectItem>
+                              ))}
+                           </SelectContent>
+                        </Select>
+                        <FormMessage />
+                     </FormItem>
+                  )}
+               />
+               <CreateCategory updateDefaultCategory={setDefaultCategory} />
+            </div>
+
             <FormField
                control={form.control}
                name='amount'
@@ -174,24 +224,6 @@ const TransactionModal = () => {
                      <FormControl>
                         <Input
                            placeholder='Description'
-                           type='text'
-                           className='sm:max-w-sm'
-                           {...field}
-                           value={field.value || ""}
-                        />
-                     </FormControl>
-                     <FormMessage />
-                  </FormItem>
-               )}
-            />
-            <FormField
-               control={form.control}
-               name='category'
-               render={({ field }) => (
-                  <FormItem>
-                     <FormControl>
-                        <Input
-                           placeholder='Category'
                            type='text'
                            className='sm:max-w-sm'
                            {...field}

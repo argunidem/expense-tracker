@@ -7,7 +7,7 @@ export const prefetchQueries = async (cookies: string) => {
 
    await queryClient.prefetchQuery(["budgets"], () => makeRequest("/budgets", { cookies }));
    await queryClient.prefetchQuery(["transactions"], () =>
-      makeRequest("/transactions", { cookies, params: { sort: "date" } })
+      makeRequest("/transactions", { cookies, params: { sort: "date", populate: "category" } })
    );
 
    return dehydrate(queryClient);

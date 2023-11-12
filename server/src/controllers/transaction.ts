@@ -16,7 +16,7 @@ import { MessageResponse, TransactionResponse, TransactionsResponse } from "@/in
 
 //! Create transaction
 //! POST request
-//! /api/incomes  or  /api/expenses
+//! /api/transactions
 //! Private Route
 const createTransaction: TransactionController = async (
    req: Request<{}, TransactionResponse, TransactionInput>,
@@ -41,7 +41,7 @@ const createTransaction: TransactionController = async (
 
 //! Get transactions
 //! GET request
-//! /api/incomes  or  /api/expenses
+//! /api/transactions
 //! Private Route
 const getTransactions = async (
    _req: Request<{}, TransactionsResponse, {}>,
@@ -69,7 +69,7 @@ const getTransactions = async (
 
 //! Get single transaction
 //! GET request
-//! /api/incomes/:id  or  /api/expenses/:id
+//! /api/transactions/:id
 //! Private Route
 const getTransaction: TransactionController = async (
    req: Request<TransactionParams, TransactionResponse, {}>,
@@ -90,7 +90,7 @@ const getTransaction: TransactionController = async (
 
 //! Update transaction
 //! PUT request
-//! /api/incomes/:id  or  /api/expenses/:id
+//! /api/transactions/:id
 //! Private Route
 const updateTransaction: TransactionController = async (
    req: Request<TransactionParams, TransactionResponse, TransactionUpdateInput>,
@@ -112,7 +112,7 @@ const updateTransaction: TransactionController = async (
 
 //! Delete transaction
 //! DELETE request
-//! /api/incomes/:id  or  /api/expenses/:id
+//! /api/transactions/:id
 //! Private Route
 const deleteTransaction: TransactionController = async (
    req: Request<TransactionParams, MessageResponse, {}>,

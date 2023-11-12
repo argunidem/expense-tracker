@@ -9,9 +9,18 @@ import {
    TransactionUpdateInput,
 } from "@/interfaces/transaction";
 import { MessageResponse, TransactionResponse } from "@/interfaces/response";
+import { getAndVerifyCategory } from "./category";
 
 const processTransactionCreation = async (body: TransactionInput) => {
    const transaction = new Transaction(body);
+
+   //- Get category and verify if user is owner
+   const category = await getAndVerifyCategory(body.category, body.user);
+
+   //- Add transaction to category
+   category.transactions.push(transaction._id);
+   await category.save();
+
    return await transaction.save();
 };
 
@@ -50,6 +59,23 @@ const updateTransactionById = async (
       const { body } = req;
       //- Check if transaction exists and user is owner
       const transaction = await getAndVerifyTransaction(req);
+
+      //- If category is being updated
+      if (body.category) {
+         //- Get category and verify if user is owner
+         const category = await getAndVerifyCategory(body.category, transaction.user);
+
+         //- Remove transaction from old category
+         const oldCategory = await getAndVerifyCategory(transaction.category, transaction.user);
+         oldCategory.transactions = oldCategory.transactions.filter(
+            (transaction) => transaction._id.toString() !== transaction._id.toString()
+         );
+         await oldCategory.save();
+
+         //- Add transaction to new category
+         category.transactions.push(transaction._id);
+         await category.save();
+      }
 
       //- Update transaction
       transaction.set(body);

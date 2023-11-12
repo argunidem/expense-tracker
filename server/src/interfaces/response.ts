@@ -1,5 +1,6 @@
 import { UserWithoutPassword } from "./user/mongoose";
 import { TransactionDocument } from "./transaction";
+import { CategoryDocument } from "./category";
 
 interface MessageResponse {
    status: "success";
@@ -33,6 +34,16 @@ interface TransactionsResponse extends Omit<ResultsResponse, "data"> {
    };
 }
 
+interface CategoryResponse {
+   status: "success";
+   data: CategoryDocument;
+}
+
+interface CategoriesResponse {
+   status: "success";
+   data: CategoryDocument[];
+}
+
 interface ErrorResponse {
    status: "fail";
    message: string;
@@ -44,6 +55,8 @@ export {
    UserResponse,
    TransactionResponse,
    TransactionsResponse,
+   CategoryResponse,
+   CategoriesResponse,
    ResultsResponse,
    ErrorResponse,
 };

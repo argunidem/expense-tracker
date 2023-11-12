@@ -1,7 +1,8 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 import { TransactionDocument } from "@/interfaces/transaction";
 import { format } from "date-fns";
 import { getEndOfMonth } from "@/utils/date";
+import { getAndVerifyCategory } from "@/services/category";
 
 const transactionSchema: Schema = new Schema<TransactionDocument>(
    {
@@ -17,7 +18,8 @@ const transactionSchema: Schema = new Schema<TransactionDocument>(
          type: String,
       },
       category: {
-         type: String,
+         type: Schema.Types.ObjectId,
+         ref: "Category",
          required: true,
       },
       amount: {
@@ -93,6 +95,22 @@ transactionSchema.pre("save", async function () {
       }
    } catch (error) {
       console.error("Error in transaction pre-save middleware: ".red.underline, error);
+   }
+});
+
+//! Remove transaction from its category
+transactionSchema.pre("deleteOne", { document: true, query: false }, async function () {
+   try {
+      //- Get category by id and verify if user is owner
+      const category = await getAndVerifyCategory(this.category, this.user);
+      //- Remove transaction from category
+      category.transactions = category.transactions.filter(
+         (id) => id.toString() !== (this._id as unknown as Types.ObjectId).toString()
+      );
+
+      await category.save();
+   } catch (error) {
+      console.error("Error in transaction pre-deleteOne middleware: ".red.underline, error);
    }
 });
 

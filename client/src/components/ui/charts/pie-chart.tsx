@@ -1,18 +1,9 @@
 "use client";
 
 import ChartContainer from "@/components/ui/charts/chart-container";
-import { PieChart as Chart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { PieChart as Chart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
-const data = [
-   { name: "Group A", value: 400 },
-   { name: "Group B", value: 300 },
-   { name: "Group C", value: 300 },
-   { name: "Group D", value: 200 },
-];
-
-// const COLORS = ["#4a657c", "#488f82", "#b99852", "#b34a4a"];
-// const COLORS = ["#3b5b76dc", "#3d8073df", "#b99852df", "#b34a4ad9"];
-const COLORS = ["#3f576d", "#3d8174", "#aa8b49", "#a54545"];
+const COLORS = ["#3f576d", "#3d8174", "#aa8b49", "#a54545", "#5845a5", "#a54568", "#4ab675"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -41,7 +32,14 @@ const renderCustomizedLabel = ({
    );
 };
 
-const PieChart = () => {
+interface PieChartProps {
+   data: {
+      name: string;
+      amount: number;
+   }[];
+}
+
+const PieChart = ({ data }: PieChartProps) => {
    return (
       <ChartContainer>
          <ResponsiveContainer
@@ -58,7 +56,7 @@ const PieChart = () => {
                   outerRadius={140}
                   style={{ outline: "none" }}
                   fill='#8884d8'
-                  dataKey='value'
+                  dataKey='amount'
                >
                   {data.map((entry, index) => (
                      <Cell
@@ -77,6 +75,7 @@ const PieChart = () => {
                      borderRadius: "6px",
                   }}
                   itemStyle={{ color: "#fefefe" }}
+                  formatter={(value: number) => `$${value}`}
                />
             </Chart>
          </ResponsiveContainer>

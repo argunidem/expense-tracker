@@ -15,7 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { handleDeleteTransaction } from "@/utils/handlers/handle-delete";
 import { handleCopy } from "@/utils/handlers/handle-copy";
 import { ArrowUpDown, MoreHorizontal, X, Check } from "lucide-react";
-import { Transaction } from "@/interfaces/transaction";
+import { CategoryColumn, Transaction } from "@/interfaces/transaction";
 
 const generateButton = (column: Column<Transaction, unknown>, label: string) => (
    <button
@@ -35,6 +35,11 @@ export const columns: ColumnDef<Transaction>[] = [
    {
       accessorKey: "category",
       header: ({ column }) => generateButton(column, "Category"),
+      cell: ({ row }) => {
+         return (
+            <div className='font-medium'>{(row.getValue("category") as CategoryColumn).name}</div>
+         );
+      },
    },
    {
       accessorKey: "amount",

@@ -3,6 +3,7 @@ import DoubleLineChart from "@/components/ui/charts/double-line-chart";
 import PieChart from "@/components/ui/charts/pie-chart";
 import { MappedBudgetData } from "@/interfaces/budget";
 import { Transaction } from "@/interfaces/transaction";
+import { useCategories } from "@/hooks/query/use-categories";
 
 interface TransactionChartsProps {
    transactionData: Transaction[];
@@ -15,6 +16,20 @@ const TransactionCharts = ({
    budgetData,
    transactionType,
 }: TransactionChartsProps) => {
+   const {
+      getCategories: { data: categories },
+   } = useCategories();
+
+   const pieChartData =
+      categories
+         ?.map((category) => ({
+            name: category.name,
+            amount: category.transactions[
+               transactionType === "expense" ? "expenses" : "incomes"
+            ].reduce((acc, transaction) => acc + transaction.amount, 0),
+         }))
+         .filter((category) => category.amount > 0) || [];
+
    return (
       <div className='grid grid-cols-1 sm:my-12 2xl:grid-cols-2'>
          {/* Latest transactions */}
@@ -36,7 +51,7 @@ const TransactionCharts = ({
          />
          {/* Expenses and incomes comparison */}
          <DoubleLineChart data={budgetData} />
-         <PieChart />
+         <PieChart data={pieChartData} />
       </div>
    );
 };

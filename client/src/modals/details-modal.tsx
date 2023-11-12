@@ -26,7 +26,7 @@ const BodyContainer = ({ children, title, id }: BodyContainerProps) => {
    } = useTransactions();
 
    return (
-      <div className='flex flex-col gap-4'>
+      <div className='w-full max-w-xl mx-auto flex flex-col gap-4'>
          <div className='flex justify-between items-center'>
             <h3 className='text-xl font-bold'>{title} Details</h3>
             {id && (
@@ -104,7 +104,7 @@ const DetailsModal = () => {
             )}
             <ModalField
                label={`${title} category`}
-               value={category}
+               value={category.name}
             />
             <ModalField
                label={"Transaction date"}

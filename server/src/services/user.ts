@@ -3,6 +3,7 @@ import { FilterQuery, QueryOptions } from "mongoose";
 import axios from "axios";
 import { stringify } from "qs";
 import User from "@/models/user";
+import Category from "@/models/category";
 import { AuthenticationError, BaseError, ConflictError, NotFoundError } from "@/utils/error";
 import { googleClientId, googleClientSecret, googleOauthRedirectUrl } from "@/config/variables";
 import {
@@ -22,6 +23,13 @@ const createUser = async (credentials: RegistrationCredentials): Promise<UserWit
 
       //- Create user and return without password
       const user = await User.create(credentials);
+
+      //- Create default category named "Other"
+      await Category.create({
+         name: "Other",
+         user: user._id,
+      });
+
       return user.excludePassword();
    } catch (error: any) {
       throw error;

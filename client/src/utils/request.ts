@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { AuthValues } from "@/schemas/auth-schema";
 import { TransactionValues } from "@/interfaces/transaction";
+import { CategoryValues } from "@/interfaces/category";
 
 const request = axios.create({
    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -10,7 +11,7 @@ type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 type RequestOptions = {
    method?: HttpMethod;
-   values?: AuthValues | TransactionValues;
+   values?: AuthValues | TransactionValues | CategoryValues;
    params?: Record<string, any>;
    cookies?: string;
 };

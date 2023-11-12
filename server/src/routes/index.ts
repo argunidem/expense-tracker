@@ -1,7 +1,8 @@
 import { Router } from "express";
 import user from "./user";
 import transaction from "./transaction";
-import budget from "./budgets";
+import budget from "./budget";
+import category from "./category";
 
 const router = Router();
 
@@ -13,5 +14,8 @@ router.use("/transactions", transaction);
 
 //! /api/budgets
 router.use("/budgets", budget);
+
+//! /api/categories
+router.use("/categories", category);
 
 export default router;

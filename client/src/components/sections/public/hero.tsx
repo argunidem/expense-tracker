@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Button } from "../ui/button";
-import NavLink from "../ui/navbar/nav-link";
+import { Button } from "../../ui/button";
+import NavLink from "../../ui/navbar/nav-link";
 
 const Hero = () => {
    return (

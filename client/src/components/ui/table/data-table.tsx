@@ -36,7 +36,7 @@ import useDetails from "@/hooks/store/use-details";
 interface DataTableProps<TData, TValue> {
    columns: ColumnDef<TData, TValue>[];
    data: TData[];
-   searchBy: string;
+   searchBy?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -69,19 +69,23 @@ export function DataTable<TData, TValue>({
    });
 
    const handleClick = (e: any) => {
-      setData(e, "transaction");
+      setData(e, searchBy ? "transaction" : "budget");
       toggleModal("details");
    };
 
    return (
       <>
          <div className='flex flex-col-reverse items-center gap-y-4 py-4 sm:flex-row'>
-            <Input
-               placeholder={`Filter by ${searchBy}...`}
-               value={(table.getColumn(searchBy)?.getFilterValue() as string) ?? ""}
-               onChange={(event) => table.getColumn(searchBy)?.setFilterValue(event.target.value)}
-               className='max-w-sm bg-transparent'
-            />
+            {searchBy && (
+               <Input
+                  placeholder={`Filter by ${searchBy}...`}
+                  value={(table.getColumn(searchBy)?.getFilterValue() as string) ?? ""}
+                  onChange={(event) =>
+                     table.getColumn(searchBy)?.setFilterValue(event.target.value)
+                  }
+                  className='max-w-sm bg-transparent'
+               />
+            )}
             <DropdownMenu>
                <DropdownMenuTrigger asChild>
                   <Button

@@ -1,4 +1,4 @@
-import AuthForm from "@/components/sections/auth/auth-form";
+import AuthForm from "@/components/sections/public/auth/auth-form";
 import GoogleButton from "./google-button";
 import AuthSwitchLink from "./auth-switch-link";
 import { cn } from "@/utils/cn";

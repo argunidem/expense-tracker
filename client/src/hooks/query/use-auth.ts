@@ -2,7 +2,8 @@ import { useRouter } from "next/navigation";
 import { makeRequest } from "@/utils/request";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "../use-toast";
-import { AuthValues } from "@/schemas/auth-schema";
+import { AuthValues, UpdateProfileValues } from "@/schemas/auth-schema";
+import { ProfileResponse } from "@/interfaces/profile";
 
 export const useAuth = () => {
    const { push, refresh } = useRouter();
@@ -15,25 +16,25 @@ export const useAuth = () => {
       });
    };
 
-   const onSuccess = (message: string, route: string = "/") => {
+   const onSuccess = (message: string, route?: string) => {
       toast({
          description: message,
       });
       refresh();
-      push(route);
+      if (route) push(route);
    };
 
    return {
       login: useMutation({
          mutationFn: (values: AuthValues) =>
             makeRequest("/users/login", { method: "POST", values }),
-         onSuccess: () => onSuccess("You have successfully logged in"),
+         onSuccess: () => onSuccess("You have successfully logged in", "/"),
          onError,
       }),
       register: useMutation({
          mutationFn: (values: AuthValues) =>
             makeRequest("/users/register", { method: "POST", values }),
-         onSuccess: () => onSuccess("You have successfully registered"),
+         onSuccess: () => onSuccess("You have successfully registered", "/"),
          onError,
       }),
       logout: useQuery({
@@ -43,6 +44,19 @@ export const useAuth = () => {
          retry: false,
          onSuccess: (data: { status: string; message: string }) =>
             onSuccess(data.message, "/login"),
+         onError,
+      }),
+      getProfile: useQuery({
+         queryKey: ["profile"],
+         queryFn: () => makeRequest<ProfileResponse>("/users/profile"),
+         onError,
+         refetchOnMount: false,
+         refetchOnWindowFocus: false,
+      }),
+      updateProfile: useMutation({
+         mutationFn: (values: UpdateProfileValues) =>
+            makeRequest("/users/update", { method: "PUT", values }),
+         onSuccess: () => onSuccess("Profile updated"),
          onError,
       }),
    };

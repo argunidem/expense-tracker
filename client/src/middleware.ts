@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { protect } from "./utils/auth/protect";
 
 const publicRoutes = ["/login", "/register"];
-const privateRoutes = ["/expenses", "/incomes", "/budgets", "/data-table"];
+const privateRoutes = ["/expenses", "/incomes", "/budgets", "/profile"];
 
 export async function middleware(request: NextRequest) {
    const { status } = await protect(request.cookies.toString());
@@ -16,5 +16,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-   matcher: ["/login", "/register", "/expenses", "/incomes", "/budgets"],
+   matcher: ["/login", "/register", "/expenses", "/incomes", "/budgets", "/profile"],
 };

@@ -58,14 +58,15 @@ const PieChart = ({ data }: PieChartProps) => {
                   fill='#8884d8'
                   dataKey='amount'
                >
-                  {data.map((entry, index) => (
-                     <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                        stroke='#3b3b3b'
-                        style={{ outline: "none" }}
-                     />
-                  ))}
+                  {data &&
+                     data.map((entry, index) => (
+                        <Cell
+                           key={`cell-${index}`}
+                           fill={COLORS[index % COLORS.length]}
+                           stroke='#3b3b3b'
+                           style={{ outline: "none" }}
+                        />
+                     ))}
                </Pie>
                <Tooltip
                   contentStyle={{

@@ -8,6 +8,7 @@ import {
    Tooltip,
    Legend,
    ResponsiveContainer,
+   ReferenceLine,
 } from "recharts";
 import useModal from "@/hooks/store/use-modal";
 import useDetails from "@/hooks/store/use-details";
@@ -76,7 +77,7 @@ const SingleBarChart = ({
    let color = defaultColor ?? (theme === "dark" ? dark : light);
 
    const handleClick = (e: any) => {
-      const modalKey = tooltipText?.startsWith("Total") ? "budget" : "transaction";
+      const modalKey = bar === "amount" ? "transaction" : "budget";
       setData(e.payload, modalKey);
       toggleModal("details");
    };
@@ -108,6 +109,11 @@ const SingleBarChart = ({
                   content={<CustomTooltip tooltipText={tooltipText} />}
                />
                <Legend layout='vertical' />
+               <ReferenceLine
+                  y={0}
+                  stroke={theme === "dark" ? "#444" : "#aaa"}
+                  strokeWidth={2}
+               />
                <Bar
                   dataKey={bar}
                   onClick={(e) => handleClick(e)}

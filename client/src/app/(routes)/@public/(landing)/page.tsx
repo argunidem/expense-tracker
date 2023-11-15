@@ -1,8 +1,8 @@
-import Hero from "@/components/sections/hero";
-import Services from "@/components/sections/services";
-import Features from "@/components/sections/features";
-import Testimonials from "@/components/sections/testimonials";
-import Pricing from "@/components/sections/pricing/pricing";
+import Hero from "@/components/sections/public/hero";
+import Services from "@/components/sections/public/services";
+import Features from "@/components/sections/public/features";
+import Testimonials from "@/components/sections/public/testimonials";
+import Pricing from "@/components/sections/public/pricing/pricing";
 import Footer from "@/components/ui/footer";
 
 const Home = () => {

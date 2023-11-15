@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { Button } from "../../ui/button";
+import { Button } from "../../../ui/button";
 
 interface PlanProps {
    plan: {

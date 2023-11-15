@@ -36,7 +36,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { transactionSchema } from "@/schemas/transaction-schema";
 import { Transaction } from "@/interfaces/transaction";
 import { Calendar as CalendarIcon, Info, Plus } from "lucide-react";
-import CreateCategory from "@/components/sections/transaction/create-category";
+import CreateCategory from "@/components/sections/private/transaction/create-category";
 
 const TransactionModal = () => {
    const [isRegular, setIsRegular] = useState(false);
@@ -378,6 +378,7 @@ const TransactionModal = () => {
                className={cn(isRegular ? "translate-y-0" : "-translate-y-20 sm:-translate-y-16")}
                variant={"auth"}
                size={"none"}
+               border={"default"}
                type='submit'
             >
                <Plus className='w-6 h-6 -ml-2' />

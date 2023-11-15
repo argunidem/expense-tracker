@@ -1,4 +1,4 @@
-import Auth from "@/components/sections/auth/auth";
+import Auth from "@/components/sections/public/auth/auth";
 
 const LoginPage = () => {
    return <Auth type='login' />;

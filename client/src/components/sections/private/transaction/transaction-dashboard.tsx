@@ -1,9 +1,9 @@
 "use client";
 
 import StatsContainer from "@/components/ui/stats/stats-container";
-import TransactionCharts from "@/components/sections/transaction/transaction-charts";
+import TransactionCharts from "@/components/sections/private/transaction/transaction-charts";
 import TableContainer from "@/components/ui/table/table-container";
-import { columns } from "@/components/sections/transaction/transaction-columns";
+import { columns } from "@/components/sections/private/transaction/transaction-columns";
 import { useTransactions } from "@/hooks/query/use-transactions";
 import { useBudgets } from "@/hooks/query/use-budgets";
 import { mapTransactionStats } from "@/utils/data-mappers/stats";

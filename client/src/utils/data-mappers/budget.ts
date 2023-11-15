@@ -20,3 +20,28 @@ export const mapBudgetData = (data: Budget[]): MappedBudgetData[] => {
       return new Date(a.name).getTime() - new Date(b.name).getTime();
    });
 };
+
+export const mapPieChartData = (data: MappedBudgetData[]) => {
+   return {
+      totalChartData: [
+         {
+            name: "Income",
+            amount: data.reduce((acc, budget) => acc + budget.income, 0),
+         },
+         {
+            name: "Expense",
+            amount: data.reduce((acc, budget) => acc + budget.expense, 0),
+         },
+      ],
+      currentMonthData: [
+         {
+            name: "Income",
+            amount: data[data.length - 1]?.income || 0,
+         },
+         {
+            name: "Expense",
+            amount: data[data.length - 1]?.expense || 0,
+         },
+      ],
+   };
+};

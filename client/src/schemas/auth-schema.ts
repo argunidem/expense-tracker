@@ -39,6 +39,13 @@ const registrationSchema = z
       path: ["confirmation"],
    });
 
-export type AuthValues = z.infer<typeof loginSchema> | z.infer<typeof registrationSchema>;
+const updateProfileSchema = z.object({
+   name: z.string().min(4, "Name must have at least 4 characters.").optional(),
+   email: z.string().email("The email provided is invalid.").optional(),
+   password: z.string().min(6, "Password must have at least 6 characters.").optional(),
+});
 
-export { loginSchema, registrationSchema };
+export type AuthValues = z.infer<typeof loginSchema> | z.infer<typeof registrationSchema>;
+export type UpdateProfileValues = z.infer<typeof updateProfileSchema>;
+
+export { loginSchema, registrationSchema, updateProfileSchema };

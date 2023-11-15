@@ -1,5 +1,5 @@
 import ExpensesHeader from "@/components/ui/header";
-import TransactionDashboard from "@/components/sections/transaction/transaction-dashboard";
+import TransactionDashboard from "@/components/sections/private/transaction/transaction-dashboard";
 import { Separator } from "@/components/ui/separator";
 
 const ExpensesPage = () => {

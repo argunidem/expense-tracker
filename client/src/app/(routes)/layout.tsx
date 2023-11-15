@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
-import { makeRequest } from "@/utils/request";
-import { ProfileResponse } from "@/interfaces/profile";
+import Hydrate from "@/utils/react-query/hydrate";
+import { prefetchProfile } from "@/utils/react-query/prefetch-queries";
 
 export default async function RoutesLayout({
    private: authenticated,
@@ -9,9 +9,10 @@ export default async function RoutesLayout({
    private: React.ReactNode;
    public: React.ReactNode;
 }) {
-   const { status } = await makeRequest<ProfileResponse>("/users/profile", {
-      cookies: cookies().toString(),
-   });
-
-   return <>{status === "success" ? authenticated : shared}</>;
+   const dehydratedState = await prefetchProfile(cookies().toString());
+   return (
+      <Hydrate state={dehydratedState}>
+         {dehydratedState.status === "success" ? authenticated : shared}
+      </Hydrate>
+   );
 }

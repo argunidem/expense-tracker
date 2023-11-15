@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { AuthValues } from "@/schemas/auth-schema";
+import { AuthValues, UpdateProfileValues } from "@/schemas/auth-schema";
 import { TransactionValues } from "@/interfaces/transaction";
 import { CategoryValues } from "@/interfaces/category";
 
@@ -11,7 +11,7 @@ type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 type RequestOptions = {
    method?: HttpMethod;
-   values?: AuthValues | TransactionValues | CategoryValues;
+   values?: AuthValues | UpdateProfileValues | TransactionValues | CategoryValues;
    params?: Record<string, any>;
    cookies?: string;
 };

@@ -20,15 +20,14 @@ const TransactionCharts = ({
       getCategories: { data: categories },
    } = useCategories();
 
-   const pieChartData =
-      categories
-         ?.map((category) => ({
-            name: category.name,
-            amount: category.transactions[
-               transactionType === "expense" ? "expenses" : "incomes"
-            ].reduce((acc, transaction) => acc + transaction.amount, 0),
-         }))
-         .filter((category) => category.amount > 0) || [];
+   const pieChartData = categories
+      ?.map((category) => ({
+         name: category.name,
+         amount: category.transactions[
+            transactionType === "expense" ? "expenses" : "incomes"
+         ].reduce((acc, transaction) => acc + transaction.amount, 0),
+      }))
+      .filter((category) => category.amount > 0);
 
    return (
       <div className='grid grid-cols-1 sm:my-12 2xl:grid-cols-2'>
@@ -51,7 +50,8 @@ const TransactionCharts = ({
          />
          {/* Expenses and incomes comparison */}
          <DoubleLineChart data={budgetData} />
-         <PieChart data={pieChartData} />
+         {/* Category comparison */}
+         <PieChart data={pieChartData || []} />
       </div>
    );
 };

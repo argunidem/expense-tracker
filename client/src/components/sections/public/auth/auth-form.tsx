@@ -8,7 +8,7 @@ import { UserPlus } from "lucide-react";
 
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form/form";
 import { Input } from "@/components/ui/form/input";
-import { Button } from "../../ui/button";
+import { Button } from "../../../ui/button";
 import { useAuth } from "@/hooks/query/use-auth";
 import { cn } from "@/utils/cn";
 import { loginSchema, registrationSchema } from "@/schemas/auth-schema";
@@ -119,6 +119,7 @@ const AuthForm = () => {
             <Button
                variant={"auth"}
                size={"none"}
+               border={"default"}
                type='submit'
             >
                <UserPlus className='w-6 h-6 -ml-2' />

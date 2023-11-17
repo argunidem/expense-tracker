@@ -34,7 +34,9 @@ describe("/api/users/logout", () => {
             .set("Cookie", [login.headers["set-cookie"]]);
 
          expect(statusCode).toBe(200);
-         expect(headers["set-cookie"]).not.toBeDefined();
+         expect(headers["set-cookie"][0]).toEqual(
+            "sid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+         );
          expect(body.message).toEqual("Logout successful");
       });
    });

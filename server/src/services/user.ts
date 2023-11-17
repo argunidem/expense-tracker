@@ -1,10 +1,9 @@
-import { NextFunction, Request } from "express";
 import { FilterQuery, QueryOptions } from "mongoose";
 import axios from "axios";
 import { stringify } from "qs";
 import User from "@/models/user";
 import Category from "@/models/category";
-import { AuthenticationError, BaseError, ConflictError, NotFoundError } from "@/utils/error";
+import { AuthenticationError, ConflictError, NotFoundError } from "@/utils/error";
 import { googleClientId, googleClientSecret, googleOauthRedirectUrl } from "@/config/variables";
 import {
    LoginCredentials,
@@ -102,21 +101,6 @@ export async function getGoogleUser({
    }
 }
 
-const logoutUser = (req: Request, next: NextFunction) => {
-   //- Destroy session
-   req.session.destroy((err: any) => {
-      if (err) {
-         //- Log and handle session destruction error
-         console.error("Error destroying session:", err);
-         return next(new BaseError(500, "Internal server error"));
-      }
-
-      //- Log and handle session destruction error
-      req.user = null;
-      next();
-   });
-};
-
 const updateDetails = async (
    query: FilterQuery<UserDocument>,
    update: UpdateUserCredentials,
@@ -150,4 +134,4 @@ const updateDetails = async (
    return user as UserWithoutPassword;
 };
 
-export { createUser, loginUser, getGoogleOauthTokens, logoutUser, updateDetails };
+export { createUser, loginUser, getGoogleOauthTokens, updateDetails };

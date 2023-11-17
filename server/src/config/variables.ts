@@ -5,3 +5,4 @@ export const mongoUri = process.env.MONGO_URI;
 export const googleClientId = process.env.GOOGLE_CLIENT_ID;
 export const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 export const googleOauthRedirectUrl = process.env.GOOGLE_OAUTH_REDIRECT_URL;
+export const sessionSecret = process.env.SESSION_SECRET_KEY;

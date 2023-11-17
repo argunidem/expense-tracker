@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import {
    createUser,
-   logoutUser,
    getGoogleOauthTokens,
    getGoogleUser,
    loginUser,
    updateDetails,
 } from "@/services/user";
-import { ForbiddenError } from "@/utils/error";
+import { BaseError, ForbiddenError } from "@/utils/error";
 import { handleBudgetOnAuth } from "@/utils/budget";
 import { origin } from "@/config/variables";
 import { MessageResponse, UserResponse } from "@/interfaces/response";
@@ -115,12 +114,24 @@ const googleOAuth = async (req: Request, res: Response, next: NextFunction) => {
 //! Logout user
 //! POST /api/users/logout
 //! Private Route
-const logout = (req: Request<{}, MessageResponse, {}>, res: Response<MessageResponse>) => {
+const logout = (
+   req: Request<{}, MessageResponse, {}>,
+   res: Response<MessageResponse>,
+   next: NextFunction
+) => {
    //- Destroy session
-   logoutUser(req, () => {
+   req.session.destroy((err: any) => {
+      if (err) {
+         //- Log and handle session destruction error
+         console.error("Error destroying session:", err);
+         return next(new BaseError(500, "Internal server error"));
+      }
+
+      //- Log and handle session destruction error
+      req.user = null;
+      res.clearCookie("sid");
       res.status(200).json({ status: "success", message: "Logout successful" });
    });
-   res.clearCookie("sid");
 };
 
 //! Get current user

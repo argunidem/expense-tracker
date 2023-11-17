@@ -1,10 +1,10 @@
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import { mongoUri } from "@/config/variables";
+import { mongoUri, sessionSecret } from "@/config/variables";
 
 export const sessionSetup = session({
    name: "sid",
-   secret: "Replace with your secret key",
+   secret: sessionSecret,
    resave: false,
    saveUninitialized: false,
    cookie: {

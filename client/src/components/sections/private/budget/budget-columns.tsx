@@ -46,7 +46,7 @@ export const columns: ColumnDef<MappedBudgetData>[] = [
             <div
                className={cn(
                   "font-medium text-center xl:mx-auto 2xl:text-left",
-                  isNegative ? "text-rose-400" : "text-emerald-600"
+                  balance === 0 ? "text-white" : isNegative ? "text-rose-400" : "text-emerald-600"
                )}
             >
                {isNegative ? "-" : ""}${amount}

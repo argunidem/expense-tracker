@@ -154,7 +154,7 @@ const DetailsModal = () => {
             ))}
             <div className='flex flex-col space-y-1'>
                <h4 className='text-neutral-700 dark:text-neutral-200'>Incomes</h4>
-               {transactions.incomes.map((income) => (
+               {transactions?.incomes.map((income) => (
                   <React.Fragment key={income._id}>
                      <div className='pl-4'>
                         <ModalField
@@ -165,7 +165,7 @@ const DetailsModal = () => {
                   </React.Fragment>
                ))}
                <h4 className='text-neutral-700 dark:text-neutral-200'>Expenses</h4>
-               {transactions.expenses.map((expense) => (
+               {transactions?.expenses.map((expense) => (
                   <React.Fragment key={expense._id}>
                      <div className='pl-4'>
                         <ModalField

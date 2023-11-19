@@ -26,7 +26,7 @@ const BodyContainer = ({ children, title, id }: BodyContainerProps) => {
    } = useTransactions();
 
    return (
-      <div className='w-full max-w-xl mx-auto flex flex-col gap-4'>
+      <div className='max-w-xl mx-auto flex flex-col gap-4 md:w-full'>
          <div className='flex justify-between items-center'>
             <h3 className='text-xl font-bold'>{title} Details</h3>
             {id && (

@@ -29,6 +29,8 @@ const TransactionCharts = ({
       }))
       .filter((category) => category.amount > 0);
 
+   const title = transactionType[0].toUpperCase() + transactionType.slice(1);
+
    return (
       <div className='grid grid-cols-1 sm:my-12 2xl:grid-cols-2'>
          {/* Latest transactions */}
@@ -36,10 +38,8 @@ const TransactionCharts = ({
             data={transactionData}
             color={{ dark: "#37885c", light: "#42a87d" }}
             dataKeys={{ bar: "amount" }}
-            tooltipText={transactionType.replace(
-               transactionType[0],
-               transactionType[0].toUpperCase()
-            )}
+            tooltipText={title}
+            title={`Latest ${transactionType}s`}
          />
          {/* Transactions by month */}
          <SingleBarChart
@@ -47,11 +47,21 @@ const TransactionCharts = ({
             color={{ default: "#4e68a0" }}
             dataKeys={{ bar: transactionType }}
             tooltipText={`Total ${transactionType}`}
+            title={`${title}s by month`}
          />
          {/* Expenses and incomes comparison */}
-         <DoubleLineChart data={budgetData} />
+         <DoubleLineChart
+            data={budgetData}
+            title={"Transaction comparison"}
+         />
          {/* Category comparison */}
-         <PieChart data={pieChartData || []} />
+         <PieChart
+            data={pieChartData || []}
+            title={`
+            ${title}s by category
+      
+         `}
+         />
       </div>
    );
 };

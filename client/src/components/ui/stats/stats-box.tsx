@@ -16,9 +16,8 @@ const StatsBox = ({ label, value, tooltip }: StatsProps) => {
                   {value.toLocaleString("en-US", {
                      style: "currency",
                      currency: "USD",
-                     minimumFractionDigits: 0,
+                     minimumFractionDigits: 2,
                   })}
-                  .{value.toFixed(2).slice(-2)}
                </p>
             </div>
          </TooltipTrigger>

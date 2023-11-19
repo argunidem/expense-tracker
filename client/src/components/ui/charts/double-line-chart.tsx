@@ -1,14 +1,5 @@
 import ChartContainer from "@/components/ui/charts/chart-container";
-import {
-   LineChart,
-   Line,
-   XAxis,
-   YAxis,
-   CartesianGrid,
-   Tooltip,
-   Legend,
-   ResponsiveContainer,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { MappedBudgetData } from "@/interfaces/budget";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -29,48 +20,46 @@ const CustomTooltip = ({ active, payload, label }: any) => {
    return null;
 };
 
-const DoubleLineChart = ({ data }: { data: MappedBudgetData[] }) => {
+const DoubleLineChart = ({ data, title }: { data: MappedBudgetData[]; title: string }) => {
    return (
-      <ChartContainer>
-         <ResponsiveContainer
-            width='100%'
-            height='100%'
+      <ChartContainer
+         title={title}
+         dataExists={data.length > 0}
+      >
+         <LineChart
+            width={500}
+            height={300}
+            data={data}
+            margin={{
+               top: 5,
+               right: 30,
+               left: 20,
+               bottom: 5,
+            }}
          >
-            <LineChart
-               width={500}
-               height={300}
-               data={data}
-               margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-               }}
-            >
-               <CartesianGrid stroke='#54585d53' />
-               <XAxis
-                  dataKey='name'
-                  fontSize={12}
-               />
-               <YAxis />
-               <Tooltip
-                  cursor={{ stroke: "#545e6963" }}
-                  content={<CustomTooltip />}
-               />
-               <Legend />
-               <Line
-                  type='monotone'
-                  dataKey='income'
-                  stroke='#4caf84'
-                  activeDot={{ r: 5 }}
-               />
-               <Line
-                  type='monotone'
-                  dataKey='expense'
-                  stroke='#b55959'
-               />
-            </LineChart>
-         </ResponsiveContainer>
+            <CartesianGrid stroke='#54585d53' />
+            <XAxis
+               dataKey='name'
+               fontSize={12}
+            />
+            <YAxis />
+            <Tooltip
+               cursor={{ stroke: "#545e6963" }}
+               content={<CustomTooltip />}
+            />
+            <Legend />
+            <Line
+               type='monotone'
+               dataKey='income'
+               stroke='#4caf84'
+               activeDot={{ r: 5 }}
+            />
+            <Line
+               type='monotone'
+               dataKey='expense'
+               stroke='#b55959'
+            />
+         </LineChart>
       </ChartContainer>
    );
 };

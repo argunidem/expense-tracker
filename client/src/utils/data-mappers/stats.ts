@@ -26,7 +26,7 @@ const mapTransactionStats = (budgets: MappedBudgetData[], type: "income" | "expe
 
 const mapBudgetStats = (budgets: MappedBudgetData[]) => {
    const totalBalance = budgets?.reduce((acc, curr) => acc + curr.balance, 0);
-   const currentMonth = budgets?.slice(-1)[0].balance;
+   const currentMonth = budgets?.slice(-1)[0]?.balance;
    const averageBalance = (totalBalance || 0) / (budgets?.length || 0);
 
    return [

@@ -7,7 +7,6 @@ import {
    CartesianGrid,
    Tooltip,
    Legend,
-   ResponsiveContainer,
    ReferenceLine,
 } from "recharts";
 import useModal from "@/hooks/store/use-modal";
@@ -28,6 +27,7 @@ interface SingleBarChartProps {
       bar: string;
    };
    tooltipText?: string;
+   title: string;
 }
 
 const CustomTooltip = ({ active, payload, label, tooltipText }: any) => {
@@ -69,6 +69,7 @@ const SingleBarChart = ({
    color: { dark, light, default: defaultColor },
    dataKeys: { bar },
    tooltipText,
+   title,
 }: SingleBarChartProps) => {
    const { toggleModal } = useModal();
    const { setData } = useDetails();
@@ -82,47 +83,47 @@ const SingleBarChart = ({
       toggleModal("details");
    };
 
+   const dataExists = data.find((item: any) => item[bar] !== 0);
+
    return (
-      <ChartContainer>
-         <ResponsiveContainer
-            width='100%'
-            height='100%'
+      <ChartContainer
+         title={title}
+         dataExists={data.length > 0 && dataExists !== undefined}
+      >
+         <Chart
+            data={data}
+            margin={{
+               top: 5,
+               right: 30,
+               left: 20,
+               bottom: 5,
+            }}
          >
-            <Chart
-               data={data}
-               margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-               }}
-            >
-               <CartesianGrid stroke='#54585d52' />
-               <XAxis
-                  dataKey='date'
-                  tickFormatter={(_value: string, index) => data[index].date}
-                  fontSize={12}
-               />
-               <YAxis />
-               <Tooltip
-                  cursor={{ opacity: 0 }}
-                  content={<CustomTooltip tooltipText={tooltipText} />}
-               />
-               <Legend layout='vertical' />
-               <ReferenceLine
-                  y={0}
-                  stroke={theme === "dark" ? "#444" : "#aaa"}
-                  strokeWidth={2}
-               />
-               <Bar
-                  dataKey={bar}
-                  onClick={(e) => handleClick(e)}
-                  className='cursor-pointer'
-                  fill={color}
-                  maxBarSize={60}
-               />
-            </Chart>
-         </ResponsiveContainer>
+            <CartesianGrid stroke='#54585d52' />
+            <XAxis
+               dataKey='date'
+               tickFormatter={(_value: string, index) => data[index].date}
+               fontSize={12}
+            />
+            <YAxis />
+            <Tooltip
+               cursor={{ opacity: 0 }}
+               content={<CustomTooltip tooltipText={tooltipText} />}
+            />
+            <Legend layout='vertical' />
+            <ReferenceLine
+               y={0}
+               stroke={theme === "dark" ? "#444" : "#aaa"}
+               strokeWidth={2}
+            />
+            <Bar
+               dataKey={bar}
+               onClick={(e) => handleClick(e)}
+               className='cursor-pointer'
+               fill={color}
+               maxBarSize={60}
+            />
+         </Chart>
       </ChartContainer>
    );
 };

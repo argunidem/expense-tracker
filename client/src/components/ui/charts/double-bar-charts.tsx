@@ -3,19 +3,11 @@
 import ChartContainer from "@/components/ui/charts/chart-container";
 import { useDetails, useModal } from "@/hooks/store";
 import { MappedBudgetData } from "@/interfaces/budget";
-import {
-   BarChart as Chart,
-   Bar,
-   XAxis,
-   YAxis,
-   CartesianGrid,
-   Tooltip,
-   Legend,
-   ResponsiveContainer,
-} from "recharts";
+import { BarChart as Chart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 interface DoubleBarChartProps {
    data: MappedBudgetData[];
+   title: string;
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -32,7 +24,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
    return null;
 };
 
-const DoubleBarChart = ({ data }: DoubleBarChartProps) => {
+const DoubleBarChart = ({ data, title }: DoubleBarChartProps) => {
    const { toggleModal } = useModal();
    const { setData } = useDetails();
 
@@ -42,48 +34,46 @@ const DoubleBarChart = ({ data }: DoubleBarChartProps) => {
    };
 
    return (
-      <ChartContainer>
-         <ResponsiveContainer
-            width='100%'
-            height='100%'
+      <ChartContainer
+         title={title}
+         dataExists={data.length > 0}
+      >
+         <Chart
+            data={data}
+            margin={{
+               top: 5,
+               right: 30,
+               left: 20,
+               bottom: 5,
+            }}
          >
-            <Chart
-               data={data}
-               margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-               }}
-            >
-               <CartesianGrid stroke='#54585d52' />
-               <XAxis
-                  dataKey='date'
-                  tickFormatter={(_value: string, index) => data[index].date}
-                  fontSize={12}
-               />
-               <YAxis />
-               <Tooltip
-                  cursor={{ opacity: 0 }}
-                  content={<CustomTooltip />}
-               />
-               <Legend />
-               <Bar
-                  dataKey='income'
-                  onClick={(e) => handleClick(e)}
-                  className='cursor-pointer'
-                  fill='#9ba3b3'
-                  maxBarSize={60}
-               />
-               <Bar
-                  dataKey='expense'
-                  onClick={(e) => handleClick(e)}
-                  className='cursor-pointer'
-                  fill='#938348'
-                  maxBarSize={60}
-               />
-            </Chart>
-         </ResponsiveContainer>
+            <CartesianGrid stroke='#54585d52' />
+            <XAxis
+               dataKey='date'
+               tickFormatter={(_value: string, index) => data[index].date}
+               fontSize={12}
+            />
+            <YAxis />
+            <Tooltip
+               cursor={{ opacity: 0 }}
+               content={<CustomTooltip />}
+            />
+            <Legend />
+            <Bar
+               dataKey='income'
+               onClick={(e) => handleClick(e)}
+               className='cursor-pointer'
+               fill='#9ba3b3'
+               maxBarSize={60}
+            />
+            <Bar
+               dataKey='expense'
+               onClick={(e) => handleClick(e)}
+               className='cursor-pointer'
+               fill='#938348'
+               maxBarSize={60}
+            />
+         </Chart>
       </ChartContainer>
    );
 };
